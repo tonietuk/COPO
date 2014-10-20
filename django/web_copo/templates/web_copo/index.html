@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+{% load staticfiles %}
+
+<link href="{% static 'web_copo/css/style.css' %}" rel="stylesheet" type="text/css"/>
+<link href="{% static 'web_copo/css/responsive.css' %}" rel="stylesheet" type="text/css"/>
+<link href='http://fonts.googleapis.com/css?family=Lato:400,100,300,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,800,600,300,200' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
+<link href="{% static 'web_copo/css/font-awesome-ie7.min.css' %}" rel="stylesheet" media="screen">
+<script type="text/javascript" src="{% static 'web_copo/js/smoothscroll.js' %}"></script>
+<script src="{% static 'web_copo/jquery.min.js' %}"></script>
+<title>COPO</title>
+</head>
+
+<body>
+	<!--------Start Header----------->
+    	<div class="header">
+        	<div class="container">
+            	<div class="logo-menu">
+                	<div class="logo">
+                    	<h1>COPO (Collaborative Open Plant Omics)</h1>
+                    </div>
+                    <div class="menu">
+                    <label for="show-menu" class="show-menu">Show Menu</label>
+					<input type="checkbox" id="show-menu" role="button"></input>
+                    	<ul class="nav" id="menu">
+                        	<li><a href="#" class="active">Home</a></li>
+                            <li><a href="#isatools">isatools</a></li>
+                            <li><a href="#My_Data">data</a></li>
+                            <li><a href="#My_Docs">docs</a></li>
+                            <li><a href="#References">references</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--------End Header------------->
+    
+    <!--------Banner Starts---------->
+    	<div class="banner">
+        	<div class="container">
+            	<div class="banner-text">
+                	<h2 class="tagline"><span>COPO Front Page</span>
+                    <p class="under-tagline">Please log in to continue.</p>
+                    <button class="mainbutton">Do Something</button>
+                </div>
+            </div>
+        </div>
+    <!--------Banner Ends------------>
+    
+
+    <!--------Footer Starts---------->
+
+    	<div class="footer">
+            <ul class="socialmedia">
+                <li><a href=""><i class="icon-twitter"></i></a></li>
+                <li><a href=""><i class="icon-facebook"></i></a></li>
+                <li><a href=""><i class="icon-dribbble"></i></a></li>
+                <li><a href=""><i class="icon-linkedin"></i></a></li>
+                <li><a href=""><i class="icon-instagram"></i></a></li>
+            </ul>
+            </div>
+        </div>
+
+    <!--------Footer Ends------------>
+
+</body>
+</html>
