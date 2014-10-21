@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
     $("#frm_login_submit").on('click', function() {
-        frm_login_submit_callback($(this));
+        //frm_login_submit_callback($(this));
     });
 
 
@@ -14,21 +14,27 @@ function frm_login_submit_callback(request){
     //get username and pasword
     var username = $("#frm_login_username").val();
     var password = $("#frm_login_password").val();
-    $.ajax({
-        type: "POST",
-        url:"?xhr",
-        data: {
-        'zip': 'testing123',
-        },
-        success: function(data){
 
-            //results = $(data).find('#results').html()
-            alert('success');
+    if((username)&&(password)){
 
-        },
-        error: function(){
-            alert("Error");
-        }
-    })
+        $.ajax({
+            type: "POST",
+            url:"?xhr",
+            data: {
+                'username': username,
+                'password': password
+            },
+            success: function(data){
+
+                //results = $(data).find('#results').html()
+                alert(data);
+
+            },
+            error: function(){
+                alert("Error");
+            }
+        })
+    }
+
 
 }

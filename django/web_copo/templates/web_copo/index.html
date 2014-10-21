@@ -4,26 +4,18 @@
     <script src="{% static 'web_copo/js/copo.login_view.js' %}"></script>
 {% endblock %}
 
-{% block title_block %} Login {% endblock %}
+{% block title_block %} Index {% endblock %}
 
-{% block tagline_block %} Please login {% endblock %}
+{% block tagline_block %} Authenticated! {% endblock %}
 
 {% block main_block %}
 
 
 
 
+You have succesfully logged into COPO!
 
-        <form>
-            {% csrf_token %}
-            <label for="frm_login_username">User</label>
-            <input type="text" id="frm_login_username" name="frm_login_username"  />
 
-            <label for="frm_login_password">Password</label>
-            <input type="password" id="frm_login_password" name="frm_login_password" />
-
-        </form>
-        <button class="submit" id="frm_login_submit">Submit</button>
 
 
 
