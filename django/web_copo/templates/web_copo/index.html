@@ -1,4 +1,8 @@
 {% extends 'web_copo/base.html' %}
+{% load staticfiles %}
+{% block js_block %}
+    <script src="{% static 'web_copo/js/copo.login_view.js' %}"></script>
+{% endblock %}
 
 {% block title_block %} Login {% endblock %}
 
@@ -11,15 +15,15 @@
 
 
         <form>
-            <label for="frm:login:username">User</label>
-            <input type="text" id="frm:login:username" name="frm:login:username"  />
-            <br/>
-            <label for="frm:login:password">Password</label>
-            <input type="password" id="frm:login:password" name="frm:login:password" />
-            <br/>
-            <button class="submit">Submit style</button>
-        </form>
+            {% csrf_token %}
+            <label for="frm_login_username">User</label>
+            <input type="text" id="frm_login_username" name="frm_login_username"  />
 
+            <label for="frm_login_password">Password</label>
+            <input type="password" id="frm_login_password" name="frm_login_password" />
+
+        </form>
+        <button class="submit" id="frm_login_submit">Submit</button>
 
 
 
