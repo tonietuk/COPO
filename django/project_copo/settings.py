@@ -29,6 +29,7 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SESSION_COOKIE_SECURE = True
 
 # Application definition
 
@@ -39,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'sslserver',
     'web_copo',
 )
 

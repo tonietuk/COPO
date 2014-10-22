@@ -7,5 +7,5 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^copo/', include('web_copo.urls', namespace='web_copo')),
+    url(r'^copo/', include('web_copo.urls', namespace='copo')),
 )

@@ -72,6 +72,7 @@ p, span
 {
 	width: 1200px;
 	margin: 0 auto;
+    #border:3px solid black;
 }
 .logo
 {
@@ -114,6 +115,14 @@ ul.nav li
 		margin: 0 15px;
 		padding: 33px 0px;
 }
+ul.nav li img
+{
+
+    height:30px;
+
+}
+
+/*
 ul.nav li a
 {
 	font-family: 'Open Sans', sans-serif;
@@ -131,6 +140,26 @@ ul.nav li a.active
 {
 	color: #16b1b5;
 }
+*/
+a
+{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    display: block;
+}
+a:hover
+{
+    color: #16b1b5;
+}
+a.active
+{
+    color: #16b1b5;
+}
+
+
 .banner
 {
 	background:url(../images/bg.png) no-repeat fixed;
@@ -142,6 +171,7 @@ ul.nav li a.active
 	padding:180px 0px 100px 0px;
 	background-color: #3d454a;
 	cursor: default;
+    #border:3px solid black;
 }
 .banner-text
 {
@@ -149,14 +179,14 @@ ul.nav li a.active
 	margin: 0 auto;
 	padding:80px 0px;
 }
-.banner-text h2
+.banner h2
 {
 	color: #fff;
 	font-size: 30px;
 	font-weight: 300;
 	line-height: 1.5;
 }
-.banner-text h2 span
+.banner h2 span
 {
 	font-weight: 400;
 }
@@ -285,6 +315,7 @@ button.mainbutton:hover
 	float: left;
 	width: 100%;
 	text-align: center;
+
 }
 .desc h3
 {
@@ -373,11 +404,13 @@ button.mainbutton:hover
 	float: left;
 	padding-bottom: 100px;
 }
-.contact-form
+.generic-form
 {
 	width: 600px;
 	float: left;
 }
+
+
 form input
 {
 	background: none repeat scroll 0% 0% #F7F6F6;
