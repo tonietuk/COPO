@@ -92,22 +92,7 @@
 						</div>
 					</div>
 					<div class="col-sm-8 col-md-8 col-lg-8">
-						<div id="browse_header">
-							
-								<span class="blue_icon">
-									<i class="fa fa-folder-open"></i>
-								</span>
-								<span class="blue_icon">
-									<i class="fa fa-pencil-square-o"></i>
-								</span>
-								<span class="blue_icon">
-									<i class="fa fa-trash-o"></i>
-								</span>
-								<div class="input-group input-group-sm">
-								<span class="input-group-addon"><i class="fa fa-search"></i></span>
-									<input type="search" class="form-control" placeholder="Search">
-								</div>
-						</div>
+						{% block browse_header_block %} default search {% endblock %}
 					</div>
 					
 				</div>

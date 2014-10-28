@@ -78,13 +78,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/django/web_copo/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="20" selection-start="476" selection-end="476" vertical-scroll-proportion="0.38636363" vertical-offset="0" max-vertical-offset="660">
+            <state line="17" column="20" selection-start="476" selection-end="476" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
               <folding>
                 <element signature="e#0#28#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.html" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/django/web_copo/templates/copo/index.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="33" column="22" selection-start="917" selection-end="917" vertical-scroll-proportion="0.7783019" vertical-offset="0" max-vertical-offset="645">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="base.html" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/django/web_copo/templates/copo/base.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="94" column="82" selection-start="2744" selection-end="2744" vertical-scroll-proportion="-9.625" vertical-offset="1179" max-vertical-offset="1815">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -131,12 +149,12 @@
         <option value="$PROJECT_DIR$/django/web_copo/urls.py" />
         <option value="$PROJECT_DIR$/django/web_copo/templates/copo/register.html" />
         <option value="$PROJECT_DIR$/django/web_copo/views.py" />
-        <option value="$PROJECT_DIR$/django/web_copo/templates/copo/index.html" />
-        <option value="$PROJECT_DIR$/django/web_copo/templates/copo/base.html" />
         <option value="$PROJECT_DIR$/django/web_copo/static/copo/css/style.css" />
         <option value="$PROJECT_DIR$/django/project_copo/settings.py" />
         <option value="$PROJECT_DIR$/django/web_copo/admin.py" />
         <option value="$PROJECT_DIR$/django/web_copo/models.py" />
+        <option value="$PROJECT_DIR$/django/web_copo/templates/copo/base.html" />
+        <option value="$PROJECT_DIR$/django/web_copo/templates/copo/index.html" />
       </list>
     </option>
   </component>
@@ -202,6 +220,24 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="web_copo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="COPO" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="django" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="web_copo" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="copo" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -626,10 +662,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/django/web_copo/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="20" selection-start="476" selection-end="476" vertical-scroll-proportion="0.38636363" vertical-offset="0" max-vertical-offset="660">
+        <state line="17" column="20" selection-start="476" selection-end="476" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
           <folding>
             <element signature="e#0#28#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/web_copo/templates/copo/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="94" column="82" selection-start="2744" selection-end="2744" vertical-scroll-proportion="-9.625" vertical-offset="1179" max-vertical-offset="1815">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/web_copo/templates/copo/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="22" selection-start="917" selection-end="917" vertical-scroll-proportion="0.7783019" vertical-offset="0" max-vertical-offset="645">
+          <folding />
         </state>
       </provider>
     </entry>
