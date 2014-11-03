@@ -3,14 +3,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from web_copo.models import Collection, Resource
 
-
-import pdb
+import pudb
 
 # Create your views here.
-@login_required
+#@login_required
 def index(request):
-    context = {'test_obj': 'Testing Testing 123'}
+
+    username = User(username=request.user)
+    #c = Collection.objects.filter(user = username)
+    collection_set = Collection.objects.all()
+    print collection_set
+    context = {'user': request.user, 'collections': collection_set}
     return render(request, 'copo/index.html', context)
 
 
@@ -73,3 +78,14 @@ def copo_register(request):
         user.save()
 
         return render(request, 'copo/login.html')
+
+def copo_collection(request):
+    #pudb.set_trace()
+    if request.method == 'POST':
+        #get current user
+        u = User.objects.get(username=request.user)
+        x = request.POST['collection_name']
+        y = request.POST['sub_date']
+        c = Collection(name = x, user = u, submission_date = y)
+        c.save()
+        return HttpResponseRedirect('/copo/')
