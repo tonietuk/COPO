@@ -1,0 +1,47 @@
+{% extends 'copo/base.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheet_block %}
+<link rel="stylesheet" href="{% static 'copo/css/browse_style.css' %}">
+<link rel="stylesheet" href="{% static 'copo/css/datepicker.css' %}">
+{% endblock %}
+
+
+{% block title_block %} Study {% endblock %}
+
+{% block tagline_block %}{% endblock %}
+
+{% block browse_header_block %}
+
+<div id="browse_header">
+        <span class="blue_icon">
+           <a><i class="fa fa-plus-circle" data-toggle="modal" data-target="#newStudyModal"></i></a>
+        </span>
+        <span class="blue_icon">
+            <a><i class="fa fa-pencil-square-o"></i></a>
+        </span>
+        <span class="blue_icon">
+            <a><i class="fa fa-trash-o"></i></a>
+        </span>
+    <div class="input-group input-group-sm">
+            <span class="input-group-addon">
+                <i class="fa fa-search"></i>
+            </span>
+        <input type="search" class="form-control" placeholder="Search">
+    </div>
+</div>
+
+{% endblock %}
+
+{% block work_area %}
+
+TESTING
+
+{% endblock %}
+
+
+{% block js_block %}
+<script src="{% static 'copo/js/bootstrap-datepicker.js' %}"></script>
+<script src="{% static 'copo/js/index.js' %}"></script>
+{% endblock %}

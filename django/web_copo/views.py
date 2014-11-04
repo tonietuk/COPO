@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from web_copo.models import Collection, Resource
+from web_copo.models import Collection, Resource, Study
 
 import pudb
 
@@ -13,9 +13,8 @@ def index(request):
 
     username = User(username=request.user)
     #c = Collection.objects.filter(user = username)
-    collection_set = Collection.objects.all()
-    print collection_set
-    context = {'user': request.user, 'collections': collection_set}
+    study_set = Study.objects.all()
+    context = {'user': request.user, 'studies': study_set}
     return render(request, 'copo/index.html', context)
 
 
@@ -79,13 +78,22 @@ def copo_register(request):
 
         return render(request, 'copo/login.html')
 
-def copo_collection(request):
+def copo_index(request):
     #pudb.set_trace()
     if request.method == 'POST':
         #get current user
         u = User.objects.get(username=request.user)
-        x = request.POST['collection_name']
-        y = request.POST['sub_date']
-        c = Collection(name = x, user = u, submission_date = y)
-        c.save()
+        a = request.POST['study_abstract']
+        sa = a[:147]
+        sa += '...'
+        d = request.POST['study_date']
+        t = request.POST['study_type']
+        ti = request.POST['study_title']
+        s = Study(title=ti, user=u, date=d, abstract=a, type=t, abstract_short=sa)
+        s.save()
         return HttpResponseRedirect('/copo/')
+
+def copo_study(request):
+    pk = request.GET.get('pk', None)
+    pudb.set_trace()
+    return render(request, 'copo/study.html')

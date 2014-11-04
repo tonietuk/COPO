@@ -7,13 +7,13 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('web_copo', '0003_collection_submission_data'),
+        ('web_copo', '0003_remove_study_testfield'),
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='collection',
-            old_name='submission_data',
-            new_name='submission_date',
+        migrations.AlterField(
+            model_name='study',
+            name='date',
+            field=models.DateField(auto_now=True),
         ),
     ]

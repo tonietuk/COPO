@@ -70,7 +70,9 @@ DATABASES = {
         'PASSWORD': 'Apple123',
         'Host': '127.0.0.1',
         'Port': '',
+        'init_command' :'SET storage_engine=MyISAM',
     }
+
 }
 
 # Internationalization
