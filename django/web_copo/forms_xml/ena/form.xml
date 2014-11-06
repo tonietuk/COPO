@@ -1,0 +1,16 @@
+<components>
+
+    <component>
+        <name>attribute</name>
+        <type>text</type>
+        <meta>many</meta>
+    </component>
+
+    <component>
+        <name>oranges</name>
+        <type>text</type>
+        <meta>one</meta>
+    </component>
+
+
+</components>

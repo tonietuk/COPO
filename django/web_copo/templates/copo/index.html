@@ -42,7 +42,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form role="form" action="/copo/study/" method="post">
+                    <form role="form" action="/copo/new_study/" method="post">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="study_title">Title</label>
@@ -99,6 +99,7 @@
 
 {% block work_area %}
 
+    <h2 class="h2">Studies</h2>
 
     <table class="browse_table">
 

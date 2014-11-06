@@ -4,6 +4,7 @@
 
 {% block stylesheet_block %}
 <link rel="stylesheet" href="{% static 'copo/css/browse_style.css' %}">
+<link rel="stylesheet" href="{% static 'copo/css/study.css' %}">
 <link rel="stylesheet" href="{% static 'copo/css/datepicker.css' %}">
 {% endblock %}
 
@@ -36,12 +37,80 @@
 
 {% block work_area %}
 
-TESTING
+<!-- here is the markup for the top table data pulled in from the study itself -->
+<table class="browse_table">
+    <h2 class="h2">Study Collections</h2>
+    <tr>
+        <th>Title</th>
+        <th>Abstract</th>
+    </tr>
+
+
+
+    <tr>
+
+        <td>{{ study_title }}</td>
+        <td>{{ study_abstract }}</td>
+
+    </tr>
+
+
+</table>
+
+<!-- subsequently we should loop and have some sort of collapsable table showing the existing work collections -->
+
+
+
+<!-- then we have a button to add a new work collection -->
+<div class="text-center add_data_button">
+    <button type="button" class="btn btn-primary btn-lg text-center" data-toggle="modal"
+            data-target="#newCollectionModal">Add Data</button>
+</div>
+
+
+
+<!-- here is the hidden modal which will be populated from js, will look at having a rest call to a python service to
+query the forms xml for the type of data selected by the user -->
+
+<!-- Modal -->
+<div class="modal fade" id="newCollectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">New Study</h4>
+            </div>
+            <div class="modal-body">
+
+                <form role="form" id="ena_study_form" action="/copo/new_submission/" method="post">
+                    {% csrf_token %}
+
+
+
+
+                    <label for="submission_type">Submisison Type</label>
+                    <select name="submission_type" id="submission_type" class="form-control">
+                        <option></option>
+                        <option>ENA Submission</option>
+                        <option>Custom Submission</option>
+                    </select>
+
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
 
 
 {% block js_block %}
 <script src="{% static 'copo/js/bootstrap-datepicker.js' %}"></script>
-<script src="{% static 'copo/js/index.js' %}"></script>
+<script src="{% static 'copo/js/study.js' %}"></script>
 {% endblock %}

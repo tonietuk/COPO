@@ -78,7 +78,7 @@ def copo_register(request):
 
         return render(request, 'copo/login.html')
 
-def copo_index(request):
+def new_study(request):
     #pudb.set_trace()
     if request.method == 'POST':
         #get current user
@@ -93,7 +93,8 @@ def copo_index(request):
         s.save()
         return HttpResponseRedirect('/copo/')
 
-def copo_study(request):
-    pk = request.GET.get('pk', None)
-    pudb.set_trace()
-    return render(request, 'copo/study.html')
+def view_study(request, pk):
+
+    study = Study.objects.get(id=pk)
+    context = {'study_title': study.title, 'study_abstract': study.abstract_short}
+    return render(request, 'copo/study.html', context)
