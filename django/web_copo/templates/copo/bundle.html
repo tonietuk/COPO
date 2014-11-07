@@ -39,7 +39,7 @@
 
 <!-- here is the markup for the top table data pulled in from the study itself -->
 <table class="browse_table">
-    <h2 class="h2">Study Collections</h2>
+    <h2 class="h2">Bundle: {{ study_title }}</h2>
     <tr>
         <th>Title</th>
         <th>Abstract</th>
@@ -49,8 +49,8 @@
 
     <tr>
 
-        <td>{{ study_title }}</td>
-        <td>{{ study_abstract }}</td>
+        <td>{{ bundle_title }}</td>
+        <td>{{ bundle_abstract }}</td>
 
     </tr>
 
@@ -64,7 +64,7 @@
 <!-- then we have a button to add a new work collection -->
 <div class="text-center add_data_button">
     <button type="button" class="btn btn-primary btn-lg text-center" data-toggle="modal"
-            data-target="#newCollectionModal">Add Data</button>
+            data-target="#newCollectionModal">Add Collection</button>
 </div>
 
 
@@ -78,23 +78,29 @@ query the forms xml for the type of data selected by the user -->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">New Study</h4>
+                <h4 class="modal-title" id="myModalLabel">New Collection</h4>
             </div>
             <div class="modal-body">
 
-                <form role="form" id="ena_study_form" action="/copo/new_submission/" method="post">
+                <form role="form" id="ena_study_form" action="/copo/new_collection/" method="post">
                     {% csrf_token %}
 
+                    <input type="hidden" name="bundle_id" value="{{ bundle_id }}">
+                    <div class="form-group">
+                        <label for="collection_name">Collection Name</label><br/>
+                        <input type="text" name="collection_name" id="collection_name" class="form_control" placeholder="Enter Name"/>
+                    </div>
 
 
+                    <div class="form-group">
+                        <label for="collection_type">Colection Type</label>
+                        <select name="collection_type" id="collection_type" class="form-control">
+                            <option>ENA Submission</option>
+                            <option>Custom Submission</option>
+                        </select>
+                    </div>
 
-                    <label for="submission_type">Submisison Type</label>
-                    <select name="submission_type" id="submission_type" class="form-control">
-                        <option></option>
-                        <option>ENA Submission</option>
-                        <option>Custom Submission</option>
-                    </select>
-
+                    <button type="submit" class="btn btn-default">Submit</button>
 
                 </form>
 

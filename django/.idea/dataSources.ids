@@ -169,7 +169,7 @@
       <exported-key name="auth_user_groups_user_id_4b5ed4ffdb8fd9b0_fk_auth_user_id" table="auth_user_groups" schema="" catalog="copo_db" columns="user_id"/>
       <exported-key name="auth_user_user_permissi_user_id_7f0938558328534a_fk_auth_user_id" table="auth_user_user_permissions" schema="" catalog="copo_db" columns="user_id"/>
       <exported-key name="django_admin_log_user_id_52fdd58701c5f563_fk_auth_user_id" table="django_admin_log" schema="" catalog="copo_db" columns="user_id"/>
-      <exported-key name="user_id_refs_id_563a3b4d" table="web_copo_study" schema="" catalog="copo_db" columns="user_id"/>
+      <exported-key name="web_copo_bundle_user_id_65bc32edf49c2a97_fk_auth_user_id" table="web_copo_bundle" schema="" catalog="copo_db" columns="user_id"/>
       <index name="username" unique="true" columns="username"/>
     </table>
     <table name="auth_user_groups" schema="" catalog="copo_db" type="TABLE">
@@ -233,12 +233,26 @@
       <primary-key name="PRIMARY" columns="session_key"/>
       <index name="django_session_de54fa62" unique="false" columns="expire_date"/>
     </table>
+    <table name="web_copo_bundle" schema="" catalog="copo_db" type="TABLE">
+      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <column name="title" sqlType="VARCHAR" length="500" precision="0" nullable="false" jdbcType="12"/>
+      <column name="abstract" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="true" jdbcType="-1"/>
+      <column name="abstract_short" sqlType="VARCHAR" length="150" precision="0" nullable="true" jdbcType="12"/>
+      <column name="date_created" sqlType="DATE" length="10" precision="0" nullable="true" jdbcType="91"/>
+      <column name="user_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="date_modified" sqlType="DATE" length="10" precision="0" nullable="false" jdbcType="91"/>
+      <primary-key name="PRIMARY" columns="id"/>
+      <foreign-key name="web_copo_bundle_user_id_65bc32edf49c2a97_fk_auth_user_id" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="copo_db" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <exported-key name="web_copo_collect_study_id_3344b191df4f8a40_fk_web_copo_bundle_id" table="web_copo_collection" schema="" catalog="copo_db" columns="study_id"/>
+      <index name="web_copo_bundle_e8701ad4" unique="false" columns="user_id"/>
+    </table>
     <table name="web_copo_collection" schema="" catalog="copo_db" type="TABLE">
       <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="name" sqlType="VARCHAR" length="50" precision="0" nullable="false" jdbcType="12"/>
       <column name="study_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
+      <column name="type" sqlType="VARCHAR" length="50" precision="0" nullable="false" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="study_id_refs_id_1532d87a" columns="study_id" ref-table="web_copo_study" ref-schema="" ref-catalog="copo_db" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
+      <foreign-key name="web_copo_collect_study_id_3344b191df4f8a40_fk_web_copo_bundle_id" columns="study_id" ref-table="web_copo_bundle" ref-schema="" ref-catalog="copo_db" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="collection_id_refs_id_a298b2c7" table="web_copo_resource" schema="" catalog="copo_db" columns="collection_id"/>
       <index name="web_copo_collection_3ad81dbb" unique="false" columns="study_id"/>
     </table>
@@ -251,19 +265,6 @@
       <primary-key name="PRIMARY" columns="id"/>
       <foreign-key name="collection_id_refs_id_a298b2c7" columns="collection_id" ref-table="web_copo_collection" ref-schema="" ref-catalog="copo_db" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
       <index name="web_copo_resource_7f91a80f" unique="false" columns="collection_id"/>
-    </table>
-    <table name="web_copo_study" schema="" catalog="copo_db" type="TABLE">
-      <column name="id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4" autoIncrement="true"/>
-      <column name="title" sqlType="VARCHAR" length="500" precision="0" nullable="false" jdbcType="12"/>
-      <column name="abstract" sqlType="LONGTEXT" length="2147483647" precision="0" nullable="true" jdbcType="-1"/>
-      <column name="type" sqlType="VARCHAR" length="100" precision="0" nullable="false" jdbcType="12"/>
-      <column name="user_id" sqlType="INT" length="10" precision="0" nullable="false" jdbcType="4"/>
-      <column name="date" sqlType="DATE" length="10" precision="0" nullable="false" jdbcType="91"/>
-      <column name="abstract_short" sqlType="VARCHAR" length="150" precision="0" nullable="true" jdbcType="12"/>
-      <primary-key name="PRIMARY" columns="id"/>
-      <foreign-key name="user_id_refs_id_563a3b4d" columns="user_id" ref-table="auth_user" ref-schema="" ref-catalog="copo_db" ref-columns="id" update-rule="3" delete-rule="3" deferrability="2"/>
-      <exported-key name="study_id_refs_id_1532d87a" table="web_copo_collection" schema="" catalog="copo_db" columns="study_id"/>
-      <index name="web_copo_study_6340c63c" unique="false" columns="user_id"/>
     </table>
     <table name="CHARACTER_SETS" schema="" catalog="information_schema" type="SYSTEM VIEW">
       <column name="CHARACTER_SET_NAME" sqlType="VARCHAR" length="32" precision="0" nullable="false" jdbcType="12" def="Jyc="/>

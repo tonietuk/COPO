@@ -42,7 +42,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <form role="form" action="/copo/new_study/" method="post">
+                    <form role="form" action="/copo/new_bundle/" method="post">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="study_title">Title</label>
@@ -52,35 +52,6 @@
                             <label for="study_abstract">Abstract</label>
                             <textarea rows="6" class="form-control" name="study_abstract" placeholder="Enter Abstract"></textarea>
                         </div>
-
-
-
-                        <label for="study_type">Collection Type</label>
-                        <select name="study_type" id="collection_type" class="form-control">
-                            <option>Whole Genome Sequencing</option>
-                            <option>Metagenomics</option>
-                            <option>Transcriptome Analysis</option>
-                            <option>Resequencing</option>
-                            <option>Epigenetics</option>
-                            <option>Synthetic Genomics</option>
-                            <option>Forensic or Paleo-genomics</option>
-                            <option>Gene Regulation Study</option>
-                            <option>Cancer Genomics</option>
-                            <option>RNASeq</option>
-                            <option>Exome Sequencing</option>
-                            <option>Pooled Clone Sequencing</option>
-                            <option>other</option>
-                        </select>
-
-                        <br/>
-
-                        <div class="input-append date" id="dp3" data-date="" data-date-format="yyyy-mm-dd">
-                            <label for="study_date">Date</label><br/>
-                            <input name="study_date" class="span2 datepicker" size="16" type="text" value="Date"/>
-                            <span class="add-on"><i class="icon-th"></i></span>
-                        </div>
-
-                        <br/>
 
                         <button type="submit" class="btn btn-default">Submit</button>
                     </form>
@@ -114,7 +85,7 @@
         {% for s in studies %}
             <tr>
                 <td style="text-align: center">
-                    <a href="/copo/study/{{ s.id }}/view"><i class="fa fa-pencil-square-o "></i></a>
+                    <a href="/copo/bundle/{{ s.id }}/view"><i class="fa fa-pencil-square-o "></i></a>
                 </td>
                 <td>{{ s.title }}</td>
                 <td>{{ s.abstract_short }}</td>

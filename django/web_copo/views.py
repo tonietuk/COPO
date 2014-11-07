@@ -1,11 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from web_copo.models import Collection, Resource, Study
+from web_copo.models import Collection, Resource, Bundle
 
-import pudb
+import pdb
 
 # Create your views here.
 #@login_required
@@ -13,7 +13,7 @@ def index(request):
 
     username = User(username=request.user)
     #c = Collection.objects.filter(user = username)
-    study_set = Study.objects.all()
+    study_set = Bundle.objects.all()
     context = {'user': request.user, 'studies': study_set}
     return render(request, 'copo/index.html', context)
 
@@ -78,23 +78,43 @@ def copo_register(request):
 
         return render(request, 'copo/login.html')
 
-def new_study(request):
-    #pudb.set_trace()
+def new_bundle(request):
+
     if request.method == 'POST':
         #get current user
         u = User.objects.get(username=request.user)
         a = request.POST['study_abstract']
         sa = a[:147]
         sa += '...'
-        d = request.POST['study_date']
-        t = request.POST['study_type']
         ti = request.POST['study_title']
-        s = Study(title=ti, user=u, date=d, abstract=a, type=t, abstract_short=sa)
+        s = Bundle(title=ti, user=u, abstract=a, abstract_short=sa)
         s.save()
         return HttpResponseRedirect('/copo/')
 
-def view_study(request, pk):
 
-    study = Study.objects.get(id=pk)
-    context = {'study_title': study.title, 'study_abstract': study.abstract_short}
-    return render(request, 'copo/study.html', context)
+def view_bundle(request, pk):
+
+    bundle = Bundle.objects.get(id=pk)
+    collections = bundle.collection_set
+    context = {'bundle_id':pk, 'bundle_title': bundle.title, 'bundle_abstract': bundle.abstract_short, 'collections': collections}
+    return render(request, 'copo/bundle.html', context)
+
+def new_collection(request):
+
+    c_type = request.POST['collection_type']
+    c_name = request.POST['collection_name']
+    bundle_id = request.POST['bundle_id']
+    b = Bundle.objects.get(id=bundle_id)
+    c = Collection(name=c_name, type=c_type)
+    c.save()
+    b.collection_set.add(c)
+    c.save()
+    context = {'request_type':c_type, 'bundle':b}
+    return redirect(request, 'copo/collection/' + c.id + '/view', context)
+
+def view_collection(request, collection_id):
+    #pdb.set_trace()
+    #collection = Collection.objects.get(id=pk)
+    collection = get_object_or_404(Collection, pk=collection_id)
+    context = {'collection':collection}
+    return render(request, 'copo/collection.html', context)

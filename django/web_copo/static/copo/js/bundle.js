@@ -25,8 +25,8 @@ $(document).ready(function(){
         //for each element in returned data, append a new html control to the form
         var theForm = $('#ena_study_form');
         var controls = $(jQuery.parseJSON(data));
-        
-        for(i = 0; i < controls.childElementCount; i++){
+
+        for(i = 0; i < controls.length; i++){
             var field_name = controls[i].name;
             var field_type = controls[i].type;
             var meta = controls[i].meta;
@@ -37,6 +37,7 @@ $(document).ready(function(){
                     //append the control
                     theForm.append("<input type='text' class='form-control' name=" + field_name + "></input>")
                     theForm.append("<button type='button' class='btn btn-info btn-xs add_many_button'>add another</button>")
+                    theForm.append("<hr/>")
                 }
                 else if(meta == 'one'){
                     //append a label

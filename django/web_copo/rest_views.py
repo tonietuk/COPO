@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from web_copo.models import Collection, Resource, Study
+from web_copo.models import Collection, Resource, Bundle
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
 import pdb
