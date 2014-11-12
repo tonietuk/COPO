@@ -4,7 +4,7 @@
 
 {% block stylesheet_block %}
 <link rel="stylesheet" href="{% static 'copo/css/browse_style.css' %}">
-<link rel="stylesheet" href="{% static 'copo/css/study.css' %}">
+<link rel="stylesheet" href="{% static 'copo/css/collection.css' %}">
 <link rel="stylesheet" href="{% static 'copo/css/datepicker.css' %}">
 {% endblock %}
 
@@ -37,15 +37,70 @@
 
 {% block work_area %}
 
-<h2> {{ collection.name }}</h2>
-<h2> {{ collection.type }}</h2>
-<h2> {{ collection.id }} </h2>
+<form role="form" class="form-horizontal" id="ena_title_form" action="/copo/new_collection/" method="post">
+    <div class="form-group">
+        <label class="control-label">Collection Name</label>
+        <input type="text" id="collection_name" placeholder="{{ collection.name }}" class="form-control" disabled/>
+    </div>
+    <div class="form-group">
+        <label for="collection_type">Colection Type</label>
+        <select name="collection_type" id="collection_type" class="form-control">
+            <option selected="selected">ENA Submission</option>
+            <option>Custom Submission</option>
+        </select>
+    </div>
+</form>
 
 
-{% endblock %}
+<div class="panel-group" id="accordion">
+
+    <!-- Panel for ENA Study -->
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
+                    ENA Study
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Panel for ENA Sample -->
+
+    <div class="panel panel-default" id="panel2">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-target="#collapseTwo"
+                   href="#collapseTwo" class="collapsed">
+                    Collapsible Group Item #2
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body">
+                Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+    {% endblock %}
 
 
 {% block js_block %}
 <script src="{% static 'copo/js/bootstrap-datepicker.js' %}"></script>
-<script src="{% static 'copo/js/study.js' %}"></script>
+<script src="{% static 'copo/js/collection.js' %}"></script>
 {% endblock %}

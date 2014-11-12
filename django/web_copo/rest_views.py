@@ -7,9 +7,8 @@ from django.contrib.auth.models import User
 from web_copo.models import Collection, Resource, Bundle
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
+from xml.ena_parsers import get_study_form_controls
 import pdb
-import xmltodict
-import json
 
 
 class JSONResponse(HttpResponse):
@@ -19,20 +18,11 @@ class JSONResponse(HttpResponse):
     def __init__(self, data, **kwargs):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
+
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
 
-def test(request):
-
-    #get submission type and select corresponding form control xml
-    submission_type = request.GET['submission_type']
-    if submission_type == 'ENA Submission':
-        xml_file = 'web_copo/forms_xml/ena/form.xml'
-    #open and parse xml
-    with open(xml_file) as fd:
-        tree = xmltodict.parse(fd.read())
-    #get components, convert to json and return
-    y = tree['components']['component']
-    out = json.dumps(y)
-    return JSONResponse(out)
+def get_ena_study_controls(request):
+    html = get_study_form_controls('web_copo/xml/schemas/ena/SRA.study.xsd.xml')
+    return HttpResponse(html, content_type='html')
