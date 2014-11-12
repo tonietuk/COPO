@@ -14,7 +14,7 @@ def get_study_form_controls(path):
 
     descriptor = root.findall(".//xs:element[@name='DESCRIPTOR']//xs:complexType//xs:all/xs:element", namespaces)
 
-    str = '<form>'
+    str = ''
 
     for el in iter(descriptor):
         el_name = el.get('name')
@@ -25,7 +25,12 @@ def get_study_form_controls(path):
         if(el_type == 'xs:string'):
             str += "<div class='form-group'>"
             str += "<label for='" + el_name + "'>" + el_name_tidy + "</label>"
-            str += "<input type='text' class='form-control' id='" + el_name + "' name='" + el_name + "'/>"
+
+            if(el.get('name') == 'STUDY_ABSTRACT'):
+                str += "<textarea type='text' rows='6' class='form-control' id='" + el_name + "' name='" + el_name + "'/>"
+            else:
+                str += "<input type='text' class='form-control' id='" + el_name + "' name='" + el_name + "'/>"
+
             str += "</div>"
 
         #make dropdown for study type
@@ -41,5 +46,5 @@ def get_study_form_controls(path):
             str += "</select>"
             str += "</div>"
 
-    str += '</form>'
+
     return str

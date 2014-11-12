@@ -5,7 +5,7 @@
 {% block stylesheet_block %}
 <link rel="stylesheet" href="{% static 'copo/css/browse_style.css' %}">
 <link rel="stylesheet" href="{% static 'copo/css/collection.css' %}">
-<link rel="stylesheet" href="{% static 'copo/css/datepicker.css' %}">
+<link rel="stylesheet" href="{% static 'copo/css/bootstrapValidator.css' %}">
 {% endblock %}
 
 
@@ -66,7 +66,9 @@
         <div id="collapseOne" class="panel-collapse collapse in">
             <div class="panel-body">
 
-
+                <form id="ena_subject_form">
+                    <!-- populated by ajax -->
+                </form>
 
             </div>
         </div>
@@ -74,7 +76,6 @@
 
 
     <!-- Panel for ENA Sample -->
-
     <div class="panel panel-default" id="panel2">
         <div class="panel-heading">
             <h4 class="panel-title">
@@ -103,4 +104,5 @@
 {% block js_block %}
 <script src="{% static 'copo/js/bootstrap-datepicker.js' %}"></script>
 <script src="{% static 'copo/js/collection.js' %}"></script>
+<script src="{% static 'copo/js/bootstrapValidator.js' %}"></script>
 {% endblock %}
