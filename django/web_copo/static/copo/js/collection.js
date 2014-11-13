@@ -2,16 +2,19 @@
  * Created by fshaw on 11/11/14.
  */
 $(document).ready( function(){
-    get_form_data()
+    get_study_form_data()
+    get_sample_form_data()
+    //add_validators()
     $('#collection_type').change(function(){
-        get_form_data()
+        get_study_form_data()
+        //add_validators()
+        get_sample_form_data()
     })
 
 
 
-    $('#ena_subject_form')
-
-
+    //add validators to study form
+    $('#ena_study_form, #ena_sample_form')
         .on('init.field.bv', function(e, data) {
             // data.bv      --> The BootstrapValidator instance
             // data.field   --> The field name
@@ -65,6 +68,17 @@ $(document).ready( function(){
                             message: 'Please provide an abstract for this study (as it might appear in publication)'
                         }
                     }
+                },
+                TAXON_ID:{
+                    message: 'Taxon ID must be provided',
+                    validators:{
+                        notEmpty:{
+                            message: 'Please provide the taxonimic id for this sample'
+                        },
+                        integer:{
+                            message: 'Taxon id be an integer number'
+                        }
+                    }
                 }
             }
         })
@@ -72,7 +86,7 @@ $(document).ready( function(){
 
 })
 
-function get_form_data(){
+function get_study_form_data(){
     var c_type = $('#collection_type').val()
 
     $.ajax({
@@ -80,7 +94,9 @@ function get_form_data(){
         url:"/rest/ena_study_form",
         async:false,
         dataType:"html",
-        success:add_to_page,
+        success:function(data){
+            $('#ena_study_form').html(data)
+        },
         error:function(){
             alert('no json returned')
         },
@@ -89,8 +105,27 @@ function get_form_data(){
 
 }
 
-function add_to_page(data){
-    $('#ena_subject_form').html(data)
-    //$('#collapseOne .panel-body').html()
-    //$('body').html(data)
+function get_sample_form_data(){
+    var c_type = $('#collection_type').val()
+
+    $.ajax({
+        type:"GET",
+        url:"/rest/ena_sample_form",
+        async:false,
+        dataType:"html",
+        success:function(data){
+            $('#ena_sample_form').html(data)
+        },
+        error:function(){
+            alert('no json returned')
+        },
+        data:{collection_type:c_type}
+    });
+
+}
+
+function add_validators(){
+    var x = $('input[required="true"]').val()
+
+    alert(x)
 }

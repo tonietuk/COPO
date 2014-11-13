@@ -6,4 +6,5 @@ from web_copo import rest_views
 
 urlpatterns = patterns('',
     url(r'^ena_study_form/', rest_views.get_ena_study_controls, name='get_ena_study_controls'),
+    url(r'^ena_sample_form/', rest_views.get_ena_sample_controls, name='get_ena_sample_controls'),
 )
