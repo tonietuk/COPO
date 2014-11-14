@@ -2,16 +2,30 @@
  * Created by fshaw on 11/11/14.
  */
 $(document).ready( function(){
-    get_study_form_data()
-    get_sample_form_data()
-    //add_validators()
+    study_form_data()
+    sample_form_data()
     $('#collection_type').change(function(){
-        get_study_form_data()
-        //add_validators()
-        get_sample_form_data()
+        study_form_data()
+        sample_form_data()
     })
 
+    $('#button_p').click(function(){
+        //need to update the hidden field containing counter for attribute ids
+        var att_counter = parseInt($('#attr_counter').attr('value'))
+        att_counter += 1
+        $('#attr_counter').attr('value', att_counter)
 
+        //add new html for the attribute
+        var html = '<div class="form-group col-sm-10">' +
+            '<label class="sr-only" for="tag_1">tag</label>' +
+            '<label class="sr-only" for="value_1">value</label>' +
+            '<label class="sr-only" for="unit_1">unit</label>' +
+            '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="attribute tag"></input>' +
+            '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="attribute value"/></input>' +
+            '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="attribute unit (optional)"/></input>' +
+            '</div>'
+        $(html).insertBefore($('#button_p'))
+    })
 
     //add validators to study form
     $('#ena_study_form, #ena_sample_form')
@@ -45,13 +59,6 @@ $(document).ready( function(){
         })
 
         .bootstrapValidator({
-            message: 'This value is not valid',
-            feedbackIcons: {
-                required: 'fa fa-asterisk',
-                valid: 'fa fa-check',
-                invalid: 'fa fa-times',
-                validating: 'fa fa-refresh'
-            },
             fields: {
                 STUDY_TITLE: {
                     message: 'Study name not provided',
@@ -80,15 +87,19 @@ $(document).ready( function(){
                         }
                     }
                 }
+            },
+            message: 'This value is not valid',
+            feedbackIcons: {
+                required: 'fa fa-asterisk',
+                valid: 'fa fa-check',
+                invalid: 'fa fa-times',
+                validating: 'fa fa-refresh'
             }
         })
-
-
 })
 
-function get_study_form_data(){
+function study_form_data(){
     var c_type = $('#collection_type').val()
-
     $.ajax({
         type:"GET",
         url:"/rest/ena_study_form",
@@ -102,12 +113,10 @@ function get_study_form_data(){
         },
         data:{collection_type:c_type}
     });
-
 }
 
-function get_sample_form_data(){
+function sample_form_data(){
     var c_type = $('#collection_type').val()
-
     $.ajax({
         type:"GET",
         url:"/rest/ena_sample_form",
@@ -121,11 +130,4 @@ function get_sample_form_data(){
         },
         data:{collection_type:c_type}
     });
-
-}
-
-function add_validators(){
-    var x = $('input[required="true"]').val()
-
-    alert(x)
 }
