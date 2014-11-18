@@ -71,9 +71,31 @@
                     <!-- populated by ajax -->
                 </form>
 
+                <h2 class="h2">Add Study Attributes</h2>
+                <hr/>
+                <form id="ena_study_form_attributes" class="form-horizontal" role="form">
+                    <input type="hidden" id="attr_counter" value="1"/>
+
+                    <!-- pressing the button underneath this div will cause another div to be created and inserted -->
+                    <div class="form-group col-sm-10" id="attribute_group">
+                        <label class="sr-only" for="tag_1">tag</label>
+                        <label class="sr-only" for="value_1">value</label>
+                        <label class="sr-only" for="unit_1">unit</label>
+                        <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="attribute tag"/>
+                        <input type="text" class="col-sm-3 attr" name="value_1" placeholder="attribute value"/>
+                        <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="attribute unit (optional)"/>
+                    </div>
+                    <p id="study_button_p" class="col-sm-10">
+                        <br/>
+                        <button type="button" id="study_add_attribute_button" class="btn btn-default btn-s">Add Another</button>
+                    </p>
+                </form>
+
             </div>
         </div>
     </div>
+
+
 
 
     <!-- Panel for ENA Sample -->
@@ -90,15 +112,84 @@
             <div class="panel-body">
                 <h2 class="h2">Add Sample Details</h2>
                 <hr/>
-                <form id="ena_sample_form" class="ena_form_validation_icon ena_form_validation_icon">
-                    <!-- populated by ajax -->
-                </form>
+                <table class="table-bordered">
 
+                    <tr>
+                        <th>Filename</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Remove</th>
+                    </tr>
+
+                </table>
+
+
+
+                <p class="col-sm-10">
+                    <br/>
+                    <button type="button" id="add_sample_button" class="btn btn-default btn-s" data-toggle="modal" data-target="#newSampleModal">Add Sample</button>
+                </p>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Panel for ENA Sample -->
+    <div class="panel panel-default" id="panel3">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-target="#collapseThree"
+                   href="#collapseThree" class="collapsed">
+                    ENA Data
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                <h2 class="h2">Add Experiment Details</h2>
+                <hr/>
+                    <table class="table-bordered">
+
+                        <tr>
+                            <th>Filename</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Remove</th>
+                        </tr>
+
+                    </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="newSampleModal" tabindex="-1" role="dialog" aria-labelledby="newStudyModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel">New Sample</h4>
+            </div>
+
+            <div class="modal-body" style="padding-bottom:100px">
+
+                <form id="ena_sample_form" class="ena_form_validation_icon">
+                    <!-- populated by ajax -->
+                    {% csrf_token %}
+                </form>
 
                 <h2 class="h2">Add Sample Attributes</h2>
                 <hr/>
+
                 <form id="ena_sample_form_attributes" class="form-horizontal" role="form">
                     <input type="hidden" id="attr_counter" value="1"/>
+
+                    <!-- pressing the button underneath this div will cause another div to be created and inserted -->
                     <div class="form-group col-sm-10" id="attribute_group">
                         <label class="sr-only" for="tag_1">tag</label>
                         <label class="sr-only" for="value_1">value</label>
@@ -107,23 +198,21 @@
                         <input type="text" class="col-sm-3 attr" name="value_1" placeholder="attribute value"/>
                         <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="attribute unit (optional)"/>
                     </div>
-
-
-
-
-                    <p id="button_p" class="col-sm-10">
+                    <p id="sample_button_p" class="col-sm-10">
                         <br/>
-                        <button type="button" id="add_attribute_button" class="btn btn-info btn-xs">Add Another</button>
+                        <button type="button" id="sample_add_attribute_button" class="btn btn-info btn-xs">Add Another</button>
                     </p>
                 </form>
 
+
             </div>
+
+
+
+
         </div>
     </div>
-
 </div>
-
-
 
 
 

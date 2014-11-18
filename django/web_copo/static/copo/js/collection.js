@@ -9,7 +9,7 @@ $(document).ready( function(){
         sample_form_data()
     })
 
-    $('#button_p').click(function(){
+    $('#study_add_attribute_button').click(function(){
         //need to update the hidden field containing counter for attribute ids
         var att_counter = parseInt($('#attr_counter').attr('value'))
         att_counter += 1
@@ -24,7 +24,29 @@ $(document).ready( function(){
             '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="attribute value"/></input>' +
             '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="attribute unit (optional)"/></input>' +
             '</div>'
-        $(html).insertBefore($('#button_p'))
+        $(html).insertBefore($('#study_button_p'))
+
+    })
+
+    $('#sample_add_attribute_button').click(function(){
+        //need to update the hidden field containing counter for attribute ids
+        var att_counter = parseInt($('#attr_counter').attr('value'))
+        att_counter += 1
+        $('#attr_counter').attr('value', att_counter)
+
+        //add new html for the attribute
+        var html = '<div class="form-group col-sm-10">' +
+            '<label class="sr-only" for="tag_1">tag</label>' +
+            '<label class="sr-only" for="value_1">value</label>' +
+            '<label class="sr-only" for="unit_1">unit</label>' +
+            '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="attribute tag"></input>' +
+            '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="attribute value"/></input>' +
+            '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="attribute unit (optional)"/></input>' +
+            '</div>'
+        $(html).insertBefore($('#sample_button_p'))
+        //make modal longer
+        var height = $('.modal-body').height();
+        $('.modal-body').height(height + 50)
     })
 
     //add validators to study form

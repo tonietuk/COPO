@@ -3,7 +3,7 @@ table{
 }
 th{
     background-color:#FFF4CF;
-    opacity:0.5;
+    opacity:1;
 }
 table, td, th {
     border: 1px solid rgba(75, 79, 87, 0.08);
