@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block work_area %}
-
+<input type="hidden" id="collection_id" name="collection_id" value="{{ collection_id }}">
 <form role="form" class="form-horizontal" id="ena_title_form" action="/copo/new_collection/" method="post">
     <div class="form-group">
         <label class="control-label">Collection Name</label>
@@ -67,7 +67,10 @@
             <div class="panel-body">
                 <h2 class="h2">Add Study Details</h2>
                 <hr/>
+                <!-- hidden field to store study id -->
+                <input type="hidden" name="study_id"/>
                 <form id="ena_study_form" class="ena_form_validation_icon">
+                    {% csrf_token %}
                     <!-- populated by ajax -->
                 </form>
 
@@ -75,23 +78,33 @@
                 <hr/>
                 <form id="ena_study_form_attributes" class="form-horizontal" role="form">
                     <input type="hidden" id="attr_counter" value="1"/>
-
+                    {% csrf_token %}
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
                     <div class="form-group col-sm-10" id="attribute_group">
                         <label class="sr-only" for="tag_1">tag</label>
                         <label class="sr-only" for="value_1">value</label>
                         <label class="sr-only" for="unit_1">unit</label>
-                        <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="attribute tag"/>
-                        <input type="text" class="col-sm-3 attr" name="value_1" placeholder="attribute value"/>
-                        <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="attribute unit (optional)"/>
+                        <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
+                        <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
+                        <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
                     </div>
                     <p id="study_button_p" class="col-sm-10">
                         <br/>
-                        <button type="button" id="study_add_attribute_button" class="btn btn-default btn-s">Add Another</button>
+                        <button type="button" id="study_add_attribute_button" class="btn btn-default btn-s">Add Another</button><br/><br/><br/>
+                        <button type="button" id="save_study" style="margin-right:-200px" class="btn btn-success pull-right">Save Study</button>
+                    </p>
+
+
                     </p>
                 </form>
 
+
+
+
             </div>
+
+
+
         </div>
     </div>
 
@@ -168,12 +181,12 @@
 
 
 <!-- Modal -->
-<div class="modal fade" id="newSampleModal" tabindex="-1" role="dialog" aria-labelledby="newStudyModal" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="newSampleModal" tabindex="-1" role="dialog" aria-labelledby="newSampleModal" aria-hidden="false">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">New Sample</h4>
+                <h4 class="modal-title h2" id="myModalLabel">New Sample</h4>
             </div>
 
             <div class="modal-body" style="padding-bottom:100px">
@@ -194,16 +207,22 @@
                         <label class="sr-only" for="tag_1">tag</label>
                         <label class="sr-only" for="value_1">value</label>
                         <label class="sr-only" for="unit_1">unit</label>
-                        <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="attribute tag"/>
-                        <input type="text" class="col-sm-3 attr" name="value_1" placeholder="attribute value"/>
-                        <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="attribute unit (optional)"/>
+                        <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
+                        <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
+                        <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
                     </div>
                     <p id="sample_button_p" class="col-sm-10">
                         <br/>
-                        <button type="button" id="sample_add_attribute_button" class="btn btn-info btn-xs">Add Another</button>
+                        <button type="button" id="sample_add_attribute_button" class="btn btn-default btn-xs">Add Another</button>
                     </p>
                 </form>
 
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" id="sample_add_attribute_button" class="btn btn-success">Save Sample</button>
 
             </div>
 

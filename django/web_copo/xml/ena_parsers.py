@@ -38,7 +38,7 @@ def get_study_form_controls(path):
             enum = el.findall(".//xs:enumeration", namespaces)
             str += "<div class='form-group'>"
             str += '<label for="' + el_name + '" class="control-label">' + el_name_tidy + '</label>'
-            str += "<select class='form-control' id='" + el_name + "'>"
+            str += "<select class='form-control' name='" + el_name + "' id='" + el_name + "'>"
 
 
             for e in iter(enum):

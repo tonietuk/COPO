@@ -113,8 +113,9 @@ def new_collection(request):
     return redirect(request, 'copo/collection/' + c.id + '/view', context)
 
 def view_collection(request, collection_id):
-    #pdb.set_trace()
+    pdb.set_trace()
+    print 'hoghock'
     #collection = Collection.objects.get(id=pk)
     collection = get_object_or_404(Collection, pk=collection_id)
-    context = {'collection':collection}
+    context = {'collection':collection, 'collection_id': collection_id}
     return render(request, 'copo/collection.html', context)

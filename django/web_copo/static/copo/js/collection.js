@@ -9,6 +9,42 @@ $(document).ready( function(){
         sample_form_data()
     })
 
+    $('#save_study').click(function(){
+        //this callback saves the study to the database and returns the study id to the hidden field on the form
+        var $inputs = $('#ena_study_form :input');
+
+        // get an associative array of form the values.
+        var form_values = {};
+        $inputs.each(function() {
+            form_values[this.name] = $(this).val();
+        });
+        //add values from attributes
+        var attr_values = {};
+       $inputs = $('#ena_study_form_attributes :input');
+        $inputs.each(function() {
+            attr_values[this.name] = $(this).val();
+        });
+
+        var inputs_json = JSON.stringify(form_values)
+        var attr_json = JSON.stringify(attr_values)
+        var collection_id = $('#collection_id').val()
+
+        //now post to web service to save a new study
+        $.ajax({
+            type:"GET",
+            url:"/rest/ena_new_study/",
+            async:false,
+            dataType:"text",
+            success:function(data){
+                alert('ook')
+            },
+            error:function(){
+                alert('no json returned')
+            },
+            data:{values:inputs_json, attributes: attr_json, collection_id: collection_id}
+        });
+    })
+
     $('#study_add_attribute_button').click(function(){
         //need to update the hidden field containing counter for attribute ids
         var att_counter = parseInt($('#attr_counter').attr('value'))
@@ -39,9 +75,9 @@ $(document).ready( function(){
             '<label class="sr-only" for="tag_1">tag</label>' +
             '<label class="sr-only" for="value_1">value</label>' +
             '<label class="sr-only" for="unit_1">unit</label>' +
-            '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="attribute tag"></input>' +
-            '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="attribute value"/></input>' +
-            '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="attribute unit (optional)"/></input>' +
+            '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="tag"></input>' +
+            '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="value"/></input>' +
+            '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="unit (optional)"/></input>' +
             '</div>'
         $(html).insertBefore($('#sample_button_p'))
         //make modal longer
