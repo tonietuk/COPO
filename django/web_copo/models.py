@@ -4,8 +4,8 @@ import datetime
 
 # Create your models here.
 
-#bundle is the top level container object representing a profile of work
-class Bundle(models.Model):
+#profile is the top level container object representing a profile of work
+class Profile(models.Model):
     title = models.CharField(max_length=500)
     abstract = models.TextField(null=True, blank=True)
     abstract_short = models.CharField(max_length=150, null=True, blank=True)
@@ -15,11 +15,11 @@ class Bundle(models.Model):
     def __unicode__(self):
         return self.title
 
-#collection represents a type of data submission i.e. ENA, GenBank etc.
+#collection represents a type of data i.e. ENA, GenBank, pdf, image data, movie etc.
 class Collection(models.Model):
     name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, default="custom submission")
-    bundle = models.ForeignKey(Bundle)
+    profile = models.ForeignKey(Profile)
     def __unicode__(self):
         return self.name
 
@@ -34,22 +34,29 @@ class Resource(models.Model):
         return self.name
 
 #the following ENA objects are self explanatory
-class ENA_Study(models.Model):
+class EnaStudy(models.Model):
     collection = models.ForeignKey(Collection)
-    study_title = models.CharField(max_length=100)
-    study_type = models.CharField(max_length=50)
+    study_title = models.CharField(max_length=1000)
+    study_type = models.CharField(max_length=5000)
     study_abstract = models.TextField(null=True, blank=True)
-    center_name = models.CharField(max_length=50, null=True, blank=True)
-    center_project_id = models.CharField(max_length=50, null=True, blank=True)
+    center_name = models.CharField(max_length=100, null=True, blank=True)
+    center_project_id = models.CharField(max_length=100, null=True, blank=True)
+    study_description = models.CharField(max_length=5000, null=True, blank=True)
 
-class ENA_Study_Attr(models.Model):
-    ena_study = models.ForeignKey(ENA_Study)
+    def __unicode__(self):
+        return self.study_title
+
+class EnaStudyAttr(models.Model):
+    ena_study = models.ForeignKey(EnaStudy)
     tag = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
-    units = models.CharField(max_length=50, null=True, blank=True)
+    unit = models.CharField(max_length=50, null=True, blank=True)
 
-class ENA_Sample(models.Model):
-    ena_study = models.ForeignKey(ENA_Study)
+    def __unicode__(self):
+        return self.tag
+
+class EnaSample(models.Model):
+    ena_study = models.ForeignKey(EnaStudy)
     title = models.CharField(max_length=50, null=True, blank=True)
     taxon_id = models.IntegerField()
     common_name = models.CharField(max_length=50, null=True, blank=True)
@@ -57,15 +64,15 @@ class ENA_Sample(models.Model):
     inividual_name = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
 
-class ENA_Sample_Attr(models.Model):
-    ena_sample = models.ForeignKey(ENA_Sample)
+class EnaSampleAttr(models.Model):
+    ena_sample = models.ForeignKey(EnaSample)
     tag = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
     units = models.CharField(max_length=50, null=True, blank=True)
 
-class ENA_Experiment(models.Model):
+class EnaExperiment(models.Model):
     data = models.ForeignKey(Resource)
-    sample_reference = models.ForeignKey(ENA_Study)
+    sample_reference = models.ForeignKey(EnaStudy)
     instrument_model = models.CharField(max_length=50, null=True, blank=True)
     library_name = models.CharField(max_length=50, null=True, blank=True)
     library_source = models.CharField(max_length=50, null=True, blank=True)

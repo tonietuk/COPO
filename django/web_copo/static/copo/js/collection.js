@@ -2,6 +2,7 @@
  * Created by fshaw on 11/11/14.
  */
 $(document).ready( function(){
+    $('#save_study').text('Save Study').removeAttr('disabled')
     study_form_data()
     sample_form_data()
     $('#collection_type').change(function(){
@@ -10,39 +11,56 @@ $(document).ready( function(){
     })
 
     $('#save_study').click(function(){
-        //this callback saves the study to the database and returns the study id to the hidden field on the form
-        var $inputs = $('#ena_study_form :input');
+        //first validate form
+        var bootstrapValidator = $('#ena_study_form').data('bootstrapValidator');
+        if(bootstrapValidator.isValid()){
 
-        // get an associative array of form the values.
-        var form_values = {};
-        $inputs.each(function() {
-            form_values[this.name] = $(this).val();
-        });
-        //add values from attributes
-        var attr_values = {};
-       $inputs = $('#ena_study_form_attributes :input');
-        $inputs.each(function() {
-            attr_values[this.name] = $(this).val();
-        });
+            //this callback saves the study to the database and returns the study id to the hidden field on the form
+            var $inputs = $('#ena_study_form :input');
 
-        var inputs_json = JSON.stringify(form_values)
-        var attr_json = JSON.stringify(attr_values)
-        var collection_id = $('#collection_id').val()
+            // get an associative array of form the values.
+            var form_values = {};
+            $inputs.each(function() {
+                form_values[this.name] = $(this).val();
+            });
+            //add values from attributes
+            var attr_values = [];
+            inputs = $('.attr_vals');
+            for(var k = 0; k < inputs.length; k++) {
+                var els = []
+                childs = $(inputs[k]).children()
 
-        //now post to web service to save a new study
-        $.ajax({
-            type:"GET",
-            url:"/rest/ena_new_study/",
-            async:false,
-            dataType:"text",
-            success:function(data){
-                alert('ook')
-            },
-            error:function(){
-                alert('no json returned')
-            },
-            data:{values:inputs_json, attributes: attr_json, collection_id: collection_id}
-        });
+                for(var i = 0; i < childs.length; i++){
+                    els[i] = $(childs[i]).val()
+                }
+                attr_values[attr_values.length] = els
+            }
+
+            var inputs_json = JSON.stringify(form_values)
+            var attr_json = JSON.stringify(attr_values)
+            var collection_id = $('#collection_id').val()
+
+            //now post to web service to save a new study
+            $.ajax({
+                type:"GET",
+                url:"/rest/ena_new_study/",
+                async:false,
+                dataType:"text",
+                success:function(data){
+                    d = jQuery.parseJSON(data)
+                    if(d.return_value == true){
+                        $('#save_study').text('Saved').attr('disabled','disabled')
+                    }
+                },
+                error:function(){
+                    alert('no json returned')
+                },
+                data:{values:inputs_json, attributes: attr_json, collection_id: collection_id}
+            });
+        }
+        else{
+            bootstrapValidator.validate()
+        }
     })
 
     $('#study_add_attribute_button').click(function(){
@@ -53,12 +71,16 @@ $(document).ready( function(){
 
         //add new html for the attribute
         var html = '<div class="form-group col-sm-10">' +
+
             '<label class="sr-only" for="tag_1">tag</label>' +
             '<label class="sr-only" for="value_1">value</label>' +
             '<label class="sr-only" for="unit_1">unit</label>' +
+
+            '<div class="attr_vals">' +
             '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="attribute tag"></input>' +
             '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="attribute value"/></input>' +
             '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="attribute unit (optional)"/></input>' +
+            '</div>' +
             '</div>'
         $(html).insertBefore($('#study_button_p'))
 

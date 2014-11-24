@@ -84,9 +84,11 @@
                         <label class="sr-only" for="tag_1">tag</label>
                         <label class="sr-only" for="value_1">value</label>
                         <label class="sr-only" for="unit_1">unit</label>
-                        <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
-                        <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
-                        <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
+                        <div class="attr_vals">
+                            <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
+                            <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
+                            <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
+                        </div>
                     </div>
                     <p id="study_button_p" class="col-sm-10">
                         <br/>
@@ -204,12 +206,17 @@
 
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
                     <div class="form-group col-sm-10" id="attribute_group">
-                        <label class="sr-only" for="tag_1">tag</label>
-                        <label class="sr-only" for="value_1">value</label>
-                        <label class="sr-only" for="unit_1">unit</label>
-                        <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
-                        <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
-                        <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
+
+                    <label class="sr-only" for="tag_1">tag</label>
+                    <label class="sr-only" for="value_1">value</label>
+                    <label class="sr-only" for="unit_1">unit</label>
+
+
+                            <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
+                            <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
+                            <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
+
+
                     </div>
                     <p id="sample_button_p" class="col-sm-10">
                         <br/>

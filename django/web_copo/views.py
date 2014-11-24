@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from web_copo.models import Collection, Resource, Bundle
+from web_copo.models import Collection, Resource, Profile
 
 import pdb
 
@@ -13,7 +14,7 @@ def index(request):
 
     username = User(username=request.user)
     #c = Collection.objects.filter(user = username)
-    study_set = Bundle.objects.all()
+    study_set = Profile.objects.all()
     context = {'user': request.user, 'studies': study_set}
     return render(request, 'copo/index.html', context)
 
@@ -78,7 +79,7 @@ def copo_register(request):
 
         return render(request, 'copo/login.html')
 
-def new_bundle(request):
+def new_profile(request):
 
     if request.method == 'POST':
         #get current user
@@ -87,34 +88,35 @@ def new_bundle(request):
         sa = a[:147]
         sa += '...'
         ti = request.POST['study_title']
-        s = Bundle(title=ti, user=u, abstract=a, abstract_short=sa)
+        s = Profile(title=ti, user=u, abstract=a, abstract_short=sa)
         s.save()
         return HttpResponseRedirect('/copo/')
 
 
-def view_bundle(request, pk):
+def view_profile(request, profile_id):
 
-    bundle = Bundle.objects.get(id=pk)
-    collections = bundle.collection_set
-    context = {'bundle_id':pk, 'bundle_title': bundle.title, 'bundle_abstract': bundle.abstract_short, 'collections': collections}
-    return render(request, 'copo/bundle.html', context)
+    profile = Profile.objects.get(id=profile_id)
+    collections = Collection.objects.filter(profile__id=profile_id)
+    context = {'bundle_id':profile_id, 'bundle_title': profile.title, 'bundle_abstract': profile.abstract_short, 'collections': collections}
+    return render(request, 'copo/profile.html', context)
 
 def new_collection(request):
 
     c_type = request.POST['collection_type']
     c_name = request.POST['collection_name']
-    bundle_id = request.POST['bundle_id']
-    b = Bundle.objects.get(id=bundle_id)
-    c = Collection(name=c_name, type=c_type)
-    c.save()
-    b.collection_set.add(c)
-    c.save()
+    profile_id = request.POST['bundle_id']
+    b = Profile.objects.get(id=profile_id)
+
+    c = b.collection_set.create(
+        name=c_name,
+        type=c_type
+    )
+
     context = {'request_type':c_type, 'bundle':b}
-    return redirect(request, 'copo/collection/' + c.id + '/view', context)
+    return HttpResponseRedirect(reverse('copo:view_profile', kwargs={'profile_id':profile_id}))
+
 
 def view_collection(request, collection_id):
-    pdb.set_trace()
-    print 'hoghock'
     #collection = Collection.objects.get(id=pk)
     collection = get_object_or_404(Collection, pk=collection_id)
     context = {'collection':collection, 'collection_id': collection_id}

@@ -38,11 +38,11 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <h4 class="modal-title" id="myModalLabel">New Study</h4>
+                    <h4 class="modal-title" id="myModalLabel">New Profile</h4>
                 </div>
                 <div class="modal-body">
 
-                    <form role="form" action="/copo/new_bundle/" method="post">
+                    <form role="form" action="/copo/new_profile/" method="post">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="study_title">Title</label>
@@ -70,7 +70,7 @@
 
 {% block work_area %}
 
-    <h2 class="h2">Studies</h2>
+    <h2 class="h2">Work Profiles</h2>
 
     <table class="browse_table">
 
@@ -85,7 +85,8 @@
         {% for s in studies %}
             <tr>
                 <td style="text-align: center">
-                    <a href="/copo/bundle/{{ s.id }}/view"><i class="fa fa-pencil-square-o "></i></a>
+
+                    <a href="{% url 'copo:view_profile' profile_id=s.id %}"><i class="fa fa-pencil-square-o "></i></a>
                 </td>
                 <td>{{ s.title }}</td>
                 <td>{{ s.abstract_short }}</td>

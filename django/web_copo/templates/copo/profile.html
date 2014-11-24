@@ -39,21 +39,23 @@
 
 <!-- here is the markup for the top table data pulled in from the study itself -->
 <table class="browse_table">
-    <h2 class="h2">Bundle: {{ study_title }}</h2>
+    <h2 class="h2">{{ bundle_title }}</h2>
+    <hr/>
+    <h3>Collections</h3>
     <tr>
-        <th>Title</th>
-        <th>Abstract</th>
+        <th>Name</th>
+        <th>Type</th>
     </tr>
 
-
+    {% for c in collections %}
 
     <tr>
+        <td><a href="{% url 'copo:view_collection' collection_id=c.id %}">{{ c.name }}</a></td>
 
-        <td><a href="/copo/collection/{{ bundle_id }}/view">{{ bundle_title }}</a></td>
-        <td>{{ bundle_abstract }}</td>
-
+        <td>{{ c.type }}</td>
     </tr>
 
+    {% endfor %}
 
 </table>
 
@@ -96,7 +98,10 @@ query the forms xml for the type of data selected by the user -->
                         <label for="collection_type">Colection Type</label>
                         <select name="collection_type" id="collection_type" class="form-control">
                             <option>ENA Submission</option>
-                            <option>Custom Submission</option>
+                            <option>PDF File</option>
+                            <option>Image</option>
+                            <option>Movie</option>
+                            <option>Other</option>
                         </select>
                     </div>
 
