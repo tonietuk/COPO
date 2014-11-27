@@ -4,6 +4,17 @@ import lxml.etree as etree
 import pdb
 
 
+class EnaStudyForm:
+    #simple class to return parsed data
+
+
+    def __init__(self, n=None, tn=None, t=None, values=[]):
+        self.name = n
+        self.tidy_name = tn
+        self.type = t
+        self.values = []
+
+
 
 def get_study_form_controls(path):
 
@@ -16,38 +27,43 @@ def get_study_form_controls(path):
 
     str = ''
 
+    #out is an array of EnaStudyForm objects
+    out = []
+
     for el in iter(descriptor):
         el_name = el.get('name')
         el_name_tidy = el.get('name').replace('_', ' ').title()
         el_type = el.get('type')
         optional = int(el.get('minOccurs')) == 0
+        ena = EnaStudyForm()
+        ena.name = el_name
+        ena.tidy_name = el_name_tidy
 
         if(el_type == 'xs:string'):
-            str += "<div class='form-group'>"
-            str += "<label for='" + el_name + "'>" + el_name_tidy + "</label>"
 
             if(el.get('name') == 'STUDY_ABSTRACT'):
-                str += "<textarea type='text' rows='6' class='form-control' id='" + el_name + "' name='" + el_name + "'/>"
+                ena.type = 'textarea'
+                out.append(ena)
             else:
-                str += "<input type='text' class='form-control' id='" + el_name + "' name='" + el_name + "'/>"
+                ena.type = 'input'
+                out.append(ena)
 
-            str += "</div>"
 
         #make dropdown for study type
         if el.get('name') == 'STUDY_TYPE':
             enum = el.findall(".//xs:enumeration", namespaces)
-            str += "<div class='form-group'>"
-            str += '<label for="' + el_name + '" class="control-label">' + el_name_tidy + '</label>'
-            str += "<select class='form-control' name='" + el_name + "' id='" + el_name + "'>"
 
 
+            ena.type = 'select'
             for e in iter(enum):
-                str += "<option value='" + e.get('value') + "'>" + e.get('value') + "</option>"
-            str += "</select>"
-            str += "</div>"
+                ena.values.append(e.get('value'))
+                #str += "<option value='" + e.get('value') + "'>" + e.get('value') + "</option>"
+            out.append(ena)
+            #str += "</select>"
+            #str += "</div>"
 
 
-    return str
+    return out
 
 def get_sample_form_controls(path):
 
@@ -79,3 +95,4 @@ def get_sample_form_controls(path):
             str += "</div>"
 
     return str
+

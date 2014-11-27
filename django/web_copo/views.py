@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-from web_copo.models import Collection, Resource, Profile
+from web_copo.models import Collection, Resource, Profile, EnaStudy, EnaSample
 
 import pdb
 
@@ -119,5 +119,10 @@ def new_collection(request):
 def view_collection(request, collection_id):
     #collection = Collection.objects.get(id=pk)
     collection = get_object_or_404(Collection, pk=collection_id)
-    context = {'collection':collection, 'collection_id': collection_id}
+    #get samples for enastudy association
+    study = EnaStudy.objects.get(collection__id=int(collection_id))
+    samples = EnaSample.objects.filter(ena_study__id=study.id)
+
+
+    context = {'collection':collection, 'samples': samples, 'collection_id': collection_id}
     return render(request, 'copo/collection.html', context)

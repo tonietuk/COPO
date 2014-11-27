@@ -10,6 +10,8 @@ $(document).ready( function(){
         sample_form_data()
     })
 
+
+    //function to save study
     $('#save_study').click(function(){
         //first validate form
         var bootstrapValidator = $('#ena_study_form').data('bootstrapValidator');
@@ -63,6 +65,45 @@ $(document).ready( function(){
         }
     })
 
+    //function to save sample
+    $('#p_save_sample').click(function(){
+        //make obj from form values
+        var form = $('#ena_sample_form').serializeFormJSON()
+
+        //make obj from attribute values
+        var attr_values = [];
+        inputs = $('.sample_attr_vals');
+        for(var k = 0; k < inputs.length; k++) {
+            var els = []
+            childs = $(inputs[k]).children()
+
+            for(var i = 0; i < childs.length; i++){
+                els[i] = $(childs[i]).val()
+            }
+            attr_values[attr_values.length] = els
+        }
+
+        //get collection id
+        var collection_id = $('#collection_id').val()
+
+        //now post to web service to save new sample
+        $.ajax({
+            type:"GET",
+            url:"/rest/ena_new_sample/",
+            async:false,
+            dataType:"html",
+            success:function(data){
+                //insert data into samples table
+                $(data).insertAfter('#sample_table_tr')
+            },
+            error:function(){
+                alert('no json returned')
+            },
+            data:{sample_details:JSON.stringify(form), sample_attr:JSON.stringify(attr_values), collection_id: collection_id}
+        });
+    })
+
+    //function to add new attribute to study html
     $('#study_add_attribute_button').click(function(){
         //need to update the hidden field containing counter for attribute ids
         var att_counter = parseInt($('#attr_counter').attr('value'))
@@ -71,24 +112,24 @@ $(document).ready( function(){
 
         //add new html for the attribute
         var html = '<div class="form-group col-sm-10">' +
-
-            '<label class="sr-only" for="tag_1">tag</label>' +
-            '<label class="sr-only" for="value_1">value</label>' +
-            '<label class="sr-only" for="unit_1">unit</label>' +
-
-            '<div class="attr_vals">' +
-            '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="attribute tag"></input>' +
-            '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="attribute value"/></input>' +
-            '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="attribute unit (optional)"/></input>' +
-            '</div>' +
-            '</div>'
+        '<label class="sr-only" for="tag_1">tag</label>' +
+        '<label class="sr-only" for="value_1">value</label>' +
+        '<label class="sr-only" for="unit_1">unit</label>' +
+        '<div class="attr_vals">' +
+        '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="attribute tag"></input>' +
+        '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="attribute value"/></input>' +
+        '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="attribute unit (optional)"/></input>' +
+        '</div>' +
+        '</div>'
         $(html).insertBefore($('#study_button_p'))
 
     })
 
-    $('#sample_add_attribute_button').click(function(){
+    //function to add new attribute to sample html
+    $('#sample_button_p').on('click', function(){
+
         //need to update the hidden field containing counter for attribute ids
-        var att_counter = parseInt($('#attr_counter').attr('value'))
+        var att_counter = parseInt($('#sample_attr_counter').attr('value'))
         att_counter += 1
         $('#attr_counter').attr('value', att_counter)
 
@@ -97,10 +138,11 @@ $(document).ready( function(){
             '<label class="sr-only" for="tag_1">tag</label>' +
             '<label class="sr-only" for="value_1">value</label>' +
             '<label class="sr-only" for="unit_1">unit</label>' +
+            '<div class="sample_attr_vals">' +
             '<input type="text" class="col-sm-3 attr" name="tag_' + att_counter + '" placeholder="tag"></input>' +
             '<input type="text" class="col-sm-3 attr" name="value_' + att_counter + '" placeholder="value"/></input>' +
             '<input type="text" class="col-sm-3 attr" name="unit_' + att_counter + '" placeholder="unit (optional)"/></input>' +
-            '</div>'
+            '</div></div>'
         $(html).insertBefore($('#sample_button_p'))
         //make modal longer
         var height = $('.modal-body').height();
@@ -175,39 +217,59 @@ $(document).ready( function(){
                 invalid: 'fa fa-times',
                 validating: 'fa fa-refresh'
             }
-        })
+    })
+    //function to populate the study panel
+    function study_form_data(){
+        var c_type = $('#collection_type').val()
+        var c_id = $('#collection_id').val()
+        //get the contents of the panel (excluding attributes)
+        $.ajax({
+            type:"GET",
+            url:"/rest/ena_study_form",
+            async:false,
+            dataType:"html",
+            success:function(data){
+                $('#ena_study_form').html(data)
+            },
+            error:function(){
+                alert('no json returned')
+            },
+            data:{collection_type:c_type, collection_id:c_id}
+        });
+        //now get attibutes
+        $.ajax({
+            type:"GET",
+            url:"/rest/ena_study_form_attr",
+            async:false,
+            dataType:"html",
+            success:function(data){
+                $('#attribute_group').empty()
+                $(data).insertBefore($('#study_button_p'))
+            },
+            error:function(){
+                alert('no json returned')
+            },
+            data:{collection_id:c_id}
+        });
+    }
+
+    //function to populate the sample input modal
+    function sample_form_data(){
+        var c_type = $('#collection_type').val()
+        $.ajax({
+            type:"GET",
+            url:"/rest/ena_sample_form",
+            async:false,
+            dataType:"html",
+            success:function(data){
+                $('#ena_sample_form').html(data)
+            },
+            error:function(){
+                alert('no json returned')
+            },
+            data:{collection_type:c_type}
+        });
+    }
+
+
 })
-
-function study_form_data(){
-    var c_type = $('#collection_type').val()
-    $.ajax({
-        type:"GET",
-        url:"/rest/ena_study_form",
-        async:false,
-        dataType:"html",
-        success:function(data){
-            $('#ena_study_form').html(data)
-        },
-        error:function(){
-            alert('no json returned')
-        },
-        data:{collection_type:c_type}
-    });
-}
-
-function sample_form_data(){
-    var c_type = $('#collection_type').val()
-    $.ajax({
-        type:"GET",
-        url:"/rest/ena_sample_form",
-        async:false,
-        dataType:"html",
-        success:function(data){
-            $('#ena_sample_form').html(data)
-        },
-        error:function(){
-            alert('no json returned')
-        },
-        data:{collection_type:c_type}
-    });
-}

@@ -80,7 +80,7 @@
                     <input type="hidden" id="attr_counter" value="1"/>
                     {% csrf_token %}
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
-                    <div class="form-group col-sm-10" id="attribute_group">
+                    <div class="form-group col-sm-10" class="attribute_group">
                         <label class="sr-only" for="tag_1">tag</label>
                         <label class="sr-only" for="value_1">value</label>
                         <label class="sr-only" for="unit_1">unit</label>
@@ -127,14 +127,22 @@
             <div class="panel-body">
                 <h2 class="h2">Add Sample Details</h2>
                 <hr/>
-                <table class="table-bordered">
+                <table class="table-bordered" id="sample_table">
 
-                    <tr>
-                        <th>Filename</th>
+                    <tr id="sample_table_tr">
+                        <th>Sample Name</th>
                         <th>Description</th>
                         <th>Date</th>
                         <th>Remove</th>
                     </tr>
+                    {% for s in samples %}
+
+                        <tr><td> {{ s.title }} </td><td> {{ s.description }} </td>
+                            <td> {{ s.scientific_name }} </td><td> {{ s.common_name }} </td></tr>
+
+                    {% endfor %}
+
+
 
                 </table>
 
@@ -168,7 +176,7 @@
                     <table class="table-bordered">
 
                         <tr>
-                            <th>Filename</th>
+                            <th>File Name</th>
                             <th>Description</th>
                             <th>Date</th>
                             <th>Remove</th>
@@ -202,25 +210,25 @@
                 <hr/>
 
                 <form id="ena_sample_form_attributes" class="form-horizontal" role="form">
-                    <input type="hidden" id="attr_counter" value="1"/>
+                    <input type="hidden" id="sample_attr_counter" value="1"/>
 
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
-                    <div class="form-group col-sm-10" id="attribute_group">
+                    <div class="form-group col-sm-10 attribute_group">
 
                     <label class="sr-only" for="tag_1">tag</label>
                     <label class="sr-only" for="value_1">value</label>
                     <label class="sr-only" for="unit_1">unit</label>
 
-
-                            <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
-                            <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
-                            <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
-
+                            <div class="sample_attr_vals">
+                                <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
+                                <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
+                                <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
+                            </div>
 
                     </div>
                     <p id="sample_button_p" class="col-sm-10">
                         <br/>
-                        <button type="button" id="sample_add_attribute_button" class="btn btn-default btn-xs">Add Another</button>
+                        <button type="button" id="btn:sample_add_attribute" class="btn btn-default btn-xs">Add Another</button>
                     </p>
                 </form>
 
@@ -228,9 +236,9 @@
             </div>
 
             <div class="modal-footer">
-
-                <button type="button" id="sample_add_attribute_button" class="btn btn-success">Save Sample</button>
-
+                <p id="p_save_sample">
+                <button type="button" id="btn:save_sample" class="btn btn-success">Save Sample</button>
+                </p>
             </div>
 
 

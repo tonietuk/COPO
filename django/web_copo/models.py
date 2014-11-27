@@ -40,7 +40,7 @@ class EnaStudy(models.Model):
     study_type = models.CharField(max_length=5000)
     study_abstract = models.TextField(null=True, blank=True)
     center_name = models.CharField(max_length=100, null=True, blank=True)
-    center_project_id = models.CharField(max_length=100, null=True, blank=True)
+    center_project_name = models.CharField(max_length=100, null=True, blank=True)
     study_description = models.CharField(max_length=5000, null=True, blank=True)
 
     def __unicode__(self):
@@ -59,6 +59,7 @@ class EnaSample(models.Model):
     ena_study = models.ForeignKey(EnaStudy)
     title = models.CharField(max_length=50, null=True, blank=True)
     taxon_id = models.IntegerField()
+    scientific_name = models.CharField(max_length=50, null=True, blank=True)
     common_name = models.CharField(max_length=50, null=True, blank=True)
     anonymized_name = models.CharField(max_length=50, null=True, blank=True)
     inividual_name = models.CharField(max_length=50, null=True, blank=True)
@@ -68,7 +69,7 @@ class EnaSampleAttr(models.Model):
     ena_sample = models.ForeignKey(EnaSample)
     tag = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
-    units = models.CharField(max_length=50, null=True, blank=True)
+    unit = models.CharField(max_length=50, null=True, blank=True)
 
 class EnaExperiment(models.Model):
     data = models.ForeignKey(Resource)
