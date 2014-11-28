@@ -149,13 +149,7 @@ def save_ena_sample_callback(request):
         at.save()
 
 
-    #now get all samples for the collection and return json string
-    sample_set = EnaSample.objects.filter(ena_study__id = study.id)
 
-    out = ''
-    for s in sample_set:
-        out += '<tr><td>' + str(s.title) + '</td><td>' + str(s.description) + '</td><td>' + str(s.scientific_name) \
-               + '</td><td>' + str(s.common_name) + '</td></tr>'
     return HttpResponse(out, content_type='html')
 
 def make_and_save_ena_study(c_id, CENTER_NAME, STUDY_DESCRIPTION, STUDY_TYPE, CENTER_PROJECT_NAME, STUDY_ABSTRACT, STUDY_TITLE):

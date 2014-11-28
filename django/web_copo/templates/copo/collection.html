@@ -80,7 +80,7 @@
                     <input type="hidden" id="attr_counter" value="1"/>
                     {% csrf_token %}
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
-                    <div class="form-group col-sm-10" class="attribute_group">
+                    <!--<div class="form-group col-sm-10" class="attribute_group">
                         <label class="sr-only" for="tag_1">tag</label>
                         <label class="sr-only" for="value_1">value</label>
                         <label class="sr-only" for="unit_1">unit</label>
@@ -89,7 +89,7 @@
                             <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
                             <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
                         </div>
-                    </div>
+                    </div>-->
                     <p id="study_button_p" class="col-sm-10">
                         <br/>
                         <button type="button" id="study_add_attribute_button" class="btn btn-default btn-s">Add Another</button><br/><br/><br/>
@@ -135,12 +135,7 @@
                         <th>Date</th>
                         <th>Remove</th>
                     </tr>
-                    {% for s in samples %}
 
-                        <tr><td> {{ s.title }} </td><td> {{ s.description }} </td>
-                            <td> {{ s.scientific_name }} </td><td> {{ s.common_name }} </td></tr>
-
-                    {% endfor %}
 
 
 
