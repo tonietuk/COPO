@@ -1,16 +1,11 @@
 __author__ = 'fshaw'
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
 from web_copo.models import Collection, Resource, Profile, EnaStudy, EnaSampleAttr, EnaSample, EnaStudyAttr
 from rest_framework.renderers import JSONRenderer
-from rest_framework.parsers import JSONParser
-from xml.ena_parsers import get_study_form_controls, get_sample_form_controls
-import json
+from web_copo.xml.EnaParsers import get_study_form_controls, get_sample_form_controls
+from web_copo.utils.EnaUtils import get_sample_html_from_collection_id
 import jsonpickle
-import pdb
+
 
 
 class JSONResponse(HttpResponse):
@@ -149,7 +144,12 @@ def save_ena_sample_callback(request):
         at.save()
 
 
+    out = get_sample_html_from_collection_id(collection_id)
+    return HttpResponse(out, content_type='html')
 
+def populate_samples_form(request):
+    collection_id = request.GET['collection_id']
+    out = get_sample_html_from_collection_id(collection_id)
     return HttpResponse(out, content_type='html')
 
 def make_and_save_ena_study(c_id, CENTER_NAME, STUDY_DESCRIPTION, STUDY_TYPE, CENTER_PROJECT_NAME, STUDY_ABSTRACT, STUDY_TITLE):

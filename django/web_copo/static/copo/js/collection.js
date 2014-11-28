@@ -94,6 +94,7 @@ $(document).ready( function(){
             dataType:"html",
             success:function(data){
                 //insert data into samples table
+                $('#sample_table_tr').nextAll().remove()
                 $(data).insertAfter('#sample_table_tr')
             },
             error:function(){
@@ -256,6 +257,7 @@ $(document).ready( function(){
     //function to populate the sample input modal
     function sample_form_data(){
         var c_type = $('#collection_type').val()
+        var c_id = $('#collection_id').val()
         $.ajax({
             type:"GET",
             url:"/rest/ena_sample_form",
@@ -269,6 +271,15 @@ $(document).ready( function(){
             },
             data:{collection_type:c_type}
         });
+        $.get( "/rest/populate_samples_form",
+            {
+                collection_id:c_id
+            },
+            function( data ) {
+            
+                $(data).insertAfter('#sample_table_tr')
+            }
+        );
     }
 
 
