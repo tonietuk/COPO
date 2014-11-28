@@ -12,4 +12,6 @@ urlpatterns = patterns('',
     url(r'^ena_new_study/', rest.save_ena_study_callback, name='save_ena_study'),
     url(r'^ena_new_sample/', rest.save_ena_sample_callback, name='save_ena_sample'),
     url(r'^populate_samples_form/', rest.populate_samples_form, name='populate_samples_form'),
+    url(r'^get_sample_html/(?P<sample_id>\d+)', rest.get_sample_html, name='get_sample_html'),
+    url(r'^get_sample_html/', rest.get_sample_html, name='get_sample_html_param'),
 )

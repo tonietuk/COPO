@@ -150,6 +150,8 @@ $(document).ready( function(){
         $('.modal-body').height(height + 50)
     })
 
+
+
     //add validators to study form
     $('#ena_study_form, #ena_sample_form')
         .on('init.field.bv', function(e, data) {
@@ -276,11 +278,30 @@ $(document).ready( function(){
                 collection_id:c_id
             },
             function( data ) {
-            
                 $(data).insertAfter('#sample_table_tr')
+                sample_table_handler()
             }
         );
     }
 
+    function sample_table_handler(){
+        //handle clicks on sample table
+        $('#sample_table').find('a').on('click', function(e){
+            e.preventDefault()
+            var url = $(this).attr('rest_url')
+            //now call web service to get content for sample panel
+            var service = url.substring(0, url.lastIndexOf("/"))
+            var id = url.substring(url.lastIndexOf("/") + 1, url.length)
+
+            $.get(service,
+                {
+                    'sample_id':id
+                },
+                function(data){
+                    alert(data)
+                }
+            )
+        })
+    }
 
 })

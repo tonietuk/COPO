@@ -152,6 +152,9 @@ def populate_samples_form(request):
     out = get_sample_html_from_collection_id(collection_id)
     return HttpResponse(out, content_type='html')
 
+def get_sample_html(request):
+    return HttpResponse('copo', content_type='html')
+
 def make_and_save_ena_study(c_id, CENTER_NAME, STUDY_DESCRIPTION, STUDY_TYPE, CENTER_PROJECT_NAME, STUDY_ABSTRACT, STUDY_TITLE):
     e = EnaStudy()
     e.collection_id=c_id
