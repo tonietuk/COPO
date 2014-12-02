@@ -15,6 +15,21 @@
 
 {% block browse_header_block %}
 
+<div hidden id="hidden_attrs">
+
+    <!-- hidden attributes required to make the page remember where it is and what its dealing with -->
+    <input type="hidden" id="collection_id" name="collection_id" value="{{ collection_id }}">
+
+    <input type="hidden" id="sample_id" value=""/>
+
+    <input type="hidden" id="study_id" value="{{ study_id }}" />
+
+    <input type="hidden" id="attr_counter" value="1"/>
+
+    <input type="hidden" id="sample_attr_counter" value="1"/>
+
+</div>
+
 <div id="browse_header">
         <span class="blue_icon">
            <a><i class="fa fa-plus-circle" data-toggle="modal" data-target="#newStudyModal"></i></a>
@@ -36,7 +51,7 @@
 {% endblock %}
 
 {% block work_area %}
-<input type="hidden" id="collection_id" name="collection_id" value="{{ collection_id }}">
+
 <form role="form" class="form-horizontal" id="ena_title_form" action="/copo/new_collection/" method="post">
     <div class="form-group">
         <label class="control-label">Collection Name</label>
@@ -67,8 +82,7 @@
             <div class="panel-body">
                 <h2 class="h2">Add Study Details</h2>
                 <hr/>
-                <!-- hidden field to store study id -->
-                <input type="hidden" id="study_id" value="{{ study_id }}" />
+
                 <form id="ena_study_form" class="ena_form_validation_icon">
                     {% csrf_token %}
                     <!-- populated by ajax -->
@@ -77,7 +91,7 @@
                 <h2 class="h2">Add Study Attributes</h2>
                 <hr/>
                 <form id="ena_study_form_attributes" class="form-horizontal" role="form">
-                    <input type="hidden" id="attr_counter" value="1"/>
+
                     {% csrf_token %}
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
                     <!--<div class="form-group col-sm-10" class="attribute_group">
@@ -205,8 +219,8 @@
                 <hr/>
 
                 <form id="ena_sample_form_attributes" class="form-horizontal" role="form">
-                    <input type="hidden" id="sample_id" value=""/>
-                    <input type="hidden" id="sample_attr_counter" value="1"/>
+
+
 
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
                     <div class="form-group col-sm-10 attribute_group">
@@ -236,10 +250,6 @@
                 <button type="button" id="btn:save_sample" class="btn btn-success">Save Sample</button>
                 </p>
             </div>
-
-
-
-
         </div>
     </div>
 </div>

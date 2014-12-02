@@ -86,6 +86,10 @@ $(document).ready( function(){
 
         //get collection id
         var collection_id = $('#collection_id').val()
+        //get sample id
+        var sample_id = $('#sample_id').val()
+        //get study id
+        var study_id = $('#study_id').val()
 
         //now post to web service to save new sample
         $.ajax({
@@ -97,11 +101,12 @@ $(document).ready( function(){
                 //insert data into samples table
                 $('#sample_table_tr').nextAll().remove()
                 $(data).insertAfter('#sample_table_tr')
+                $('#newSampleModal').modal('hide')
             },
             error:function(){
                 alert('no json returned')
             },
-            data:{sample_details:JSON.stringify(form), sample_attr:JSON.stringify(attr_values), collection_id: collection_id}
+            data:{sample_details:JSON.stringify(form), sample_attr:JSON.stringify(attr_values), collection_id: collection_id, study_id: study_id, sample_id:sample_id}
         });
     })
 
@@ -230,7 +235,7 @@ $(document).ready( function(){
         //get the contents of the panel (excluding attributes)
         $.ajax({
             type:"GET",
-            url:"/rest/ena_study_form",
+            url:"/rest/ena_study_form/",
             async:false,
             dataType:"html",
             success:function(data){
@@ -244,7 +249,7 @@ $(document).ready( function(){
         //now get attibutes
         $.ajax({
             type:"GET",
-            url:"/rest/ena_study_form_attr",
+            url:"/rest/ena_study_form_attr/",
             async:false,
             dataType:"html",
             success:function(data){
@@ -266,7 +271,7 @@ $(document).ready( function(){
         var c_id = $('#collection_id').val()
         $.ajax({
             type:"GET",
-            url:"/rest/ena_sample_form",
+            url:"/rest/ena_sample_form/",
             async:false,
             dataType:"html",
             success:function(data){
@@ -277,7 +282,7 @@ $(document).ready( function(){
             },
             data:{collection_type:c_type}
         });
-        $.get( "/rest/populate_samples_form",
+        $.get( "/rest/populate_samples_form/",
             {
                 collection_id:c_id
             },
@@ -294,7 +299,7 @@ $(document).ready( function(){
             e.preventDefault()
             var url = $(this).attr('rest_url')
             //now call web service to get content for sample panel
-            var service = url.substring(0, url.lastIndexOf("/"))
+            var service = url.substring(0, url.lastIndexOf("/")) + '/'
             var id = url.substring(url.lastIndexOf("/") + 1, url.length)
 
             $.get(service,
@@ -303,7 +308,7 @@ $(document).ready( function(){
                 },
                 function(data){
                     //add returned data to the form
-                    $('#sample_id').val(data.id)
+                    $('#sample_id').val(data.sample_id)
                     $('#TITLE').val(data.title)
                     $('#TAXON_ID').val(data.taxon_id)
                     $('#SCIENTIFIC_NAME').val(data.scientific_name)
@@ -332,5 +337,4 @@ $(document).ready( function(){
             )
         })
     }
-
 })
