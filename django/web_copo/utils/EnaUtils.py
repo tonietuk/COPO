@@ -1,13 +1,17 @@
 __author__ = 'fshaw'
 from web_copo.models import Collection, Resource, Profile, EnaStudy, EnaSampleAttr, EnaSample, EnaStudyAttr
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def get_sample_html_from_collection_id(collection_id):
 
     #get related study and sample set
-    study = EnaStudy.objects.get(collection__id = collection_id)
-    sample_set = EnaSample.objects.filter(ena_study__id = study.id)
+    try:
+        study = EnaStudy.objects.get(collection__id = collection_id)
+        sample_set = EnaSample.objects.filter(ena_study__id = study.id)
+    except ObjectDoesNotExist:
+        return 'not found'
 
     out = ''
     #construct output html

@@ -62,7 +62,7 @@ class EnaSample(models.Model):
     scientific_name = models.CharField(max_length=50, null=True, blank=True)
     common_name = models.CharField(max_length=50, null=True, blank=True)
     anonymized_name = models.CharField(max_length=50, null=True, blank=True)
-    inividual_name = models.CharField(max_length=50, null=True, blank=True)
+    individual_name = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
 
 class EnaSampleAttr(models.Model):

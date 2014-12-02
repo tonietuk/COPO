@@ -41,6 +41,7 @@ $(document).ready( function(){
             var inputs_json = JSON.stringify(form_values)
             var attr_json = JSON.stringify(attr_values)
             var collection_id = $('#collection_id').val()
+            var study_id = $('#study_id').val()
 
             //now post to web service to save a new study
             $.ajax({
@@ -57,7 +58,7 @@ $(document).ready( function(){
                 error:function(){
                     alert('no json returned')
                 },
-                data:{values:inputs_json, attributes: attr_json, collection_id: collection_id}
+                data:{values:inputs_json, attributes: attr_json, collection_id: collection_id, study_id: study_id}
             });
         }
         else{
@@ -225,6 +226,7 @@ $(document).ready( function(){
     function study_form_data(){
         var c_type = $('#collection_type').val()
         var c_id = $('#collection_id').val()
+        var study_id = $('#study_id').val()
         //get the contents of the panel (excluding attributes)
         $.ajax({
             type:"GET",
@@ -237,7 +239,7 @@ $(document).ready( function(){
             error:function(){
                 alert('no json returned')
             },
-            data:{collection_type:c_type, collection_id:c_id}
+            data:{collection_type:c_type, collection_id:c_id, study_id:study_id}
         });
         //now get attibutes
         $.ajax({
@@ -246,8 +248,10 @@ $(document).ready( function(){
             async:false,
             dataType:"html",
             success:function(data){
-                $('#attribute_group').empty()
-                $(data).insertBefore($('#study_button_p'))
+                if(data != 'not found'){
+                    $('#attribute_group').empty()
+                    $(data).insertBefore($('#study_button_p'))
+                }
             },
             error:function(){
                 alert('no json returned')
@@ -298,7 +302,32 @@ $(document).ready( function(){
                     'sample_id':id
                 },
                 function(data){
-                    alert(data)
+                    //add returned data to the form
+                    $('#sample_id').val(data.id)
+                    $('#TITLE').val(data.title)
+                    $('#TAXON_ID').val(data.taxon_id)
+                    $('#SCIENTIFIC_NAME').val(data.scientific_name)
+                    $('#COMMON_NAME').val(data.common_name)
+                    $('#ANONYMIZED_NAME').val(data.anonymized_name)
+                    $('#INDIVIDUAL_NAME').val(data.individual_name)
+                    $('#DESCRIPTION').val(data.description)
+                    //make changes for attributes
+                    var at = JSON.parse(data.attributes)
+                    str = ''
+                    for(var x = 0; x < at.length; x++){
+
+                        str += '<div class="form-group col-sm-10 attribute_group">'
+                        str += '<div class="sample_attr_vals">'
+                        str += '<input type="text" class="col-sm-3 attr" name="tag_' + at[x].fields.id + '" value="' + at[x].fields.tag + '"placeholder="tag"/>'
+                        str += '<input type="text" class="col-sm-3 attr" name="value_' + at[x].fields.id + '" value="' + at[x].fields.value + '"placeholder="value"/>'
+                        str += '<input type="text" class="col-sm-3 attr" name="unit_' + at[x].fields.id + '" value="' + at[x].fields.unit + '"placeholder="unit"/>'
+                        str += '</div>'
+                        str += '</div>'
+
+                    }
+                    $('.sample_attr_vals').remove()
+                    $(str).insertBefore($('#sample_button_p'))
+                    $('#newSampleModal').modal('show')
                 }
             )
         })

@@ -68,7 +68,7 @@
                 <h2 class="h2">Add Study Details</h2>
                 <hr/>
                 <!-- hidden field to store study id -->
-                <input type="hidden" name="study_id"/>
+                <input type="hidden" id="study_id" value="{{ study_id }}" />
                 <form id="ena_study_form" class="ena_form_validation_icon">
                     {% csrf_token %}
                     <!-- populated by ajax -->
@@ -205,6 +205,7 @@
                 <hr/>
 
                 <form id="ena_sample_form_attributes" class="form-horizontal" role="form">
+                    <input type="hidden" id="sample_id" value=""/>
                     <input type="hidden" id="sample_attr_counter" value="1"/>
 
                     <!-- pressing the button underneath this div will cause another div to be created and inserted -->
