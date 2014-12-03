@@ -98,7 +98,7 @@ def view_profile(request, profile_id):
 
     profile = Profile.objects.get(id=profile_id)
     collections = Collection.objects.filter(profile__id=profile_id)
-    context = {'bundle_id':profile_id, 'bundle_title': profile.title, 'bundle_abstract': profile.abstract_short, 'collections': collections}
+    context = {'profile_id':profile_id, 'profile_title': profile.title, 'profile_abstract': profile.abstract_short, 'collections': collections}
     return render(request, 'copo/profile.html', context)
 
 def new_collection(request):
@@ -120,16 +120,18 @@ def new_collection(request):
 def view_collection(request, collection_id):
     #collection = Collection.objects.get(id=pk)
     collection = get_object_or_404(Collection, pk=collection_id)
+    #get profile id for breadcrumb
+    profile_id = collection.profile.id
     #check type of collection
     if collection.type == 'ENA Submission':
         #get samples for enastudy association
         try:
             study = EnaStudy.objects.get(collection__id=int(collection_id))
             samples = EnaSample.objects.filter(ena_study__id=study.id)
-            context = {'collection':collection, 'samples': samples, 'collection_id': collection_id, 'study_id': study.id}
+            context = {'collection':collection, 'samples': samples, 'collection_id': collection_id, 'study_id': study.id, 'profile_id': profile_id}
             return render(request, 'copo/ena_collection.html', context)
         except ObjectDoesNotExist as e:
-            context = {'collection': collection, 'collection_id': collection_id}
+            context = {'collection': collection, 'collection_id': collection_id, 'profile_id': profile_id}
             return render(request, 'copo/ena_collection.html', context)
 
 

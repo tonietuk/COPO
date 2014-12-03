@@ -13,6 +13,14 @@
 
 {% block tagline_block %}{% endblock %}
 
+{% block breadcrumb_block %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'copo:index' %}">Home</a></li>
+        <li><a href="{% url 'copo:view_profile' profile_id=profile_id %}">Profile</a></li>
+        <li class="active"><a href="{% url 'copo:view_collection' collection_id=collection_id %}">Collection</a></li>
+    </ol>
+{% endblock %}
+
 {% block browse_header_block %}
 
 <div hidden id="hidden_attrs">

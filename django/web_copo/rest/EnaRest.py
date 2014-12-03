@@ -217,7 +217,7 @@ def save_ena_sample_callback(request):
         enasample.save()
 
         for a in attr:
-            at = EnaSampleAttr(tag=a[0], value=a[1], unit=[2])
+            at = EnaSampleAttr(tag=a[0], value=a[1], unit=a[2])
             at.ena_sample = enasample
             at.save()
         out = get_sample_html_from_collection_id(collection_id)

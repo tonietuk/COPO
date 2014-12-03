@@ -13,6 +13,14 @@
 
 {% block tagline_block %}{% endblock %}
 
+{% block breadcrumb_block %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'copo:index' %}">Home</a></li>
+        <li class="active"><a href="{% url 'copo:view_profile' profile_id=profile_id %}">Profile</a></li>
+    </ol>
+{% endblock %}
+
+
 {% block browse_header_block %}
 
 <div id="browse_header">
@@ -39,7 +47,7 @@
 
 <!-- here is the markup for the top table data pulled in from the study itself -->
 <table class="browse_table">
-    <h2 class="h2">{{ bundle_title }}</h2>
+    <h2 class="h2">{{ profile_title }}</h2>
     <hr/>
     <h3>Collections</h3>
     <tr>
@@ -87,7 +95,7 @@ query the forms xml for the type of data selected by the user -->
                 <form role="form" id="ena_study_form" action="/copo/new_collection/" method="post">
                     {% csrf_token %}
 
-                    <input type="hidden" name="bundle_id" value="{{ bundle_id }}">
+                    <input type="hidden" name="profile_id" value="{{ profile_id }}">
                     <div class="form-group">
                         <label for="collection_name">Collection Name</label><br/>
                         <input type="text" name="collection_name" id="collection_name" class="form_control" placeholder="Enter Name"/>
