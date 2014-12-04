@@ -14,4 +14,6 @@ urlpatterns = patterns('',
     url(r'^populate_samples_form/', rest.populate_samples_form, name='populate_samples_form'),
     url(r'^get_sample_html/(?P<sample_id>\d+)', rest.get_sample_html, name='get_sample_html'),
     url(r'^get_sample_html/', rest.get_sample_html, name='get_sample_html_param'),
+    url(r'^populate_data_dropdowns/', rest.populate_data_dropdowns, name='populate_data_dropdowns'),
+    url(r'^get_instrument_models/', rest.get_instrument_models, name='get_instrument_models'),
 )

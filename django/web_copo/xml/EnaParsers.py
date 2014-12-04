@@ -6,8 +6,6 @@ import pdb
 
 class EnaStudyForm:
     #simple class to return parsed data
-
-
     def __init__(self, n=None, tn=None, t=None, values=[]):
         self.name = n
         self.tidy_name = tn
@@ -52,8 +50,6 @@ def get_study_form_controls(path):
         #make dropdown for study type
         if el.get('name') == 'STUDY_TYPE':
             enum = el.findall(".//xs:enumeration", namespaces)
-
-
             ena.type = 'select'
             for e in iter(enum):
                 ena.values.append(e.get('value'))
@@ -61,8 +57,6 @@ def get_study_form_controls(path):
             out.append(ena)
             #str += "</select>"
             #str += "</div>"
-
-
     return out
 
 def get_sample_form_controls(path):
@@ -96,3 +90,15 @@ def get_sample_form_controls(path):
 
     return str
 
+
+def get_library_dropdown(xml_file, lib_part):
+    #method to get html for library strategy dropdown
+    fileHandle = open(xml_file, 'r')
+    root = etree.parse(fileHandle)
+    namespaces = {'xs':'http://www.w3.org/2001/XMLSchema'}
+    search_str = ".//xs:element[@name=\"" + lib_part + "\"]//xs:enumeration"
+    options = root.findall(search_str, namespaces)
+    out = ''
+    for o in options:
+	    out += '<option>' + o.get('value') + '</option>'
+    return out

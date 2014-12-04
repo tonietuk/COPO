@@ -5,10 +5,14 @@ $(document).ready( function(){
     $('#save_study').text('Save Study').removeAttr('disabled')
     study_form_data()
     sample_form_data()
+    exp_form_data()
     $('#collection_type').change(function(){
         study_form_data()
         sample_form_data()
+        exp_form_data()
     })
+
+    $('#select_platform').on('change', platform_change_handler)
 
 
     //function to save study
@@ -291,6 +295,32 @@ $(document).ready( function(){
                 sample_table_handler()
             }
         );
+    }
+
+    function exp_form_data(){
+        $.get( "/rest/populate_data_dropdowns/",
+            function( data ) {
+                $('#select_library_strategy').append(data.strategy_dd)
+                $('#select_library_selection').append(data.selection_dd)
+                $('#select_library_source').append(data.source_dd)
+                platform_change_handler()
+            }
+        );
+    }
+
+    function platform_change_handler(){
+        var val = $('#select_platform').val()
+        $.get( "/rest/get_instrument_models/",
+        {
+            'dd_value':val
+        },
+        function( data ) {
+            $('#select_instrument_model').empty().append(data)
+        });
+    }
+
+    function test(data){
+        alert(data)
     }
 
     function sample_table_handler(){

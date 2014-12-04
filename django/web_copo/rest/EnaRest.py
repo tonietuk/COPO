@@ -2,7 +2,7 @@ __author__ = 'fshaw'
 from django.http import HttpResponse, HttpResponseRedirect
 from web_copo.models import Collection, Resource, Profile, EnaStudy, EnaSampleAttr, EnaSample, EnaStudyAttr
 from rest_framework.renderers import JSONRenderer
-from web_copo.xml.EnaParsers import get_study_form_controls, get_sample_form_controls
+import web_copo.xml.EnaParsers as parsers
 from web_copo.utils.EnaUtils import get_sample_html_from_collection_id
 import jsonpickle
 from django.core import serializers
@@ -25,7 +25,7 @@ class JSONResponse(HttpResponse):
 
 def get_ena_study_controls(request):
     #get list of controllers
-    out = get_study_form_controls('web_copo/xml/schemas/ena/SRA.study.xsd.xml')
+    out = parsers.get_study_form_controls('web_copo/xml/schemas/ena/SRA.study.xsd.xml')
     c_id = request.GET['collection_id']
     #check to see if there are any ena studies associated with this collection
 
@@ -96,7 +96,7 @@ def get_ena_study_attr(request):
     return HttpResponse(str, content_type='html')
 
 def get_ena_sample_controls(request):
-    html = get_sample_form_controls('web_copo/xml/schemas/ena/SRA.sample.xsd.xml')
+    html = parsers.get_sample_form_controls('web_copo/xml/schemas/ena/SRA.sample.xsd.xml')
     return HttpResponse(html, content_type='html')
 
 def save_ena_study_callback(request):
@@ -247,4 +247,72 @@ def get_sample_html(request):
     j = jsonpickle.encode(out)
     return HttpResponse(j, content_type='json')
 
+def populate_data_dropdowns(request):
+    #specify path for experiment xsd schema
+    xsd_path = 'web_copo/xml/schemas/ena/SRA.experiment.xsd.xml'
+    out = {}
+    out['strategy_dd'] = parsers.get_library_dropdown(xsd_path, 'LIBRARY_STRATEGY')
+    out['selection_dd'] = parsers.get_library_dropdown(xsd_path, 'LIBRARY_SELECTION')
+    out['source_dd'] = parsers.get_library_dropdown(xsd_path, 'LIBRARY_SOURCE')
+    out = jsonpickle.encode(out)
+    return HttpResponse(out, content_type='json')
 
+
+
+
+
+def get_instrument_models(request):
+    #return instrument model list depending on input type
+    type = request.GET['dd_value']
+    out = ''
+    if type == 'LS454':
+        out += '<option value="454_GS">454 GS</option>'
+        out += '<option value="454_GS_20454_GS_FLX">454 GS 20454 GS FLX</option>'
+        out += '<option value="454_GS_FLX+">454 GS FLX+</option>'
+        out += '<option value="454_GS_FLX_Titanium">454 GS FLX Titanium</option>'
+        out += '<option value="454_GS_Junior">454 GS Junior</option>'
+        out += '<option value="unspecified">Unspecified</option>'
+
+    elif type == 'ILLUMINA':
+        out += '<option value="ILLUMINA_GENOME_ANALYSER">Illumina Genome Analyzer</option>'
+        out += '<option value="ILLUMINA_GENOME_ANALYSER_II">Illumina Genome Analyzer II</option>'
+        out += '<option value="ILLUMINA_GENOME_ANALYSER_IIx">Illumina Genome Analyzer IIx</option>'
+        out += '<option value="ILLUMINA_HISEQ_2500">Illumina HiSeq 2500</option>'
+        out += '<option value="ILLUMINA_HISEQ_2000">Illumina HiSeq 2000</option>'
+        out += '<option value="ILLUMINA_HISEQ_1500">Illumina HiSeq 1500</option>'
+        out += '<option value="ILLUMINA_HISEQ_1500">Illumina HiSeq 1000</option>'
+        out += '<option value="ILLUMINA_MISEQ">Illumina MiSeq</option>'
+        out += '<option value="ILLUMINA_HISCANSQ">Illumina HiScanSQ</option>'
+        out += '<option value="ILLUMINA_HISEQ_X_TEN">HiSeq X Ten</option>'
+        out += '<option value="ILLUMINA_NEXTSEQ_500">NextSeq 500</option>'
+        out += '<option value="UNSPECIFIED">Unspecified</option>'
+
+    elif type == 'COMPLETE_GENOMICS':
+        out += '<option value="COMPLETE_GENOMICS">Complete Genomics</option>'
+        out += '<option value="UNSPECIFIED">Unspecified</option>'
+
+    elif type == 'PACBIO_SMRT':
+        out += '<option value="PACBIO_RS">PacBio RS</option>'
+        out += '<option value="PACBIO_RS_II">PacBio RS II</option>'
+        out += '<option value="UNSPECIFIED">Unspecified</option>'
+
+    elif type == 'ION_TORRENT':
+        out += '<option value="ION_TORRENT_PGM">Ion Torrent PGM</option>'
+        out += '<option value="ION_TORRENT_PROTON">Ion Torrent Proton</option>'
+        out += '<option value="UNSPECIFIED">Unspecified</option>'
+
+    elif type == 'OXFORD_NANOPORE':
+        out += '<option value="MINION">MinION</option>'
+        out += '<option value="GRIDION">GridION</option>'
+        out += '<option value="UNSPECIFIED">Unspecified</option>'
+
+    else:
+        out += '<option value="AB_3730XL_GENETIC_ANALYZER">AB 3730xL Genetic Analyzer</option>'
+        out += '<option value="AB_3730_GENETIC_ANALYZER">AB 3730 Genetic Analyzer</option>'
+        out += '<option value="AB_3500XL_GENETIC_ANALYZER">AB 3500xL Genetic Analyzer</option>'
+        out += '<option value="AB_3500_GENETIC_ANALYZER">AB 3500 Genetic Analyzer</option>'
+        out += '<option value="AB_3130XL_GENETIC_ANALYZER">AB 3130xL Genetic Analyzer</option>'
+        out += '<option value="AB_3130_GENETIC_ANALYZER">AB 3130 Genetic Analyzer</option>'
+        out += '<option value="AB_310_GENETIC_ANALYZER">AB 310 Genetic Analyzer</option>'
+
+    return HttpResponse(out, content_type='html')
