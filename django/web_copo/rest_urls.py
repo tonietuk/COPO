@@ -16,4 +16,6 @@ urlpatterns = patterns('',
     url(r'^get_sample_html/', rest.get_sample_html, name='get_sample_html_param'),
     url(r'^populate_data_dropdowns/', rest.populate_data_dropdowns, name='populate_data_dropdowns'),
     url(r'^get_instrument_models/', rest.get_instrument_models, name='get_instrument_models'),
+    url(r'^get_experimental_samples/', rest.get_experimental_samples, name='get_experimental_samples'),
+    url(r'^receive_data_file/', rest.receive_data_file, name='receive_data_file'),
 )

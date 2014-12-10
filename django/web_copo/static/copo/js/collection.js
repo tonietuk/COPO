@@ -6,6 +6,7 @@ $(document).ready( function(){
     study_form_data()
     sample_form_data()
     exp_form_data()
+    get_experimental_samples()
     $('#collection_type').change(function(){
         study_form_data()
         sample_form_data()
@@ -319,8 +320,24 @@ $(document).ready( function(){
         });
     }
 
-    function test(data){
-        alert(data)
+    function get_experimental_samples(){
+        var study_id = $('#study_id').val()
+        $.get( "/rest/get_experimental_samples/",
+        {
+            'study_id':study_id
+        },
+        function(data){
+
+            var out = ''
+            for(var k = 0; k < data.length; k++){
+                out += '<option>'
+                out += data[k].fields.common_name
+                out += ' - '
+                out += data[k].fields.scientific_name
+                out += '</option>'
+            }
+            $('#select_sample_ref').empty().append(out)
+        });
     }
 
     function sample_table_handler(){
@@ -331,7 +348,6 @@ $(document).ready( function(){
             //now call web service to get content for sample panel
             var service = url.substring(0, url.lastIndexOf("/")) + '/'
             var id = url.substring(url.lastIndexOf("/") + 1, url.length)
-
             $.get(service,
                 {
                     'sample_id':id
@@ -367,4 +383,10 @@ $(document).ready( function(){
             )
         })
     }
+
+    //var uploader = new ss.SimpleUpload({
+    //  button: 'btn_add_data_file', // HTML element used as upload button
+    //  url: '/rest/receive_data_file/', // URL of server-side upload handler
+    //  name: 'uploadfile' // Parameter name of the uploaded file
+    //});
 })

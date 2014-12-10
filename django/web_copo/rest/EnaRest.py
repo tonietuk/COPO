@@ -1,12 +1,15 @@
 __author__ = 'fshaw'
 from django.http import HttpResponse, HttpResponseRedirect
-from web_copo.models import Collection, Resource, Profile, EnaStudy, EnaSampleAttr, EnaSample, EnaStudyAttr
+from django.core.context_processors import csrf
+from web_copo.models import Collection, Resource, Profile, EnaStudy, EnaSampleAttr, EnaSample, EnaStudyAttr, Document, DocumentForm
 from rest_framework.renderers import JSONRenderer
 import web_copo.xml.EnaParsers as parsers
-from web_copo.utils.EnaUtils import get_sample_html_from_collection_id
+from web_copo.utils.EnaUtils import get_sample_html_from_collection_id, handle_uploaded_file
 import jsonpickle
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+
+
 
 
 
@@ -316,3 +319,21 @@ def get_instrument_models(request):
         out += '<option value="AB_310_GENETIC_ANALYZER">AB 310 Genetic Analyzer</option>'
 
     return HttpResponse(out, content_type='html')
+
+
+def get_experimental_samples(request):
+
+    study_id = request.GET['study_id']
+    samples = EnaSample.objects.filter(ena_study__id=study_id)
+    data = serializers.serialize("json", samples)
+    return HttpResponse(data, content_type="json")
+
+def receive_data_file(request):
+    c = {}
+    c.update(csrf(request))
+    if request.method == 'POST':
+        f = request.FILES['ff_file']
+        handle_uploaded_file(f)
+
+    # Redirect to the document list after POST
+    return HttpResponse('abcd', content_type='json')

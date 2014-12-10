@@ -1,8 +1,13 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
 import datetime
+from time import time
+from django.core.files.storage import FileSystemStorage
+fs = FileSystemStorage(location=' /Users/fshaw/Desktop/test')
 
-# Create your models here.
+def get_upload_file_name(instance, filename):
+    return 'uploaded_files/%s_%s' % (str(time()).replace('.', '_'), filename)
 
 #profile is the top level container object representing a profile of work
 class Profile(models.Model):
@@ -32,6 +37,15 @@ class Resource(models.Model):
     collection = models.ForeignKey(Collection)
     def __unicode__(self):
         return self.name
+
+class DocumentForm(forms.Form):
+    docfile = forms.FileField(
+        label='Select a file',
+        help_text='max. 42 megabytes'
+    )
+
+class Document(models.Model):
+    docfile = models.FileField(storage=fs)
 
 #the following ENA objects are self explanatory
 class EnaStudy(models.Model):

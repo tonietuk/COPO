@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'sslserver',
     'web_copo',
     'rest_framework',
+    'jfu',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -50,7 +51,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -101,7 +101,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-STATIC_URL = '/static/'
+
 
 TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
                                "django.core.context_processors.debug",
@@ -111,6 +111,8 @@ TEMPLATE_CONTEXT_PROCESSORS = ("django.contrib.auth.context_processors.auth",
                                "django.core.context_processors.tz",
                                "django.contrib.messages.context_processors.messages",
                                'django.core.context_processors.csrf',
+                               'django.core.context_processors.request',
+                               'django.core.context_processors.static',
 )
 
 
@@ -118,3 +120,6 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'PAGINATE_BY': 10
 }
+
+STATIC_URL = '/static/'
+MEDIA_ROOT = '/Users/fshaw/Desktop/test'
