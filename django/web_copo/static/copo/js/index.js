@@ -1,7 +1,7 @@
 $( document ).ready(function() {
 
 });
-
+/*
 var d = new Date();
 
 var currDate = d.getDate();
@@ -26,3 +26,4 @@ $confModal.on('hidden', function() {
 });
 
 $confModal.modal({ backdrop : false });
+*/

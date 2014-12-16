@@ -9,9 +9,9 @@
     <title>{% block title %}Default Page Title{% endblock %}</title>
 
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="{% static 'copo/css/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'copo/css/bootstrap-theme.css' %}">
-	<link rel="stylesheet" href="{% static 'copo/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'copo/css/bootstrap/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'copo/css/bootstrap/bootstrap-theme.css' %}">
+	<link rel="stylesheet" href="{% static 'copo/css/copo/style.css' %}">
 
 	
 	<!-- Font Awesome -->
@@ -23,7 +23,11 @@
     <!-- Additional stylesheets -->
     {% block stylesheet_block %}{% endblock %}
 
-
+    <script src="{% static 'copo/js/jquery.js' %}"></script>
+    <script src="{% static 'copo/js/serialize_form_json.js' %}"></script>
+    <script src="{% static 'copo/js/bootstrap.js' %}"></script>
+    <!-- Additional javascripts -->
+    {% block js_block %}{% endblock %}
 
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -117,10 +121,6 @@
 			<div class="col-sm-2 col-md-2 col-lg-2"></div>
 		</div>
 	</div>
-    <script src="{% static 'copo/js/jquery.js' %}"></script>
-     <script src="{% static 'copo/js/serialize_form_json.js' %}"></script>
-    <script src="{% static 'copo/js/bootstrap.js' %}"></script>
-    <!-- Additional javascripts -->
-    {% block js_block %}{% endblock %}
+
   </body>
 </html>

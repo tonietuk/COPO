@@ -8,6 +8,7 @@ from web_copo.utils.EnaUtils import get_sample_html_from_collection_id, handle_u
 import jsonpickle
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
+import os
 
 
 
@@ -332,8 +333,45 @@ def receive_data_file(request):
     c = {}
     c.update(csrf(request))
     if request.method == 'POST':
+
         f = request.FILES['ff_file']
-        handle_uploaded_file(f)
+        #newdoc = Document(docfile = f)
+        #newdoc.save()
+        path = os.path.join('/Users/fshaw/Desktop/test/', f.name)
+        destination = open(path, 'wb+')
+        for chunk in f.chunks():
+            destination.write(chunk)
+
 
     # Redirect to the document list after POST
-    return HttpResponse('abcd', content_type='json')
+    files = {}
+    files['files'] = {}
+    files['files']['name'] = f._name
+    files['files']['size'] = 10#newdoc.docfile.size / (1000 * 1000.0)
+    files['files']['url'] = ''
+    files['files']['thumbnailUrl'] = ''
+    files['files']['deleteUrl'] = ''
+    files['files']['deleteType'] = 'DELETE'
+
+    '''
+    {"files": [
+  {
+    "name": "picture1.jpg",
+    "size": 902604,
+    "url": "http:\/\/example.org\/files\/picture1.jpg",
+    "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture1.jpg",
+    "deleteUrl": "http:\/\/example.org\/files\/picture1.jpg",
+    "deleteType": "DELETE"
+  },
+  {
+    "name": "picture2.jpg",
+    "size": 841946,
+    "url": "http:\/\/example.org\/files\/picture2.jpg",
+    "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture2.jpg",
+    "deleteUrl": "http:\/\/example.org\/files\/picture2.jpg",
+    "deleteType": "DELETE"
+  }
+]}
+'''
+    str = jsonpickle.encode(files)
+    return HttpResponse(str, content_type='json')

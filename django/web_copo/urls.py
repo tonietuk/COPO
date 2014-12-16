@@ -4,6 +4,8 @@ from web_copo import views
 
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
+    url(r'^testing/', views.view_test, name='test'),
+    url(r'^testing2/', views.view_test2, name='test'),
     url(r'^login/', views.copo_login, name='login'),
     url(r'^logout/', views.copo_logout, name='logout'),
     url(r'^register/', views.copo_register, name='register'),

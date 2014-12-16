@@ -102,6 +102,10 @@ def view_profile(request, profile_id):
     context = {'profile_id':profile_id, 'profile_title': profile.title, 'profile_abstract': profile.abstract_short, 'collections': collections}
     return render(request, 'copo/profile.html', context)
 
+def view_test(request):
+    context = {}
+    return render(request, 'copo/testing.html', context)
+
 def new_collection(request):
 
     c_type = request.POST['collection_type']
@@ -137,3 +141,5 @@ def view_collection(request, collection_id):
 
 
 
+def view_test2(request):
+    return render(request, 'copo/testing2.html')

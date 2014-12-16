@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 from time import time
 from django.core.files.storage import FileSystemStorage
-fs = FileSystemStorage(location=' /Users/fshaw/Desktop/test')
+fs = FileSystemStorage(location='/Users/fshaw/Desktop/test')
 
 def get_upload_file_name(instance, filename):
     return 'uploaded_files/%s_%s' % (str(time()).replace('.', '_'), filename)
@@ -45,7 +45,7 @@ class DocumentForm(forms.Form):
     )
 
 class Document(models.Model):
-    docfile = models.FileField(storage=fs)
+    docfile = models.FileField(upload_to='/Users/fshaw/Desktop/test')
 
 #the following ENA objects are self explanatory
 class EnaStudy(models.Model):

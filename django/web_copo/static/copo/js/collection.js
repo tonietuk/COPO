@@ -16,6 +16,8 @@ $(document).ready( function(){
     $('#select_platform').on('change', platform_change_handler)
 
 
+
+
     //function to save study
     $('#save_study').click(function(){
         //first validate form
@@ -384,9 +386,5 @@ $(document).ready( function(){
         })
     }
 
-    //var uploader = new ss.SimpleUpload({
-    //  button: 'btn_add_data_file', // HTML element used as upload button
-    //  url: '/rest/receive_data_file/', // URL of server-side upload handler
-    //  name: 'uploadfile' // Parameter name of the uploaded file
-    //});
+
 })
