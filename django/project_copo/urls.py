@@ -8,6 +8,6 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^copo/', include('web_copo.urls', namespace='copo')),
-    url(r'^rest/', include('web_copo.rest_urls', namespace='rest')),
+    url(r'^copo/', include('apps.web_copo.urls', namespace='copo')),
+    url(r'^rest/', include('apps.web_copo.rest_urls', namespace='rest')),
 )
