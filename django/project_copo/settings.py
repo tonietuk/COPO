@@ -125,6 +125,8 @@ REST_FRAMEWORK = {
 STATIC_URL = '/static/'
 MEDIA_ROOT = '/Users/fshaw/Desktop/test'
 
+
+
 CHUNKED_UPLOAD_ABSTRACT_MODEL = False
 CHUNKED_UPLOAD_MIMETYPE = 'text'
 
@@ -153,7 +155,7 @@ EXPIRATION_DELTA = getattr(settings, 'CHUNKED_UPLOAD_EXPIRATION_DELTA',
 
 
 # Path where uploading files will be stored until completion
-DEFAULT_UPLOAD_PATH = 'chunked_uploads/%Y/%m/%d'
+DEFAULT_UPLOAD_PATH = '/chunked_uploads/%Y/%m/%d'
 UPLOAD_PATH = getattr(settings, 'CHUNKED_UPLOAD_PATH', DEFAULT_UPLOAD_PATH)
 
 

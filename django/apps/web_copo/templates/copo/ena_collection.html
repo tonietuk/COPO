@@ -1,0 +1,562 @@
+{% extends 'copo/base.html' %}
+
+{% load staticfiles %}
+
+{% block stylesheet_block %}
+<link rel="stylesheet" href="{% static 'copo/css/copo/browse_style.css' %}">
+<link rel="stylesheet" href="{% static 'copo/css/copo/collection.css' %}">
+<link rel="stylesheet" href="{% static 'copo/css/bootstrap/bootstrapValidator.css' %}">
+
+<!-- Generic page styles -->
+<link rel="stylesheet" href="{% static 'copo/css/copo/style.css' %}">
+<!-- blueimp Gallery styles -->
+<link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
+<!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
+<link rel="stylesheet" href="{% static 'copo/css/uploader/jquery.fileupload.css' %}">
+<link rel="stylesheet" href="{% static 'copo/css/uploader/jquery.fileupload-ui.css' %}">
+<!-- CSS adjustments for browsers with JavaScript disabled -->
+<noscript>
+    <link rel="stylesheet" href="{% static 'copo/css/uploader/jquery.fileupload-noscript.css' %}">
+</noscript>
+<noscript>
+<link rel="stylesheet" href="{% static 'copo/css/jquery.fileupload-ui-noscript.css' %}">
+</noscript>
+{% endblock %}
+
+
+{% block title_block %} Study {% endblock %}
+
+{% block tagline_block %}{% endblock %}
+
+{% block breadcrumb_block %}
+<ol class="breadcrumb">
+    <li><a href="{% url 'copo:index' %}">Home</a></li>
+    <li><a href="{% url 'copo:view_profile' profile_id=profile_id %}">Profile</a></li>
+    <li class="active"><a href="{% url 'copo:view_collection' collection_id=collection_id %}">Collection</a></li>
+</ol>
+{% endblock %}
+
+{% block browse_header_block %}
+
+<div hidden id="hidden_attrs">
+
+    <!-- hidden attributes required to make the page remember where it is and what its dealing with -->
+    <input type="hidden" id="collection_id" name="collection_id" value="{{ collection_id }}">
+
+    <input type="hidden" id="sample_id" value=""/>
+
+    <input type="hidden" id="study_id" value="{{ study_id }}"/>
+
+    <input type="hidden" id="attr_counter" value="1"/>
+
+    <input type="hidden" id="sample_attr_counter" value="1"/>
+
+</div>
+
+<div id="browse_header">
+        <span class="blue_icon">
+           <a><i class="fa fa-plus-circle" data-toggle="modal" data-target="#newStudyModal"></i></a>
+        </span>
+        <span class="blue_icon">
+            <a><i class="fa fa-pencil-square-o"></i></a>
+        </span>
+        <span class="blue_icon">
+            <a><i class="fa fa-trash-o"></i></a>
+        </span>
+
+    <div class="input-group input-group-sm">
+            <span class="input-group-addon">
+                <i class="fa fa-search"></i>
+            </span>
+        <input type="search" class="form-control" placeholder="Search">
+    </div>
+</div>
+
+{% endblock %}
+
+{% block work_area %}
+
+
+<form role="form" class="form-horizontal" id="ena_title_form" action="/copo/new_collection/" method="post">
+    <div class="form-group">
+        <label class="control-label">Collection Name</label>
+        <input type="text" id="collection_name" placeholder="{{ collection.name }}" class="form-control" disabled/>
+    </div>
+    <div class="form-group">
+        <label for="collection_type">Colection Type</label>
+        <select name="collection_type" id="collection_type" class="form-control">
+            <option selected="selected">ENA Submission</option>
+            <option>Custom Submission</option>
+        </select>
+    </div>
+</form>
+
+
+<div class="panel-group" id="accordion">
+
+    <!-- Panel for ENA Study -->
+    <div class="panel panel-default" id="panel1">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
+                    ENA Study
+                </a>
+            </h4>
+        </div>
+        <div id="collapseOne" class="panel-collapse collapse in">
+            <div class="panel-body">
+                <h2 class="h2">Add Study Details</h2>
+                <hr/>
+
+                <form id="ena_study_form" class="ena_form_validation_icon">
+                    {% csrf_token %}
+                    <!-- populated by ajax -->
+                </form>
+
+                <h2 class="h2">Add Study Attributes</h2>
+                <hr/>
+                <form id="ena_study_form_attributes" class="form-horizontal" role="form">
+
+                    {% csrf_token %}
+                    <p id="study_button_p" class="col-sm-10">
+                        <br/>
+                        <button type="button" id="study_add_attribute_button" class="btn btn-default btn-s">Add
+                            Another
+                        </button>
+                        <br/><br/><br/>
+                        <button type="button" id="save_study" style="margin-right:-200px"
+                                class="btn btn-success pull-right">Save Study
+                        </button>
+                    </p>
+
+                </form>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <!-- Panel for ENA Sample -->
+    <div class="panel panel-default" id="panel2">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-target="#collapseTwo"
+                   href="#collapseTwo" class="collapsed">
+                    ENA Sample
+                </a>
+            </h4>
+        </div>
+        <div id="collapseTwo" class="panel-collapse collapse">
+            <div class="panel-body">
+                <h2 class="h2">Add Sample Details</h2>
+                <hr/>
+                <table class="table-bordered" id="sample_table">
+
+                    <tr id="sample_table_tr">
+                        <th>Sample Name</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Remove</th>
+                    </tr>
+                </table>
+
+
+                <p class="col-sm-10">
+                    <br/>
+                    <button type="button" id="add_sample_button" class="btn btn-default btn-s" data-toggle="modal"
+                            data-target="#newSampleModal">Add Sample
+                    </button>
+                </p>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Panel for ENA Files/Experiments -->
+    <div class="panel panel-default" id="panel3">
+        <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-target="#collapseThree"
+                   href="#collapseThree" class="collapsed">
+                    ENA Data
+                </a>
+            </h4>
+        </div>
+        <div id="collapseThree" class="panel-collapse collapse">
+            <div class="panel-body">
+                <h2 class="h2">Add Experiment Details</h2>
+                <hr/>
+                <table class="table-bordered">
+
+                    <tr>
+                        <th>File Name</th>
+                        <th>Description</th>
+                        <th>Date</th>
+                        <th>Remove</th>
+                    </tr>
+
+                </table>
+
+                <p class="col-sm-10">
+                    <br/>
+                    <button type="button" id="add_data_button" class="btn btn-default btn-s" data-toggle="modal"
+                            data-target="#newDataModal">Add Data
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Sample Modal -->
+<div class="modal fade" id="newSampleModal" tabindex="-1" role="dialog" aria-labelledby="newSampleModal"
+     aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title h2" id="myModalLabel">New Sample</h4>
+            </div>
+
+            <div class="modal-body" style="padding-bottom:100px">
+
+                <form id="ena_sample_form" class="ena_form_validation_icon">
+                    <!-- populated by ajax -->
+                    {% csrf_token %}
+                </form>
+
+                <h2 class="h2">Add Sample Attributes</h2>
+                <hr/>
+
+                <form id="ena_sample_form_attributes" class="form-horizontal" role="form">
+
+
+                    <!-- pressing the button underneath this div will cause another div to be created and inserted -->
+                    <div class="form-group col-sm-10 attribute_group">
+
+                        <label class="sr-only" for="tag_1">tag</label>
+                        <label class="sr-only" for="value_1">value</label>
+                        <label class="sr-only" for="unit_1">unit</label>
+
+                        <div class="sample_attr_vals">
+                            <input type="text" class="col-sm-3 attr" name="tag_1" placeholder="tag"/>
+                            <input type="text" class="col-sm-3 attr" name="value_1" placeholder="value"/>
+                            <input type="text" class="col-sm-3 attr" name="unit_1" placeholder="unit (optional)"/>
+                        </div>
+
+                    </div>
+                    <p id="sample_button_p" class="col-sm-10">
+                        <br/>
+
+                    </p>
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <p id="p_save_sample">
+                    <button type="button" id="btn:save_sample" class="btn btn-success">Save Sample</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Data Modal -->
+<div class="modal fade" id="newDataModal" tabindex="-1" role="dialog" aria-labelledby="newSampleModal"
+     aria-hidden="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title h2" id="myDataLabel">Add Files</h4>
+            </div>
+
+            <div class="modal-body" style="padding-bottom:100px">
+            <form id="test_form" method="post" action="/rest/receive_data_file/" enctype="multipart/form-data">
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Select files...</span>
+                    <input id="fileupload" type="file" multiple="" name="ff_file">
+                </span>
+                <br>
+                <br>
+                <div id="progress" class="progress">
+                    <div class="progress-bar progress-bar-success" style="width: 100%;"></div>
+                </div>
+                <div id="files" class="files">
+
+                </div>
+            </form>
+                <!--
+                <form id="fileupload" method="post" action="/rest/receive_data_file/" enctype="multipart/form-data">
+
+                    <div class="row fileupload-buttonbar">
+                        <div class="col-lg-7">
+                            <span class="btn btn-success fileinput-button">
+                                <i class="glyphicon glyphicon-plus"></i>
+                                <span>Add files...</span>
+                                <input type="file" name="ff_file" multiple>
+                            </span>
+                            <button type="submit" class="btn btn-primary start">
+                                <i class="glyphicon glyphicon-upload"></i>
+                                <span>Start upload</span>
+                            </button>
+                            <button type="reset" class="btn btn-warning cancel">
+                                <i class="icon-ban-circle icon-white"></i>
+                                Cancel upload
+                            </button>
+                            <button type="button" class="btn btn-danger delete">
+                                <i class="icon-trash icon-white"></i> Delete
+                            </button>
+                            <input type="checkbox" class="toggle">
+                        </div>
+
+                        <div class="span5">
+
+                            <div class="progress progress-success progress-striped active fade">
+                                <div class="bar" style="width:0%;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="fileupload-loading"></div>
+                    <br>
+
+                    <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
+
+                    <ul id="fileList">
+
+                    </ul>
+                </form>
+                -->
+
+                    <!--
+                    <form id="fileupload" action="/rest/receive_data_file/" method="POST"
+                          enctype="multipart/form-data">
+
+                        {% csrf_token %}
+                        -->
+                        <!-- Redirect browsers with JavaScript disabled to the origin page -->
+
+                        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                <!--
+                        <div class="row fileupload-buttonbar">
+                            <div class="col-lg-7">-->
+                                <!-- The fileinput-button span is used to style the file input field as button -->
+                <!--
+                                <span class="btn btn-success fileinput-button">
+                                    <i class="glyphicon glyphicon-plus"></i>
+                                    <span>Add files...</span>
+                                    <input type="file" name="ff_file" multiple>
+                                </span>
+                                <button type="submit" class="btn btn-primary start">
+                                    <i class="glyphicon glyphicon-upload"></i>
+                                    <span>Start upload</span>
+                                </button>
+                                <button type="reset" class="btn btn-warning cancel">
+                                    <i class="glyphicon glyphicon-ban-circle"></i>
+                                    <span>Cancel upload</span>
+                                </button>
+                                <button type="button" class="btn btn-danger delete">
+                                    <i class="glyphicon glyphicon-trash"></i>
+                                    <span>Delete</span>
+                                </button>
+                                <input type="checkbox" class="toggle">-->
+                                <!-- The global file processing state -->
+                <!--
+                                <span class="fileupload-process"></span>
+                            </div>-->
+                            <!-- The global progress state -->
+                <!--
+                            <div class="col-lg-5 fileupload-progress fade"> -->
+                                <!-- The global progress bar -->
+                <!--
+                                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
+                                     aria-valuemax="100">
+                                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                                </div>-->
+                                <!-- The extended global progress state -->
+                <!--
+                                <div class="progress-extended">&nbsp;</div>
+                            </div>
+                        </div>-->
+                        <!-- The table listing the files available for upload/download -->
+                <!--
+                        <table role="presentation" class="table table-striped">
+                            <tbody class="files"></tbody>
+                        </table>
+                    </form>-->
+
+                <!--<form id="ena_data_form" class="ena_form_validation_icon" method="post"
+                      action="/rest/receive_data_file/" enctype="multipart/form-data">
+
+                    <div class="form-group">-->
+
+                        <!--<button type="button" id="btn_add_data_file" class="btn btn-default">Select File</button>-->
+                        <!--<input type="file" name="ff_file" id="ff_file"/>-->
+
+                    <!--
+                    </div>
+                    <input type="submit"/>
+
+                </form>-->
+
+                <form id="ena_ff">
+                    {% csrf_token %}
+                    <div class="form-group">
+
+
+                        <label for="select_file_type">File Type</label>
+                        <select class="form-control" name="select_file_type" id="select_file_type">
+                            <option value="srf">srf</option>
+                            <option value="sff">sff</option>
+                            <option value="fastq">fastq</option>
+                            <option value="cram">cram</option>
+                            <option value="bam">bam</option>
+                            <option value="PacBio_HDF5">PacBio HDF5</option>
+                            <option value="OxfordNanopore_native">Oxford Nanopore native</option>
+                            <option value="CompleteGenomics_native">Complete Genomics native (filename must point to the
+                                whole data package)
+                            </option>
+                        </select>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input_library_name">Library Name</label>
+                        <input class="form-control" name="input_library_name" id="input_library_name" type="text"
+                               placeholder="Library Name"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="select_sample_ref">Sample Type</label>
+                        <select class="form-control" name="select_sample_ref" id="select_sample_ref" type="text"
+                                placeholder="Sample Type">
+                            <option>Test</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="select_platform">Platform</label>
+                        <select class="form-control" name="select_platform" id="select_platform" type="text"
+                                placeholder="Sample Type">
+                            <option value="LS454">LS454</option>
+                            <option value="ILLUMINA">Illumina</option>
+                            <option value="COMPLETE_GENOMICS">Complete Genomics</option>
+                            <option value="PACBIO_SMRT">PacBio SMRT</option>
+                            <option value="ION_TORRENT">Ion Torrent</option>
+                            <option value="OXFORD_NANOPORE">Oxford Nanopore</option>
+                            <option value="CAPILLARY">Capillary</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="select_instrument_model">Instrument Model</label>
+                        <select class="form-control" name="select_instrument_model" id="select_instrument_model">
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="select_library_source">Library Source</label>
+                        <select class="form-control" name="select_library_source" id="select_library_source" type="text"
+                                placeholder="Library Source">
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="select_library_selection">Library Selection</label>
+                        <select class="form-control" name="select_library_selection" id="select_library_selection"
+                                type="text" placeholder="Library Selection">
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="select_library_strategy">Library Strategy</label>
+                        <select class="form-control" name="select_library_strategy" id="select_library_strategy"
+                                type="text" placeholder="Library Strategy">
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input_insert_size">Insert Size</label>
+                        <input class="form-control" name="input_insert_size" id="input_insert_size" type="text"
+                               placeholder="Insert Size"/>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input_md5_checksum">MD5 Checksum</label>
+                        <input class="form-control" name="input_md5_checksum" id="input_md5_checksum" type="text"
+                               placeholder="To be calculated..." readonly/>
+                    </div>
+
+
+                </form>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <p id="p_save_data">
+                    <button type="button" id="btn:save_data" class="btn btn-success">Save Data</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block js_block %}
+<script src="{% static 'copo/js/collection.js' %}"></script>
+<!--<script src="{% static 'copo/js/uploader/main.js' %}"></script>-->
+<script src="{% static 'copo/js/bootstrapValidator.js' %}"></script>
+<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
+<script src="{% static 'copo/js/uploader/vendor/jquery.ui.widget.js'%}"></script>
+<script src="{% static 'copo/js/uploader/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'copo/js/uploader/jquery.fileupload.js' %}"></script>
+<!-- The Templates plugin is included to render the upload/download listings -->
+<!--<script src="{% static 'copo/js/uploader/tmpl.js' %}"></script>-->
+<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
+<!--<script src="{% static 'copo/js/uploader/load-image.all.min.js' %}"></script>-->
+<!-- The Canvas to Blob plugin is included for image resizing functionality -->
+<!--<script src="{% static 'copo/js/uploader/canvas-to-blob.min.js' %}"></script>-->
+<!-- blueimp Gallery script -->
+<!--<script src="{% static 'copo/js/uploader/jquery.blueimp-gallery.min.js' %}"></script>-->
+<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
+
+<!-- The basic File Upload plugin -->
+
+<!-- The File Upload processing plugin -->
+<script src="{% static 'copo/js/uploader/jquery.fileupload-process.js' %}"></script>
+<!-- The File Upload image preview & resize plugin -->
+<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-image.js' %}"></script>-->
+<!-- The File Upload audio preview plugin -->
+<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-audio.js' %}"></script>-->
+<!-- The File Upload video preview plugin -->
+<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-video.js' %}"></script>-->
+<!-- The File Upload validation plugin -->
+<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-validate.js' %}"></script>-->
+<!-- The File Upload user interface plugin -->
+<script src="{% static 'copo/js/uploader/jquery.fileupload-ui.js' %}"></script>
+<script src="{% static 'copo/js/uploader/main.js' %}"></script>
+
+
+{% endblock %}
