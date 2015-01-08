@@ -329,13 +329,9 @@ def receive_data_file(request):
     c.update(csrf(request))
     if request.method == 'POST':
 
-        f = request.FILES['ff_file']
+        f = request.FILES['file']
         newdoc = Document(docfile = f)
         newdoc.save()
-        #path = os.path.join('/Users/fshaw/Desktop/test/', f.name)
-        #destination = open(path, 'wb+')
-        #for chunk in f.chunks():
-        #    destination.write(chunk)
 
 
     # Redirect to the document list after POST
@@ -349,25 +345,5 @@ def receive_data_file(request):
     files['files']['deleteUrl'] = ''
     files['files']['deleteType'] = 'DELETE'
 
-    '''
-    {"files": [
-  {
-    "name": "picture1.jpg",
-    "size": 902604,
-    "url": "http:\/\/example.org\/files\/picture1.jpg",
-    "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture1.jpg",
-    "deleteUrl": "http:\/\/example.org\/files\/picture1.jpg",
-    "deleteType": "DELETE"
-  },
-  {
-    "name": "picture2.jpg",
-    "size": 841946,
-    "url": "http:\/\/example.org\/files\/picture2.jpg",
-    "thumbnailUrl": "http:\/\/example.org\/files\/thumbnail\/picture2.jpg",
-    "deleteUrl": "http:\/\/example.org\/files\/picture2.jpg",
-    "deleteType": "DELETE"
-  }
-]}
-'''
     str = jsonpickle.encode(files)
     return HttpResponse(str, content_type='json')
