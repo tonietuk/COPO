@@ -49,7 +49,12 @@
         <span>Select files...</span>
         <input type="file" name="file" id="file_upload" onchange="get_chunk_size()">
         <input type="hidden" name="upload_id" value="" id="upload_id">
+
     </span>
+    <span id="progress_label"></span>
+    <span id="total_label"></span>
+
+    <span id="bitrate"></span>
     <br><br>
     <div id="progress" class="progress">
         <div style="width: 0%;height: 20px;background: green" class="bar"></div>

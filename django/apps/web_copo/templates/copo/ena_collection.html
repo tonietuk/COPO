@@ -272,7 +272,7 @@
 <!-- Data Modal -->
 <div class="modal fade" id="newDataModal" tabindex="-1" role="dialog" aria-labelledby="newSampleModal"
      aria-hidden="false">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-sm" style="width:500px">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
@@ -281,136 +281,25 @@
             </div>
 
             <div class="modal-body" style="padding-bottom:100px">
-            <form id="test_form" method="post" action="/rest/receive_data_file/" enctype="multipart/form-data">
-                <span class="btn btn-success fileinput-button">
-                    <i class="glyphicon glyphicon-plus"></i>
-                    <span>Select files...</span>
-                    <input id="fileupload" type="file" multiple="" name="ff_file">
-                </span>
-                <br>
-                <br>
-                <div id="progress" class="progress">
-                    <div class="progress-bar progress-bar-success" style="width: 100%;"></div>
-                </div>
-                <div id="files" class="files">
+                <form enctype="multipart/form-data" id="fileupload" method="POST" action="http://127.0.0.1:8000/rest/receive_data_file_chunked/">
+                    {% csrf_token %}
+                    <span id="upload_files_button" class="btn btn-success fileinput-button">
+                        <i class="glyphicon glyphicon-plus"></i>
+                        <span>Select files...</span>
+                        <input type="file" name="file" id="file_upload" onchange="get_chunk_size()">
+                        <input type="hidden" name="upload_id" value="" id="upload_id">
 
-                </div>
-            </form>
-                <!--
-                <form id="fileupload" method="post" action="/rest/receive_data_file/" enctype="multipart/form-data">
-
-                    <div class="row fileupload-buttonbar">
-                        <div class="col-lg-7">
-                            <span class="btn btn-success fileinput-button">
-                                <i class="glyphicon glyphicon-plus"></i>
-                                <span>Add files...</span>
-                                <input type="file" name="ff_file" multiple>
-                            </span>
-                            <button type="submit" class="btn btn-primary start">
-                                <i class="glyphicon glyphicon-upload"></i>
-                                <span>Start upload</span>
-                            </button>
-                            <button type="reset" class="btn btn-warning cancel">
-                                <i class="icon-ban-circle icon-white"></i>
-                                Cancel upload
-                            </button>
-                            <button type="button" class="btn btn-danger delete">
-                                <i class="icon-trash icon-white"></i> Delete
-                            </button>
-                            <input type="checkbox" class="toggle">
-                        </div>
-
-                        <div class="span5">
-
-                            <div class="progress progress-success progress-striped active fade">
-                                <div class="bar" style="width:0%;"></div>
-                            </div>
-                        </div>
-
+                    </span>
+                    <span id="progress_label"></span>
+                    <span id="total_label"></span>
+                    <span id="bitrate"></span>
+                    <br><br>
+                    <div id="progress" class="progress">
+                        <div style="width: 0%;height: 20px;background: green" class="bar"></div>
+                        <div class="progress-bar progress-bar-success"></div>
                     </div>
-
-                    <div class="fileupload-loading"></div>
-                    <br>
-
-                    <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody></table>
-
-                    <ul id="fileList">
-
-                    </ul>
                 </form>
-                -->
-
-                    <!--
-                    <form id="fileupload" action="/rest/receive_data_file/" method="POST"
-                          enctype="multipart/form-data">
-
-                        {% csrf_token %}
-                        -->
-                        <!-- Redirect browsers with JavaScript disabled to the origin page -->
-
-                        <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
-                <!--
-                        <div class="row fileupload-buttonbar">
-                            <div class="col-lg-7">-->
-                                <!-- The fileinput-button span is used to style the file input field as button -->
-                <!--
-                                <span class="btn btn-success fileinput-button">
-                                    <i class="glyphicon glyphicon-plus"></i>
-                                    <span>Add files...</span>
-                                    <input type="file" name="ff_file" multiple>
-                                </span>
-                                <button type="submit" class="btn btn-primary start">
-                                    <i class="glyphicon glyphicon-upload"></i>
-                                    <span>Start upload</span>
-                                </button>
-                                <button type="reset" class="btn btn-warning cancel">
-                                    <i class="glyphicon glyphicon-ban-circle"></i>
-                                    <span>Cancel upload</span>
-                                </button>
-                                <button type="button" class="btn btn-danger delete">
-                                    <i class="glyphicon glyphicon-trash"></i>
-                                    <span>Delete</span>
-                                </button>
-                                <input type="checkbox" class="toggle">-->
-                                <!-- The global file processing state -->
-                <!--
-                                <span class="fileupload-process"></span>
-                            </div>-->
-                            <!-- The global progress state -->
-                <!--
-                            <div class="col-lg-5 fileupload-progress fade"> -->
-                                <!-- The global progress bar -->
-                <!--
-                                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0"
-                                     aria-valuemax="100">
-                                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
-                                </div>-->
-                                <!-- The extended global progress state -->
-                <!--
-                                <div class="progress-extended">&nbsp;</div>
-                            </div>
-                        </div>-->
-                        <!-- The table listing the files available for upload/download -->
-                <!--
-                        <table role="presentation" class="table table-striped">
-                            <tbody class="files"></tbody>
-                        </table>
-                    </form>-->
-
-                <!--<form id="ena_data_form" class="ena_form_validation_icon" method="post"
-                      action="/rest/receive_data_file/" enctype="multipart/form-data">
-
-                    <div class="form-group">-->
-
-                        <!--<button type="button" id="btn_add_data_file" class="btn btn-default">Select File</button>-->
-                        <!--<input type="file" name="ff_file" id="ff_file"/>-->
-
-                    <!--
-                    </div>
-                    <input type="submit"/>
-
-                </form>-->
-
+                <div id="file_status_label"></div>
                 <form id="ena_ff">
                     {% csrf_token %}
                     <div class="form-group">
@@ -526,37 +415,16 @@
 
 {% block js_block %}
 <script src="{% static 'copo/js/collection.js' %}"></script>
-<!--<script src="{% static 'copo/js/uploader/main.js' %}"></script>-->
 <script src="{% static 'copo/js/bootstrapValidator.js' %}"></script>
-<!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
 <script src="{% static 'copo/js/uploader/vendor/jquery.ui.widget.js'%}"></script>
 <script src="{% static 'copo/js/uploader/jquery.iframe-transport.js' %}"></script>
 <script src="{% static 'copo/js/uploader/jquery.fileupload.js' %}"></script>
-<!-- The Templates plugin is included to render the upload/download listings -->
-<!--<script src="{% static 'copo/js/uploader/tmpl.js' %}"></script>-->
-<!-- The Load Image plugin is included for the preview images and image resizing functionality -->
-<!--<script src="{% static 'copo/js/uploader/load-image.all.min.js' %}"></script>-->
-<!-- The Canvas to Blob plugin is included for image resizing functionality -->
-<!--<script src="{% static 'copo/js/uploader/canvas-to-blob.min.js' %}"></script>-->
-<!-- blueimp Gallery script -->
-<!--<script src="{% static 'copo/js/uploader/jquery.blueimp-gallery.min.js' %}"></script>-->
-<!-- The Iframe Transport is required for browsers without support for XHR file uploads -->
-
-<!-- The basic File Upload plugin -->
-
-<!-- The File Upload processing plugin -->
+<script src="{% static 'copo/js/uploader/vendor/jquery.ui.widget.js'%}"></script>
+<script src="{% static 'copo/js/uploader/jquery.iframe-transport.js' %}"></script>
+<script src="{% static 'copo/js/uploader/jquery.fileupload.js' %}"></script>
 <script src="{% static 'copo/js/uploader/jquery.fileupload-process.js' %}"></script>
-<!-- The File Upload image preview & resize plugin -->
-<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-image.js' %}"></script>-->
-<!-- The File Upload audio preview plugin -->
-<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-audio.js' %}"></script>-->
-<!-- The File Upload video preview plugin -->
-<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-video.js' %}"></script>-->
-<!-- The File Upload validation plugin -->
-<!--<script src="{% static 'copo/js/uploader/jquery.fileupload-validate.js' %}"></script>-->
-<!-- The File Upload user interface plugin -->
 <script src="{% static 'copo/js/uploader/jquery.fileupload-ui.js' %}"></script>
-<script src="{% static 'copo/js/uploader/main.js' %}"></script>
+<script src="{% static 'copo/js/uploader/upload_wrapper.js' %}"></script>
 
 
 {% endblock %}
