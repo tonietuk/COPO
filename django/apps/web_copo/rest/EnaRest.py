@@ -8,7 +8,10 @@ from django.core.exceptions import ObjectDoesNotExist
 from apps.web_copo.models import EnaStudy, EnaSample, EnaStudyAttr, EnaSampleAttr, EnaExperiment, DocumentForm, Document
 import apps.web_copo.xml.EnaParsers as parsers
 import apps.web_copo.utils.EnaUtils as u
-
+from chunked_upload.models import ChunkedUpload
+from django.core.files.base import ContentFile
+from django.conf import settings
+import os
 
 class JSONResponse(HttpResponse):
     """
@@ -325,25 +328,53 @@ def get_experimental_samples(request):
     return HttpResponse(data, content_type="json")
 
 def receive_data_file(request):
-    c = {}
-    c.update(csrf(request))
+    #need to make a chunked upload record to store deails of the file
+
     if request.method == 'POST':
+        c = {}
+
+
+         #get timestamp
+
+
+
+
+
+        fff = request.FILES['file']
+        fname = fff.__str__()
+        attrs = {'user': request.user, 'filename': fname}
+        chunked_upload = ChunkedUpload(**attrs)
+        # file starts empty
+        chunked_upload.file.save(name='', content=ContentFile(''), save=True)
 
         f = request.FILES['file']
-        newdoc = Document(docfile = f)
-        newdoc.save()
+        path = chunked_upload.file
+        destination = open(os.path.join(settings.MEDIA_ROOT,path.file.name), 'w+')
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+        c.update(csrf(request))
 
 
-    # Redirect to the document list after POST
-    files = {}
-    files['files'] = {}
-    files['files']['name'] = f._name
-    
-    files['files']['size'] = newdoc.docfile.size / (1000 * 1000.0)
-    files['files']['url'] = ''
-    files['files']['thumbnailUrl'] = ''
-    files['files']['deleteUrl'] = ''
-    files['files']['deleteType'] = 'DELETE'
+        #newdoc = Document.create(f, chunked_upload.file)
+        #newdoc.save()
 
-    str = jsonpickle.encode(files)
+
+        # create output structure to pass back to jquery-upload
+        files = {}
+        files['files'] = {}
+        files['files']['name'] = f._name
+
+        files['files']['size'] = path.size / (1000 * 1000.0)
+        files['files']['id'] = chunked_upload.id
+        files['files']['url'] = ''
+        files['files']['thumbnailUrl'] = ''
+        files['files']['deleteUrl'] = ''
+        files['files']['deleteType'] = 'DELETE'
+
+        str = jsonpickle.encode(files)
     return HttpResponse(str, content_type='json')
+
+def hash_upload(request):
+    file_id = request.GET['file_id']
+    return HttpResponse("TESTING123", content_type='json')

@@ -129,9 +129,26 @@ $(document).ready(function(){
         $('#upload_files_button span').text('Done')
         $('#upload_files_button').attr('disabled','disabled')
         $('#bitrate').hide()
+
+        $('#file_id').val(x[0].id)
+
+
+        //now call function to get md5 hash
+        get_hash()
     }
 
 
+    function get_hash(){
+        id = $('#file_id').val()
+        var response = $.ajax({
+            url: "/rest/hash_upload",
+            type: "GET",
+            data: {file_id: id}
+        })
+        response.done( function(data){
+            $('#input_md5_checksum').val(data.hash)
+        })
+    }
 
     /*
     document.getElementById("file_upload").addEventListener("change", function() {

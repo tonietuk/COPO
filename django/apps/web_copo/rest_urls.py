@@ -19,5 +19,5 @@ urlpatterns = patterns('',
     url(r'^receive_data_file/', rest.receive_data_file, name='receive_data_file'),
     url(r'^receive_data_file_chunked/', ChunkedUploadView.as_view(), name='receive_data_file'),
     url(r'^complete_upload/', ChunkedUploadCompleteView.as_view(), name='complete_data_file'),
-
+    url(r'^hash_upload/', rest.hash_upload, name='hash_upload'),
 )

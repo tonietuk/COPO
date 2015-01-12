@@ -47,6 +47,14 @@ class DocumentForm(forms.Form):
 class Document(models.Model):
     docfile = models.FileField(upload_to='/Users/fshaw/Desktop/test')
 
+    @classmethod
+    def create(cls, file, location):
+        doc = cls(docfile = file)
+        doc.docfile.upload_to = location
+
+        return doc
+
+
 #the following ENA objects are self explanatory
 class EnaStudy(models.Model):
     collection = models.ForeignKey(Collection)
