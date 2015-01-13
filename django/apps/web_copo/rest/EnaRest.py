@@ -10,8 +10,9 @@ import apps.web_copo.xml.EnaParsers as parsers
 import apps.web_copo.utils.EnaUtils as u
 from chunked_upload.models import ChunkedUpload
 from django.core.files.base import ContentFile
-from django.conf import settings
 import os
+import hashlib
+import project_copo.settings as settings
 
 class JSONResponse(HttpResponse):
     """
@@ -376,5 +377,17 @@ def receive_data_file(request):
     return HttpResponse(str, content_type='json')
 
 def hash_upload(request):
+    #open uploaded file
     file_id = request.GET['file_id']
-    return HttpResponse("TESTING123", content_type='json')
+    file_upload = ChunkedUpload.objects.get(pk=file_id)
+    file_name = os.path.join(settings.MEDIA_ROOT, file_upload.file.name)
+
+    #now hash opened file
+    md5 = hashlib.md5()
+    with open(file_name, 'r') as f:
+        for chunk in iter(lambda: f.read(8192), b''):
+            md5.update(chunk)
+    output_hash = md5.hexdigest()
+
+
+    return HttpResponse(output_hash, content_type='json')

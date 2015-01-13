@@ -3,6 +3,7 @@
 var upload_size = 0
 var chunk_size = 0
 var chunk_threshold = 200000000 // size of chunks in bytes
+
 function get_chunk_size(){
     upload_size = $('#file_upload')[0].files[0].size
     if(upload_size < chunk_threshold){
@@ -35,6 +36,8 @@ $(document).ready(function(){
     var token = $.cookie('csrftoken')
     var f = $('#file_upload')
     $('#upload_id').val('')
+    $('#sine_image').hide()
+    $('#input_md5_checksum').val('To Be Calculated...')
 
     $(function () {
     'use strict';
@@ -139,16 +142,20 @@ $(document).ready(function(){
 
 
     function get_hash(){
+        $('#sine_image').fadeIn()
+        $('#input_md5_checksum').val('Calculating...')
         id = $('#file_id').val()
-        var response = $.ajax({
-            url: "/rest/hash_upload",
+        $.ajax({ url: "/rest/hash_upload/",
             type: "GET",
-            data: {file_id: id}
-        })
-        response.done( function(data){
-            $('#input_md5_checksum').val(data.hash)
+            data: {file_id: id},
+            dataType: 'text'
+        }).done(function(data){
+            $('#input_md5_checksum').val(data)
+            $('#sine_image').fadeOut()
         })
     }
+
+
 
     /*
     document.getElementById("file_upload").addEventListener("change", function() {

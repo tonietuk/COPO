@@ -306,16 +306,24 @@
                     {% csrf_token %}
                     <div class="form-group">
 
+                        <div class="form-group">
 
+                            <label for="input_md5_checksum">MD5 Checksum</label>
+                            <ul class="list-inline">
+                            <li><input class="form-control" name="input_md5_checksum" id="input_md5_checksum" type="text"
+                               placeholder="To be calculated..." readonly style="width:300px"/></li>
+                            <li><img src="{% static 'copo/img/sin_anim.gif' %}" style="height:30px;margin-bottom:25px" id="sine_image"/></li>
+                            </ul>
+                        </div>
                         <label for="select_file_type">File Type</label>
                         <select class="form-control" name="select_file_type" id="select_file_type">
-                            <option value="srf">srf</option>
-                            <option value="sff">sff</option>
-                            <option value="fastq">fastq</option>
-                            <option value="cram">cram</option>
+                            <option value="fastq" selected>fastq</option>
                             <option value="bam">bam</option>
+                            <option value="cram">cram</option>
                             <option value="PacBio_HDF5">PacBio HDF5</option>
                             <option value="OxfordNanopore_native">Oxford Nanopore native</option>
+                            <option value="srf">srf</option>
+                            <option value="sff">sff</option>
                             <option value="CompleteGenomics_native">Complete Genomics native (filename must point to the
                                 whole data package)
                             </option>
@@ -390,11 +398,7 @@
                                placeholder="Insert Size"/>
                     </div>
 
-                    <div class="form-group">
-                        <label for="input_md5_checksum">MD5 Checksum</label>
-                        <input class="form-control" name="input_md5_checksum" id="input_md5_checksum" type="text"
-                               placeholder="To be calculated..." readonly/>
-                    </div>
+
 
 
                 </form>
