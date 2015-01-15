@@ -387,7 +387,7 @@ def hash_upload(request):
     with open(file_name, 'r') as f:
         for chunk in iter(lambda: f.read(8192), b''):
             md5.update(chunk)
-    output_hash = md5.hexdigest()
+    output_dict = {'output_hash':md5.hexdigest(), 'file_id':file_id}
+    out = jsonpickle.encode(output_dict)
 
-
-    return HttpResponse(output_hash, content_type='json')
+    return HttpResponse(out, content_type='json')

@@ -333,7 +333,7 @@ $(document).ready( function(){
             var out = ''
             for(var k = 0; k < data.length; k++){
                 out += '<option>'
-                out += data[k].fields.common_name
+                out += data[k].fields.title
                 out += ' - '
                 out += data[k].fields.scientific_name
                 out += '</option>'
