@@ -73,21 +73,5 @@
       <Port>5050</Port>
     </configuration>
   </component>
-  <component name="masterDetails">
-    <states>
-      <state key="ProjectJDKs.UI">
-        <settings>
-          <last-edited>Python 2.7.5 (/System/Library/Frameworks/Python.framework/Versions/2.7/bin/python)</last-edited>
-          <splitter-proportions>
-            <option name="proportions">
-              <list>
-                <option value="0.2" />
-              </list>
-            </option>
-          </splitter-proportions>
-        </settings>
-      </state>
-    </states>
-  </component>
 </project>
 

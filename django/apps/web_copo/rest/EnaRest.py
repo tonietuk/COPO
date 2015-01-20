@@ -353,7 +353,7 @@ def receive_data_file(request):
         destination = open(os.path.join(settings.MEDIA_ROOT,path.file.name), 'w+')
         for chunk in f.chunks():
             destination.write(chunk)
-
+        destination.close()
         c.update(csrf(request))
 
 
@@ -390,4 +390,25 @@ def hash_upload(request):
     output_dict = {'output_hash':md5.hexdigest(), 'file_id':file_id}
     out = jsonpickle.encode(output_dict)
 
+    return HttpResponse(out, content_type='json')
+
+def inspect_file(request):
+    output_dict = {'file_type': 'unknown', 'gzip':False}
+    #get reference to file
+    file_id = request.GET['file_id']
+    chunked_upload = ChunkedUpload.objects.get(id=int(file_id))
+    file_name = os.path.join(settings.MEDIA_ROOT,chunked_upload.file.name)
+
+    if(u.is_fastq_file(file_name)):
+        output_dict['file_type'] = 'fastq'
+        #if we have a fastq file, check that it is gzipped
+        if(u.is_gzipped(file_name)):
+            output_dict['gzip'] = True
+    elif(u.is_sam_file(file_name)):
+        output_dict['file_type'] = 'sam'
+    elif(u.is_bam_file(file_name)):
+        output_dict['file_type'] = 'bam'
+
+
+    out = jsonpickle.encode(output_dict)
     return HttpResponse(out, content_type='json')

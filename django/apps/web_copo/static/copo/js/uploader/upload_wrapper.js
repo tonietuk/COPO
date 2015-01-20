@@ -30,16 +30,25 @@ function get_chunk_size(){
 }
 
 
+
 $(document).ready(function(){
 
     var u_id = undefined
     var token = $.cookie('csrftoken')
     var f = $('#file_upload')
     $('#upload_id').val('')
-    $('#sine_image').hide()
-    $('#input_md5_checksum').val('To Be Calculated...')
+    //this is the md5 checksum image being hidden
+    $('.sine_image').hide()
+    //hide the zipping image
+    $('.zip_image').hide()
+    //$('#input_md5_checksum').val('To Be Calculated...')
+    //this is how many upload panels are on the screen
     $('#upload_info_count').val('0')
     $('#progress').hide()
+
+    $('#select_file_type').change( function(){
+        $('#file_type_guess').animate({opacity:"0"}, "fast")
+    })
 
     $(function () {
     'use strict';
@@ -66,7 +75,6 @@ $(document).ready(function(){
             },
             processstart: function(e, data){
                 $('#progress').show()
-
             },
             add: function(e, data) {
                 data.submit();
@@ -118,6 +126,7 @@ $(document).ready(function(){
             }
         })
     })
+
 
     //function called to finalised chunked upload
     function finalise_upload(e, data, final){
@@ -171,16 +180,15 @@ $(document).ready(function(){
 
             $('#upload_files_button').removeAttr('disabled')
         }
-
+        //now call function to inspect files
+        inspect_uploaded_files()
         //now call function to get md5 hash
         get_hash(x[0].id)
     }
 
 
     function get_hash(id){
-        $('#sine_image').fadeIn()
-
-
+        $('.sine_image').fadeIn()
         $.ajax({ url: "/rest/hash_upload/",
             type: "GET",
             data: {file_id: id},
@@ -191,13 +199,50 @@ $(document).ready(function(){
             $d = $( "input[value='" + obj.file_id + "']" ).parent()
             html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
             $d.children('ul').append(html)
-            $('#sine_image').fadeOut()
+            $('.image').fadeOut()
         })
     }
 
 
+    function inspect_uploaded_files(){
+        //this function calls the server to ask it to inspect the files just uploaded and provide
+        //the front end with any information to autocomplete the input form
 
-    /*
+        var finished = $('.alert-success')
+        var file_id = $(finished[finished.length-1]).children('input').val()
+
+        $.ajax({
+            url: '/rest/inspect_file/',
+            type: 'GET',
+            dataType: 'json',
+            data: {'file_id': file_id}
+         }).done(function(data){
+            //now search through list of filetypes in dropdown
+            //and make correct type selected
+            $('#select_file_type').children().removeAttr('selected').each(function(index, val){
+                if($(val).val() == data.file_type){
+                    $(val).prop('selected', 'selected')
+                }
+            })
+            if(data.file_type != 'unknown'){
+                var warning_label = "<h5><small> We think your file is a </small>" +
+                    data.file_type + "<small> file. If this is incorrect please change accordingly.</small></h5><br/>"
+                $('<div/>').attr('id', 'file_type_guess').css('opacity', '0').html(warning_label).insertAfter($('#select_file_type')).animate({opacity:"100"}, "fast")
+            }
+            //check if the file was gzipped, and if not send request to server to gzip
+            if(data.file_type == 'fastq' && data.gzip == false){
+                $.ajax({
+                    url: '/rest/zip_file/',
+                    type:'GET',
+                    dataType:'json',
+                    data:{'file_id': file_id}
+                })
+            }
+
+         })
+    }
+
+    /* this code is to calculate an md5 checksum on the client side, but is very slow
     document.getElementById("file_upload").addEventListener("change", function() {
             var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
                 file = this.files[0],

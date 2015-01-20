@@ -20,4 +20,5 @@ urlpatterns = patterns('',
     url(r'^receive_data_file_chunked/', ChunkedUploadView.as_view(), name='receive_data_file'),
     url(r'^complete_upload/', ChunkedUploadCompleteView.as_view(), name='complete_data_file'),
     url(r'^hash_upload/', rest.hash_upload, name='hash_upload'),
+    url(r'^inspect_file/', rest.inspect_file, name='inspect_file'),
 )

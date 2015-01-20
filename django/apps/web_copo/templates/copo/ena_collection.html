@@ -297,7 +297,10 @@
                             <input type="hidden" name="upload_id" value="" id="upload_id">
                         </span>
                     </li>
-                    <li><img src="{% static 'copo/img/sin_anim.gif' %}" style="height:30px;margin-bottom:0" id="sine_image"/></li>
+                    <li><img src="{% static 'copo/img/sin_anim.gif' %}" style="height:30px;margin-bottom:0" class="sine_image"/></li>
+                    <li class="sine_image"><h5>Hashing...</h5></li>
+                    <li><img src="{% static 'copo/img/flower.gif' %}" class="zip_image"/></li>
+                    <li class="zip_image "><h5>Zipping...</h5></li>
                     </ul>
                     <div id="progress_info">
                         <span id="progress_label"></span>
@@ -319,8 +322,10 @@
 
                         <label for="select_file_type">File Type</label>
                         <select class="form-control" name="select_file_type" id="select_file_type">
-                            <option value="fastq" selected>fastq</option>
+                            <option value="" selected></option>
+                            <option value="fastq">fastq</option>
                             <option value="bam">bam</option>
+                            <option value="sam">sam</option>
                             <option value="cram">cram</option>
                             <option value="PacBio_HDF5">PacBio HDF5</option>
                             <option value="OxfordNanopore_native">Oxford Nanopore native</option>
