@@ -29,3 +29,37 @@ table, th {
     padding:10px;
     color:white;
 }
+
+#exp_info{
+    border: 1px solid #DDD;
+    margin:30px 10px 30px 30px;
+    padding:20px;
+    border-radius:20px
+}
+
+#exp_detail{
+    margin:30px 20px 30px 0;
+    padding:20px;
+}
+
+.clickable
+{
+    cursor: pointer;
+}
+
+.clickable .glyphicon
+{
+    background: rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px
+}
+
+.panel-heading span
+{
+    margin-top: -23px;
+    font-size: 15px;
+    margin-right: -9px;
+}
+a.clickable { color: inherit; }
+a.clickable:hover { text-decoration:none; }

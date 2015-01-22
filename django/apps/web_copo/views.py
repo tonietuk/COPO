@@ -133,10 +133,10 @@ def view_collection(request, collection_id):
             study = EnaStudy.objects.get(collection__id=int(collection_id))
             samples = EnaSample.objects.filter(ena_study__id=study.id)
             data_dict = {'collection':collection, 'samples': samples, 'collection_id': collection_id, 'study_id': study.id, 'profile_id': profile_id}
-            return render_to_response('copo/ena_collection.html', data_dict, context_instance=RequestContext(request))
+            return render_to_response('copo/ena_collection_multi.html', data_dict, context_instance=RequestContext(request))
         except ObjectDoesNotExist as e:
             data_dict = {'collection': collection, 'collection_id': collection_id, 'profile_id': profile_id}
-            return render(request, 'copo/ena_collection.html', data_dict, context_instance=RequestContext(request))
+            return render(request, 'copo/ena_collection_multi.html', data_dict, context_instance=RequestContext(request))
 
 
 
