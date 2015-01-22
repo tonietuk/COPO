@@ -13,6 +13,8 @@ from django.core.files.base import ContentFile
 import os
 import hashlib
 import project_copo.settings as settings
+import gzip
+import uuid
 
 class JSONResponse(HttpResponse):
     """
@@ -379,6 +381,7 @@ def receive_data_file(request):
 def hash_upload(request):
     #open uploaded file
     file_id = request.GET['file_id']
+    print 'hash started ' + file_id
     file_upload = ChunkedUpload.objects.get(pk=file_id)
     file_name = os.path.join(settings.MEDIA_ROOT, file_upload.file.name)
 
@@ -389,7 +392,7 @@ def hash_upload(request):
             md5.update(chunk)
     output_dict = {'output_hash':md5.hexdigest(), 'file_id':file_id}
     out = jsonpickle.encode(output_dict)
-
+    print 'hash complete ' + file_id
     return HttpResponse(out, content_type='json')
 
 def inspect_file(request):
@@ -412,3 +415,40 @@ def inspect_file(request):
 
     out = jsonpickle.encode(output_dict)
     return HttpResponse(out, content_type='json')
+
+def zip_file(request):
+    #need to get a reference to the file to zip
+    f_id = request.GET['file_id']
+    print "zip started " + f_id
+    file_obj = ChunkedUpload.objects.get(pk=f_id)
+
+    #get the name of the file to zip and change its suffix to .gz
+    input_file_name = os.path.join(settings.MEDIA_ROOT, file_obj.file.name)
+    output_file_name = os.path.splitext(file_obj.filename)[0] + '.gz'
+
+    try:
+        #open the file as gzip acrchive...set compression level
+        temp_name = os.path.join(settings.MEDIA_ROOT, str(uuid.uuid4()) + '.tmp')
+        myzip = gzip.open(temp_name, 'wb', compresslevel=1)
+        src = open(input_file_name,'rb')
+
+        #write input file to gzip archive in n byte chunks
+        n = 100000000
+        for chunk in iter(lambda: src.read(n), ''):
+            myzip.write(chunk)
+    finally:
+        myzip.close()
+        src.close()
+
+
+    print 'zip complete ' + f_id
+    #now need to delete the old file and update the file record with the new file
+    file_obj.filename = output_file_name
+    file_obj.save()
+
+    os.remove(input_file_name)
+    os.rename(temp_name, input_file_name)
+
+    out = {'zipped':True}
+    out = jsonpickle.encode(out)
+    return HttpResponse(out, content_type='text/plain')

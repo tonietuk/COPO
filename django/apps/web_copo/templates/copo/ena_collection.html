@@ -56,6 +56,13 @@
     <!-- this hidden field is to keep track of the number of upload info divs currently displaying-->
     <input type="hidden" id="upload_info_count" value="0" />
 
+    <input type="hidden" id="zipping_image" value="{% static 'copo/img/flower.gif' %}"/>
+
+    <input type="hidden" id="hashing_image" value="{% static 'copo/img/sin_anim.gif' %}"/>
+
+
+
+
 </div>
 
 <div id="browse_header">
@@ -297,10 +304,7 @@
                             <input type="hidden" name="upload_id" value="" id="upload_id">
                         </span>
                     </li>
-                    <li><img src="{% static 'copo/img/sin_anim.gif' %}" style="height:30px;margin-bottom:0" class="sine_image"/></li>
-                    <li class="sine_image"><h5>Hashing...</h5></li>
-                    <li><img src="{% static 'copo/img/flower.gif' %}" class="zip_image"/></li>
-                    <li class="zip_image "><h5>Zipping...</h5></li>
+
                     </ul>
                     <div id="progress_info">
                         <span id="progress_label"></span>
@@ -404,13 +408,7 @@
                         <input class="form-control" name="input_insert_size" id="input_insert_size" type="text"
                                placeholder="Insert Size"/>
                     </div>
-
-
-
-
                 </form>
-
-
             </div>
 
             <div class="modal-footer">
@@ -438,6 +436,8 @@
 <script src="{% static 'copo/js/uploader/jquery.fileupload-process.js' %}"></script>
 <script src="{% static 'copo/js/uploader/jquery.fileupload-ui.js' %}"></script>
 <script src="{% static 'copo/js/uploader/upload_wrapper.js' %}"></script>
+
+
 
 
 {% endblock %}

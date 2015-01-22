@@ -52,7 +52,6 @@ def is_fastq_file(file_name):
                     return False
                 else:
                     #store length of string
-                    print(li)
                     second_line_length = len(li)
             elif k == 2:
                 if not li.startswith('+'):
@@ -60,7 +59,7 @@ def is_fastq_file(file_name):
                     return False
             else:
                 if len(li) != second_line_length:
-                    print(li)
+                    print 'line lengths not equal' + li
                     #if length of 2nd and 4th lines is not equal, return false
                     return False
 
