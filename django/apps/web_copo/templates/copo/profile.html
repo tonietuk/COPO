@@ -14,10 +14,10 @@
 {% block tagline_block %}{% endblock %}
 
 {% block breadcrumb_block %}
-    <ol class="breadcrumb">
-        <li><a href="{% url 'copo:index' %}">Home</a></li>
-        <li class="active"><a href="{% url 'copo:view_profile' profile_id=profile_id %}">Profile</a></li>
-    </ol>
+<ol class="breadcrumb">
+    <li><a href="{% url 'copo:index' %}">Home</a></li>
+    <li class="active"><a href="{% url 'copo:view_profile' profile_id=profile_id %}">Profile</a></li>
+</ol>
 {% endblock %}
 
 
@@ -33,6 +33,7 @@
         <span class="blue_icon">
             <a><i class="fa fa-trash-o"></i></a>
         </span>
+
     <div class="input-group input-group-sm">
             <span class="input-group-addon">
                 <i class="fa fa-search"></i>
@@ -70,24 +71,25 @@
 <!-- subsequently we should loop and have some sort of collapsable table showing the existing work collections -->
 
 
-
 <!-- then we have a button to add a new work collection -->
 <div class="text-center add_data_button">
     <button type="button" class="btn btn-primary btn-lg text-center" data-toggle="modal"
-            data-target="#newCollectionModal">Add Collection</button>
+            data-target="#newCollectionModal">Add Collection
+    </button>
 </div>
-
 
 
 <!-- here is the hidden modal which will be populated from js, will look at having a rest call to a python service to
 query the forms xml for the type of data selected by the user -->
 
 <!-- Modal -->
-<div class="modal fade" id="newCollectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="newCollectionModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="myModalLabel">New Collection</h4>
             </div>
             <div class="modal-body">
@@ -96,9 +98,11 @@ query the forms xml for the type of data selected by the user -->
                     {% csrf_token %}
 
                     <input type="hidden" name="profile_id" value="{{ profile_id }}">
+
                     <div class="form-group">
                         <label for="collection_name">Collection Name</label><br/>
-                        <input type="text" name="collection_name" id="collection_name" class="form_control" placeholder="Enter Name"/>
+                        <input type="text" name="collection_name" id="collection_name" class="form_control"
+                               placeholder="Enter Name"/>
                     </div>
 
 

@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{% static 'copo/css/uploader/jquery.fileupload-noscript.css' %}">
 </noscript>
 <noscript>
-<link rel="stylesheet" href="{% static 'copo/css/jquery.fileupload-ui-noscript.css' %}">
+    <link rel="stylesheet" href="{% static 'copo/css/jquery.fileupload-ui-noscript.css' %}">
 </noscript>
 {% endblock %}
 
@@ -54,13 +54,11 @@
     <input type="hidden" id="file_id" value=""/>
 
     <!-- this hidden field is to keep track of the number of upload info divs currently displaying-->
-    <input type="hidden" id="upload_info_count" value="0" />
+    <input type="hidden" id="upload_info_count" value="0"/>
 
     <input type="hidden" id="zipping_image" value="{% static 'copo/img/flower.gif' %}"/>
 
     <input type="hidden" id="hashing_image" value="{% static 'copo/img/sin_anim.gif' %}"/>
-
-
 
 
 </div>
@@ -284,257 +282,217 @@
 <!-- Data Modal -->
 <div class="modal fade" id="newDataModal" tabindex="-1" role="dialog" aria-labelledby="newSampleModal"
      aria-hidden="false">
-    <div class="modal-dialog modal-sm" style="width:1400px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
-                        class="sr-only">Close</span></button>
-                <h4 class="modal-title h2" id="myDataLabel">Add Files</h4>
-            </div>
+<div class="modal-dialog modal-lg" style="width:1600px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                    class="sr-only">Close</span></button>
+            <h4 class="modal-title h2" id="myDataLabel">Add Files</h4>
+        </div>
 
-
+        <div class="modal-body">
             <div class="row">
 
                 <div class="col-sm-3 col-md-3 col-lg-3">
                     <div id="exp_info">
                         <form>
                             <!-- Controls for Info Panel -->
-
-
-
                             <div class="form-group">
-                            <label for="select_instrument_model">Instrument Model</label>
-                            <select class="form-control" name="select_instrument_model" id="select_instrument_model"/>
+                                <label for="select_platform">Platform</label>
+                                <select class="form-control" name="select_platform" id="select_platform" type="text"
+                                        placeholder="Sample Type">
+                                    <option value="ILLUMINA">Illumina</option>
+                                    <option value="LS454">LS454</option>
+                                    <option value="PACBIO_SMRT">PacBio SMRT</option>
+                                    <option value="ION_TORRENT">Ion Torrent</option>
+                                    <option value="OXFORD_NANOPORE">Oxford Nanopore</option>
+                                    <option value="CAPILLARY">Capillary</option>
+                                    <option value="COMPLETE_GENOMICS">Complete Genomics</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="select_instrument_model">Instrument Model</label>
+                                <select class="form-control" name="select_instrument_model"
+                                        id="select_instrument_model"/>
                             </div>
 
                             <div class="checkbox form-group">
-                            <label>
-                                <input type="checkbox"> Multiplexed Reads
-                            </label>
+                                <label>
+                                    <input type="checkbox" id="multiplex_checkbox"> Multiplexed Reads
+                                </label>
                             </div>
 
 
-                        <div class="form-group">
-                            <label for="select_library_source">Library Source</label>
-                            <select class="form-control" name="select_library_source" id="select_library_source" type="text"
-                                    placeholder="Library Source">
+                            <div class="form-group">
+                                <label for="select_library_source">Library Source</label>
+                                <select class="form-control" name="select_library_source" id="select_library_source"
+                                        type="text"
+                                        placeholder="Library Source">
 
-                            </select>
-                        </div>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="select_library_selection">Library Selection</label>
-                            <select class="form-control" name="select_library_selection" id="select_library_selection"
-                                    type="text" placeholder="Library Selection">
+                            <div class="form-group">
+                                <label for="select_library_selection">Library Selection</label>
+                                <select class="form-control" name="select_library_selection"
+                                        id="select_library_selection"
+                                        type="text" placeholder="Library Selection">
 
-                            </select>
-                        </div>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="select_library_strategy">Library Strategy</label>
-                            <select class="form-control" name="select_library_strategy" id="select_library_strategy"
-                                    type="text" placeholder="Library Strategy">
+                            <div class="form-group">
+                                <label for="select_library_strategy">Library Strategy</label>
+                                <select class="form-control" name="select_library_strategy"
+                                        id="select_library_strategy"
+                                        type="text" placeholder="Library Strategy">
 
-                            </select>
-                        </div>
+                                </select>
+                            </div>
 
-                        <div class="form-group">
-                            <label for="input_insert_size">Insert Size</label>
-                            <input class="form-control" name="input_insert_size" id="input_insert_size" type="text"
-                                   placeholder="Insert Size"/>
-                        </div>
+                            <div class="form-group">
+                                <label for="input_insert_size">Insert Size</label>
+                                <input class="form-control" name="input_insert_size" id="input_insert_size"
+                                       type="text"
+                                       placeholder="Insert Size"/>
+                            </div>
 
                         </form>
                     </div>
                 </div>
 
                 <div class="col-sm-9 col-md-9 col-lg-9">
-                    <div  id="exp_detail">
+                    <div class="exp_detail container" id="container">
 
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="panel panel-primary">
-                                        <div class="panel-heading">
-                                            <h3 class="panel-title">Upload</h3>
-                                            <span class="pull-right clickable"><i class="glyphicon glyphicon-minus"></i></span>
+
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Upload</h3>
+                                                <span class="pull-right clickable"><i
+                                                        class="glyphicon glyphicon-minus"></i></span>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                <form class="form-inline" id="ena_ff">
+                                                    {% csrf_token %}
+                                                    <div class="form-group">
+
+                                                        <label for="select_file_type">File Type</label>
+                                                        <select class="form-control" name="select_file_type"
+                                                                id="select_file_type">
+                                                            <option value="" selected></option>
+                                                            <option value="fastq">fastq</option>
+                                                            <option value="bam">bam</option>
+                                                            <option value="sam">sam</option>
+                                                            <option value="cram">cram</option>
+                                                            <option value="PacBio_HDF5">PacBio HDF5</option>
+                                                            <option value="OxfordNanopore_native">Oxford Nanopore
+                                                                native
+                                                            </option>
+                                                            <option value="srf">srf</option>
+                                                            <option value="sff">sff</option>
+                                                            <option value="CompleteGenomics_native">Complete
+                                                                Genomics
+                                                            </option>
+                                                        </select>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="input_library_name">Library Name</label>
+                                                        <input class="form-control" name="input_library_name"
+                                                               id="input_library_name" type="text"
+                                                               placeholder="Library Name"/>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label for="select_sample_ref">Sample Type</label>
+                                                        <select class="form-control" name="select_sample_ref"
+                                                                id="select_sample_ref" type="text"
+                                                                placeholder="Sample Type">
+                                                            <option>Test</option>
+                                                        </select>
+                                                    </div>
+                                                </form>
+                                            </div>
                                         </div>
-                                        <div class="panel-body">
-                                            <form class="form-inline" id="ena_ff">
-                                                {% csrf_token %}
-                                                <div class="form-group">
-
-                                                    <label for="select_file_type">File Type</label>
-                                                    <select class="form-control" name="select_file_type" id="select_file_type">
-                                                        <option value="" selected></option>
-                                                        <option value="fastq">fastq</option>
-                                                        <option value="bam">bam</option>
-                                                        <option value="sam">sam</option>
-                                                        <option value="cram">cram</option>
-                                                        <option value="PacBio_HDF5">PacBio HDF5</option>
-                                                        <option value="OxfordNanopore_native">Oxford Nanopore native</option>
-                                                        <option value="srf">srf</option>
-                                                        <option value="sff">sff</option>
-                                                        <option value="CompleteGenomics_native">Complete Genomics</option>
-                                                    </select>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <div id="file_type_warning"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 col-md-12 col-lg-12">
+                                                <div id="file_status_label"></div>
+                                                <div id="progress_info">
+                                                    <span id="progress_label"></span>
+                                                    <span id="total_label"></span>
+                                                    <span id="bitrate"></span>
                                                 </div>
+                                                <br><br>
 
-                                                <div class="form-group">
-                                                    <label for="input_library_name">Library Name</label>
-                                                    <input class="form-control" name="input_library_name" id="input_library_name" type="text"
-                                                           placeholder="Library Name"/>
+                                                <div id="progress" class="progress">
+                                                    <div style="width: 0%;height: 20px;background: green"
+                                                         class="bar"></div>
+                                                    <div class="progress-bar progress-bar-success"></div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-10 col-md-10 col-lg-10">
 
-                                                <div class="form-group">
-                                                    <label for="select_sample_ref">Sample Type</label>
-                                                    <select class="form-control" name="select_sample_ref" id="select_sample_ref" type="text"
-                                                            placeholder="Sample Type">
-                                                        <option>Test</option>
-                                                    </select>
-                                                </div>
-                                            </form>
+                                            </div>
+                                            <div class="col-sm-2 col-md-2 col-lg-2">
+                                                <form enctype="multipart/form-data" id="fileupload"
+                                                      method="POST"
+                                                      action="/rest/receive_data_file_chunked/">
+                                                    {% csrf_token %}
+                                                                <span id="upload_files_button"
+                                                                      class="btn btn-success fileinput-button vertical-center">
+                                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                                    <span>Select files...</span>
+                                                                    <input type="file" name="file" id="file_upload"
+                                                                           onchange="get_chunk_size()" multiple>
+                                                                    <input type="hidden" name="upload_id" value=""
+                                                                           id="upload_id">
+                                                                </span>
+                                                </form>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
 
-
                     </div>
-
                 </div>
+                <div class="row">
+                    <div class="col-sm-10 col-md-10 col-lg-10"></div>
+                    <div class="col-sm-2 col-sm-2 col-sm-2">
+                            <span id="add_upload_group_button"
+                                  class="btn btn-info fileinput-button vertical-center">
+                                                                    <i class="glyphicon glyphicon-plus"></i>
+                                                                    <span>Add Experment Files</span>
 
+                                                                </span>
+                    </div>
+                </div>
             </div>
-            <!--
-            <div class="modal-body" style="padding-bottom:100px">
-                <form enctype="multipart/form-data" id="fileupload" method="POST" action="/rest/receive_data_file_chunked/">
-                    {% csrf_token %}
-                    <ul class="list-inline">
-                    <li>
-                        <span id="upload_files_button" class="btn btn-success fileinput-button">
-                            <i class="glyphicon glyphicon-plus"></i>
-                            <span>Select files...</span>
-                            <input type="file" name="file" id="file_upload" onchange="get_chunk_size()" multiple>
-                            <input type="hidden" name="upload_id" value="" id="upload_id">
-                        </span>
-                    </li>
-
-                    </ul>
-                    <div id="progress_info">
-                        <span id="progress_label"></span>
-                        <span id="total_label"></span>
-                        <span id="bitrate"></span>
-                    </div>
-                    <br><br>
-                    <div id="progress" class="progress">
-                        <div style="width: 0%;height: 20px;background: green" class="bar"></div>
-                        <div class="progress-bar progress-bar-success"></div>
-                    </div>
-                </form>
-                <div id="file_status_label"></div>
-                <form id="ena_ff">
-                    {% csrf_token %}
-                    <div class="form-group">
 
 
-
-                        <label for="select_file_type">File Type</label>
-                        <select class="form-control" name="select_file_type" id="select_file_type">
-                            <option value="" selected></option>
-                            <option value="fastq">fastq</option>
-                            <option value="bam">bam</option>
-                            <option value="sam">sam</option>
-                            <option value="cram">cram</option>
-                            <option value="PacBio_HDF5">PacBio HDF5</option>
-                            <option value="OxfordNanopore_native">Oxford Nanopore native</option>
-                            <option value="srf">srf</option>
-                            <option value="sff">sff</option>
-                            <option value="CompleteGenomics_native">Complete Genomics native (filename must point to the
-                                whole data package)
-                            </option>
-                        </select>
-
-                    </div>
-
-                    <div class="form-group">
-                        <label for="input_library_name">Library Name</label>
-                        <input class="form-control" name="input_library_name" id="input_library_name" type="text"
-                               placeholder="Library Name"/>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="select_sample_ref">Sample Type</label>
-                        <select class="form-control" name="select_sample_ref" id="select_sample_ref" type="text"
-                                placeholder="Sample Type">
-                            <option>Test</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="select_platform">Platform</label>
-                        <select class="form-control" name="select_platform" id="select_platform" type="text"
-                                placeholder="Sample Type">
-                            <option value="ILLUMINA">Illumina</option>
-                            <option value="LS454">LS454</option>
-                            <option value="PACBIO_SMRT">PacBio SMRT</option>
-                            <option value="ION_TORRENT">Ion Torrent</option>
-                            <option value="OXFORD_NANOPORE">Oxford Nanopore</option>
-                            <option value="CAPILLARY">Capillary</option>
-                            <option value="COMPLETE_GENOMICS">Complete Genomics</option>
-                        </select>
-                    </div>
-
-
-                    <div class="form-group">
-                        <label for="select_instrument_model">Instrument Model</label>
-                        <select class="form-control" name="select_instrument_model" id="select_instrument_model">
-
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="select_library_source">Library Source</label>
-                        <select class="form-control" name="select_library_source" id="select_library_source" type="text"
-                                placeholder="Library Source">
-
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="select_library_selection">Library Selection</label>
-                        <select class="form-control" name="select_library_selection" id="select_library_selection"
-                                type="text" placeholder="Library Selection">
-
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="select_library_strategy">Library Strategy</label>
-                        <select class="form-control" name="select_library_strategy" id="select_library_strategy"
-                                type="text" placeholder="Library Strategy">
-
-                        </select>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="input_insert_size">Insert Size</label>
-                        <input class="form-control" name="input_insert_size" id="input_insert_size" type="text"
-                               placeholder="Insert Size"/>
-                    </div>
-
-                </form>
-            </div>
-            -->
-            <div class="modal-footer">
-                <p id="p_save_data">
-                    <button type="button" id="btn:save_data" class="btn btn-success">Save Data</button>
-                </p>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <p id="p_save_data">
+                <button type="button" id="btn:save_data" class="btn btn-success">Save Data</button>
+            </p>
         </div>
     </div>
 </div>
-
+</div>
 
 {% endblock %}
 
@@ -552,7 +510,6 @@
 <script src="{% static 'copo/js/uploader/jquery.fileupload-ui.js' %}"></script>
 <script src="{% static 'copo/js/uploader/upload_wrapper.js' %}"></script>
 <script src="{% static 'copo/js/uploader/bootstrap_panel.js' %}"></script>
-
-
+<script src="{% static 'copo/js/uploader/upload_util.js' %}"></script>
 
 {% endblock %}

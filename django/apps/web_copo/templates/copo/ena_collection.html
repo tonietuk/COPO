@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="{% static 'copo/css/uploader/jquery.fileupload-noscript.css' %}">
 </noscript>
 <noscript>
-<link rel="stylesheet" href="{% static 'copo/css/jquery.fileupload-ui-noscript.css' %}">
+    <link rel="stylesheet" href="{% static 'copo/css/jquery.fileupload-ui-noscript.css' %}">
 </noscript>
 {% endblock %}
 
@@ -54,13 +54,11 @@
     <input type="hidden" id="file_id" value=""/>
 
     <!-- this hidden field is to keep track of the number of upload info divs currently displaying-->
-    <input type="hidden" id="upload_info_count" value="0" />
+    <input type="hidden" id="upload_info_count" value="0"/>
 
     <input type="hidden" id="zipping_image" value="{% static 'copo/img/flower.gif' %}"/>
 
     <input type="hidden" id="hashing_image" value="{% static 'copo/img/sin_anim.gif' %}"/>
-
-
 
 
 </div>
@@ -293,17 +291,18 @@
             </div>
 
             <div class="modal-body" style="padding-bottom:100px">
-                <form enctype="multipart/form-data" id="fileupload" method="POST" action="/rest/receive_data_file_chunked/">
+                <form enctype="multipart/form-data" id="fileupload" method="POST"
+                      action="/rest/receive_data_file_chunked/">
                     {% csrf_token %}
                     <ul class="list-inline">
-                    <li>
+                        <li>
                         <span id="upload_files_button" class="btn btn-success fileinput-button">
                             <i class="glyphicon glyphicon-plus"></i>
                             <span>Select files...</span>
                             <input type="file" name="file" id="file_upload" onchange="get_chunk_size()" multiple>
                             <input type="hidden" name="upload_id" value="" id="upload_id">
                         </span>
-                    </li>
+                        </li>
 
                     </ul>
                     <div id="progress_info">
@@ -312,6 +311,7 @@
                         <span id="bitrate"></span>
                     </div>
                     <br><br>
+
                     <div id="progress" class="progress">
                         <div style="width: 0%;height: 20px;background: green" class="bar"></div>
                         <div class="progress-bar progress-bar-success"></div>
@@ -321,7 +321,6 @@
                 <form id="ena_ff">
                     {% csrf_token %}
                     <div class="form-group">
-
 
 
                         <label for="select_file_type">File Type</label>
@@ -436,8 +435,6 @@
 <script src="{% static 'copo/js/uploader/jquery.fileupload-process.js' %}"></script>
 <script src="{% static 'copo/js/uploader/jquery.fileupload-ui.js' %}"></script>
 <script src="{% static 'copo/js/uploader/upload_wrapper.js' %}"></script>
-
-
 
 
 {% endblock %}

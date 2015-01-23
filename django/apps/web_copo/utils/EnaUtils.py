@@ -9,65 +9,65 @@ from apps.web_copo.models import EnaStudy, EnaSample
 
 
 def get_sample_html_from_collection_id(collection_id):
-
-    #get related study and sample set
+    # get related study and sample set
     try:
-        study = EnaStudy.objects.get(collection__id = collection_id)
-        sample_set = EnaSample.objects.filter(ena_study__id = study.id)
+        study = EnaStudy.objects.get(collection__id=collection_id)
+        sample_set = EnaSample.objects.filter(ena_study__id=study.id)
     except ObjectDoesNotExist:
         return 'not found'
 
     out = ''
     #construct output html
     for s in sample_set:
-        out += '<tr><td>' + '<a rest_url="' + reverse('rest:get_sample_html', args=[str(s.id)]) + '" href="">' + str(s.title) + '</a>' + '</td><td>' + str(s.description) + '</td><td>' + str(s.scientific_name) \
+        out += '<tr><td>' + '<a rest_url="' + reverse('rest:get_sample_html', args=[str(s.id)]) + '" href="">' + str(
+            s.title) + '</a>' + '</td><td>' + str(s.description) + '</td><td>' + str(s.scientific_name) \
                + '</td><td>' + str(s.common_name) + '</td></tr>'
     return out
 
-def handle_uploaded_file(f):
 
-    #get timestamp
+def handle_uploaded_file(f):
+    # get timestamp
     t = str(time.time()).replace('.', '')
     k = 'file_' + f.name
     path = os.path.join('/Users/fshaw/Desktop/test/', k)
     destination = open(path, 'w+')
     for chunk in f.chunks():
-            destination.write(chunk)
+        destination.write(chunk)
 
 
 def is_fastq_file(file_name):
     with open(file_name, 'r') as f:
         second_line_length = 0
-        for k in range(0,4):
+        for k in range(0, 4):
             li = f.readline().strip()
 
             if k == 0:
                 if not li.startswith('@'):
-                    #if first line don't start with @ can't be fastq
+                    # if first line don't start with @ can't be fastq
                     return False
             elif k == 1:
                 if not re.match('^(A|G|T|C|N|-)+$', li):
-                    #return false if not only AGTC is present in data string
+                    # return false if not only AGTC is present in data string
                     print 'illegal character in line: ' + li
                     return False
                 else:
-                    #store length of string
+                    # store length of string
                     second_line_length = len(li)
             elif k == 2:
                 if not li.startswith('+'):
-                    #check thrid line starts with +
+                    # check thrid line starts with +
                     return False
             else:
                 if len(li) != second_line_length:
                     print 'line lengths not equal' + li
-                    #if length of 2nd and 4th lines is not equal, return false
+                    # if length of 2nd and 4th lines is not equal, return false
                     return False
 
         return True
 
 
 def is_sam_file(file_name):
-    #get the first line of the file and compare to regex
+    # get the first line of the file and compare to regex
     with open(file_name, 'r') as f:
         li = f.readline().strip()
         regex1 = "^@[A-Za-z][A-Za-z](\t[A-Za-z][A-Za-z0-9]:[ -~]+)+$"
@@ -76,7 +76,7 @@ def is_sam_file(file_name):
 
 
 def is_bam_file(file_name):
-    #try opening the file with pysam. If this causes an exception, its not a bam file
+    # try opening the file with pysam. If this causes an exception, its not a bam file
     try:
         with pysam.AlignmentFile(file_name, "rb") as samfile:
             return True
@@ -85,9 +85,10 @@ def is_bam_file(file_name):
 
 
 def is_gzipped(file_name):
-    #try opening the file in gzip and reading the first few chars
+    # try opening the file in gzip and reading the first few chars
     #if this produces an IOError, it probably isn't gzipped
     import gzip
+
     try:
         f = gzip.open(file_name, 'rb')
         r = f.read(5)

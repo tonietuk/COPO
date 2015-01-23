@@ -31,6 +31,7 @@
         <span class="blue_icon">
             <a><i class="fa fa-trash-o"></i></a>
         </span>
+
     <div class="input-group input-group-sm">
             <span class="input-group-addon">
                 <i class="fa fa-search"></i>
@@ -42,7 +43,8 @@
 {% endblock %}
 
 {% block work_area %}
-<form enctype="multipart/form-data" id="fileupload" method="POST" action="http://127.0.0.1:8000/rest/receive_data_file_chunked/">
+<form enctype="multipart/form-data" id="fileupload" method="POST"
+      action="http://127.0.0.1:8000/rest/receive_data_file_chunked/">
     {% csrf_token %}
     <span id="upload_files_button" class="btn btn-success fileinput-button">
         <i class="glyphicon glyphicon-plus"></i>
@@ -56,6 +58,7 @@
 
     <span id="bitrate"></span>
     <br><br>
+
     <div id="progress" class="progress">
         <div style="width: 0%;height: 20px;background: green" class="bar"></div>
         <div class="progress-bar progress-bar-success"></div>
@@ -63,8 +66,6 @@
 </form>
 
 <br/><br/><br/>
-
-
 
 
 {% endblock %}

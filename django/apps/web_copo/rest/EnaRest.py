@@ -16,10 +16,12 @@ import project_copo.settings as settings
 import gzip
 import uuid
 
+
 class JSONResponse(HttpResponse):
     """
     An HttpResponse that renders its content into JSON.
     """
+
     def __init__(self, data, **kwargs):
         content = JSONRenderer().render(data)
         kwargs['content_type'] = 'application/json'
@@ -27,9 +29,8 @@ class JSONResponse(HttpResponse):
         super(JSONResponse, self).__init__(content, **kwargs)
 
 
-
 def get_ena_study_controls(request):
-    #get list of controllers
+    # get list of controllers
     out = parsers.get_study_form_controls('apps/web_copo/xml/schemas/ena/SRA.study.xsd.xml')
     c_id = request.GET['collection_id']
     #check to see if there are any ena studies associated with this collection
@@ -49,11 +50,13 @@ def get_ena_study_controls(request):
             out_str += "<div class='form-group'>"
 
             out_str += "<label for='" + obj.name + "'>" + obj.tidy_name + "</label>"
-            if(obj.type == 'input'):
-                out_str += "<input type='text' class='form-control' id='" + str(obj.name) + "' name='" + str(obj.name) + "' value='" + str(getattr(study, obj.name.lower())) + "'/>"
-            elif(obj.type == 'textarea'):
-                out_str += "<textarea type='text' rows='6' class='form-control' id='" + str(obj.name) + "' name='" + str(obj.name) + \
-                       "'>" + str(getattr(study, obj.name.lower())) + "</textarea>"
+            if (obj.type == 'input'):
+                out_str += "<input type='text' class='form-control' id='" + str(obj.name) + "' name='" + str(
+                    obj.name) + "' value='" + str(getattr(study, obj.name.lower())) + "'/>"
+            elif (obj.type == 'textarea'):
+                out_str += "<textarea type='text' rows='6' class='form-control' id='" + str(
+                    obj.name) + "' name='" + str(obj.name) + \
+                           "'>" + str(getattr(study, obj.name.lower())) + "</textarea>"
             else:
                 out_str += "<div class='form-group'>"
                 out_str += "<select class='form-control' name='" + str(obj.name) + "' id='" + str(obj.name) + "'>"
@@ -66,9 +69,9 @@ def get_ena_study_controls(request):
         for obj in out:
             out_str += "<div class='form-group'>"
             out_str += "<label for='" + obj.name + "'>" + obj.tidy_name + "</label>"
-            if(obj.type == 'input'):
+            if (obj.type == 'input'):
                 out_str += "<input type='text' class='form-control' id='" + obj.name + "' name='" + obj.name + "'/>"
-            elif(obj.type == 'textarea'):
+            elif (obj.type == 'textarea'):
                 out_str += "<textarea type='text' rows='6' class='form-control' id='" + obj.name + "' name='" + obj.name + "'/>"
             else:
                 out_str += "<div class='form-group'>"
@@ -100,9 +103,11 @@ def get_ena_study_attr(request):
             str += '</div>'
     return HttpResponse(str, content_type='html')
 
+
 def get_ena_sample_controls(request):
     html = parsers.get_sample_form_controls('apps/web_copo/xml/schemas/ena/SRA.sample.xsd.xml')
     return HttpResponse(html, content_type='html')
+
 
 def save_ena_study_callback(request):
     return_type = True;
@@ -112,29 +117,29 @@ def save_ena_study_callback(request):
     collection_id = request.GET['collection_id']
     study_id = request.GET['study_id']
 
-    #check to see if study_id had been provided, if not we are saving a new study, if so that we should update an
+    # check to see if study_id had been provided, if not we are saving a new study, if so that we should update an
     #existing study
     if study_id:
         e = EnaStudy.objects.get(pk=study_id)
-        e.study_title=values['STUDY_TITLE']
-        e.study_type=values['STUDY_TYPE']
-        e.study_abstract=values['STUDY_ABSTRACT']
-        e.center_name=values['CENTER_NAME']
-        e.study_description=values['STUDY_DESCRIPTION']
-        e.center_project_name=values['CENTER_PROJECT_NAME']
+        e.study_title = values['STUDY_TITLE']
+        e.study_type = values['STUDY_TYPE']
+        e.study_abstract = values['STUDY_ABSTRACT']
+        e.center_name = values['CENTER_NAME']
+        e.study_description = values['STUDY_DESCRIPTION']
+        e.center_project_name = values['CENTER_PROJECT_NAME']
         e.save()
 
         #now clear existing attributes and add the updated set
         for a in e.enastudyattr_set.all():
             a.delete()
         for att_group in attributes:
-                a = EnaStudyAttr(
-                    ena_study=e,
-                    tag=att_group[0],
-                    value=att_group[1],
-                    unit=att_group[2]
-                )
-                a.save()
+            a = EnaStudyAttr(
+                ena_study=e,
+                tag=att_group[0],
+                value=att_group[1],
+                unit=att_group[2]
+            )
+            a.save()
     else:
         try:
             #make the study object
@@ -151,26 +156,27 @@ def save_ena_study_callback(request):
         except(TypeError):
             return_type = False
 
-    return_structure = {'return_value':return_type}
+    return_structure = {'return_value': return_type}
     out = jsonpickle.encode(return_structure)
     return HttpResponse(out, content_type='json')
 
 
-def make_and_save_ena_study(c_id, CENTER_NAME, STUDY_DESCRIPTION, STUDY_TYPE, CENTER_PROJECT_NAME, STUDY_ABSTRACT, STUDY_TITLE):
+def make_and_save_ena_study(c_id, CENTER_NAME, STUDY_DESCRIPTION, STUDY_TYPE, CENTER_PROJECT_NAME, STUDY_ABSTRACT,
+                            STUDY_TITLE):
     e = EnaStudy()
-    e.collection_id=c_id
-    e.study_title=STUDY_TITLE
-    e.study_type=STUDY_TYPE
-    e.study_abstract=STUDY_ABSTRACT
-    e.center_name=CENTER_NAME
-    e.study_description=STUDY_DESCRIPTION
-    e.center_project_id=CENTER_PROJECT_NAME
+    e.collection_id = c_id
+    e.study_title = STUDY_TITLE
+    e.study_type = STUDY_TYPE
+    e.study_abstract = STUDY_ABSTRACT
+    e.center_name = CENTER_NAME
+    e.study_description = STUDY_DESCRIPTION
+    e.center_project_id = CENTER_PROJECT_NAME
     e.save()
     return e
 
 
 def save_ena_sample_callback(request):
-    #get sample form list, attribute list, and the collection id
+    # get sample form list, attribute list, and the collection id
     collection_id = jsonpickle.decode(request.GET['collection_id'])
     study_id = request.GET['study_id']
     sample_id = request.GET['sample_id']
@@ -180,13 +186,13 @@ def save_ena_sample_callback(request):
     #and edit it. If not then create a new sample
     if sample_id:
         enasample = EnaSample.objects.get(pk=sample_id)
-        enasample.title=sample['TITLE']
-        enasample.taxon_id=sample['TAXON_ID']
-        enasample.common_name=sample['COMMON_NAME']
-        enasample.anonymized_name=sample['ANONYMIZED_NAME']
-        enasample.individual_name=sample['INDIVIDUAL_NAME']
-        enasample.scientific_name=sample['SCIENTIFIC_NAME']
-        enasample.description=sample['DESCRIPTION']
+        enasample.title = sample['TITLE']
+        enasample.taxon_id = sample['TAXON_ID']
+        enasample.common_name = sample['COMMON_NAME']
+        enasample.anonymized_name = sample['ANONYMIZED_NAME']
+        enasample.individual_name = sample['INDIVIDUAL_NAME']
+        enasample.scientific_name = sample['SCIENTIFIC_NAME']
+        enasample.description = sample['DESCRIPTION']
         enasample.save()
 
         #now clear attributes and readd the new set
@@ -211,14 +217,14 @@ def save_ena_sample_callback(request):
 
         #now make sample
         enasample = EnaSample()
-        enasample.title=sample['TITLE']
-        enasample.taxon_id=sample['TAXON_ID']
-        enasample.common_name=sample['COMMON_NAME']
-        enasample.anonymized_name=sample['ANONYMIZED_NAME']
-        enasample.individual_name=sample['INDIVIDUAL_NAME']
-        enasample.scientific_name=sample['SCIENTIFIC_NAME']
-        enasample.description=sample['DESCRIPTION']
-        enasample.ena_study=study
+        enasample.title = sample['TITLE']
+        enasample.taxon_id = sample['TAXON_ID']
+        enasample.common_name = sample['COMMON_NAME']
+        enasample.anonymized_name = sample['ANONYMIZED_NAME']
+        enasample.individual_name = sample['INDIVIDUAL_NAME']
+        enasample.scientific_name = sample['SCIENTIFIC_NAME']
+        enasample.description = sample['DESCRIPTION']
+        enasample.ena_study = study
         enasample.save()
 
         for a in attr:
@@ -229,10 +235,12 @@ def save_ena_sample_callback(request):
 
     return HttpResponse(out, content_type='html')
 
+
 def populate_samples_form(request):
     collection_id = request.GET['collection_id']
     out = u.get_sample_html_from_collection_id(collection_id)
     return HttpResponse(out, content_type='html')
+
 
 def get_sample_html(request):
     sample_id = request.GET['sample_id']
@@ -252,8 +260,9 @@ def get_sample_html(request):
     j = jsonpickle.encode(out)
     return HttpResponse(j, content_type='json')
 
+
 def populate_data_dropdowns(request):
-    #specify path for experiment xsd schema
+    # specify path for experiment xsd schema
     xsd_path = 'apps/web_copo/xml/schemas/ena/SRA.experiment.xsd.xml'
     out = {}
     out['strategy_dd'] = parsers.get_library_dropdown(xsd_path, 'LIBRARY_STRATEGY')
@@ -263,11 +272,8 @@ def populate_data_dropdowns(request):
     return HttpResponse(out, content_type='json')
 
 
-
-
-
 def get_instrument_models(request):
-    #return instrument model list depending on input type
+    # return instrument model list depending on input type
     type = request.GET['dd_value']
     out = ''
     if type == 'LS454':
@@ -324,20 +330,20 @@ def get_instrument_models(request):
 
 
 def get_experimental_samples(request):
-
     study_id = request.GET['study_id']
     samples = EnaSample.objects.filter(ena_study__id=study_id)
     data = serializers.serialize("json", samples)
     return HttpResponse(data, content_type="json")
 
+
 def receive_data_file(request):
-    #need to make a chunked upload record to store deails of the file
+    # need to make a chunked upload record to store deails of the file
 
     if request.method == 'POST':
         c = {}
 
 
-         #get timestamp
+        #get timestamp
 
 
 
@@ -352,7 +358,7 @@ def receive_data_file(request):
 
         f = request.FILES['file']
         path = chunked_upload.file
-        destination = open(os.path.join(settings.MEDIA_ROOT,path.file.name), 'w+')
+        destination = open(os.path.join(settings.MEDIA_ROOT, path.file.name), 'w+')
         for chunk in f.chunks():
             destination.write(chunk)
         destination.close()
@@ -378,8 +384,9 @@ def receive_data_file(request):
         str = jsonpickle.encode(files)
     return HttpResponse(str, content_type='json')
 
+
 def hash_upload(request):
-    #open uploaded file
+    # open uploaded file
     file_id = request.GET['file_id']
     print 'hash started ' + file_id
     file_upload = ChunkedUpload.objects.get(pk=file_id)
@@ -390,34 +397,35 @@ def hash_upload(request):
     with open(file_name, 'r') as f:
         for chunk in iter(lambda: f.read(8192), b''):
             md5.update(chunk)
-    output_dict = {'output_hash':md5.hexdigest(), 'file_id':file_id}
+    output_dict = {'output_hash': md5.hexdigest(), 'file_id': file_id}
     out = jsonpickle.encode(output_dict)
     print 'hash complete ' + file_id
     return HttpResponse(out, content_type='json')
 
+
 def inspect_file(request):
-    output_dict = {'file_type': 'unknown', 'gzip':False}
-    #get reference to file
+    output_dict = {'file_type': 'unknown', 'gzip': False}
+    # get reference to file
     file_id = request.GET['file_id']
     chunked_upload = ChunkedUpload.objects.get(id=int(file_id))
-    file_name = os.path.join(settings.MEDIA_ROOT,chunked_upload.file.name)
+    file_name = os.path.join(settings.MEDIA_ROOT, chunked_upload.file.name)
 
-    if(u.is_fastq_file(file_name)):
+    if (u.is_fastq_file(file_name)):
         output_dict['file_type'] = 'fastq'
         #if we have a fastq file, check that it is gzipped
-        if(u.is_gzipped(file_name)):
+        if (u.is_gzipped(file_name)):
             output_dict['gzip'] = True
-    elif(u.is_sam_file(file_name)):
+    elif (u.is_sam_file(file_name)):
         output_dict['file_type'] = 'sam'
-    elif(u.is_bam_file(file_name)):
+    elif (u.is_bam_file(file_name)):
         output_dict['file_type'] = 'bam'
-
 
     out = jsonpickle.encode(output_dict)
     return HttpResponse(out, content_type='json')
 
+
 def zip_file(request):
-    #need to get a reference to the file to zip
+    # need to get a reference to the file to zip
     f_id = request.GET['file_id']
     print "zip started " + f_id
     file_obj = ChunkedUpload.objects.get(pk=f_id)
@@ -430,7 +438,7 @@ def zip_file(request):
         #open the file as gzip acrchive...set compression level
         temp_name = os.path.join(settings.MEDIA_ROOT, str(uuid.uuid4()) + '.tmp')
         myzip = gzip.open(temp_name, 'wb', compresslevel=1)
-        src = open(input_file_name,'rb')
+        src = open(input_file_name, 'rb')
 
         #write input file to gzip archive in n byte chunks
         n = 100000000
@@ -440,7 +448,6 @@ def zip_file(request):
         myzip.close()
         src.close()
 
-
     print 'zip complete ' + f_id
     #now need to delete the old file and update the file record with the new file
     file_obj.filename = output_file_name
@@ -449,6 +456,6 @@ def zip_file(request):
     os.remove(input_file_name)
     os.rename(temp_name, input_file_name)
 
-    out = {'zipped':True}
+    out = {'zipped': True}
     out = jsonpickle.encode(out)
     return HttpResponse(out, content_type='text/plain')

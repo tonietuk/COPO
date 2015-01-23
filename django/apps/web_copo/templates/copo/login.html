@@ -1,7 +1,7 @@
 {% extends 'copo/base.html' %}
 {% load staticfiles %}
 {% block js_block %}
-    <script src="{% static 'copo/js/copo.login_view.js' %}"></script>
+<script src="{% static 'copo/js/copo.login_view.js' %}"></script>
 {% endblock %}
 
 {% block title_block %} Login {% endblock %}
@@ -11,17 +11,15 @@
 {% block main_block %}
 
 
-
-
 <div class="generic-form">
-        <form method="post" action="/copo/login/">
-            {% csrf_token %}
+    <form method="post" action="/copo/login/">
+        {% csrf_token %}
 
-            <input type="text" id="frm_login_username" name="frm_login_username" placeholder="Name" />
+        <input type="text" id="frm_login_username" name="frm_login_username" placeholder="Name"/>
 
-            <input type="password" id="frm_login_password" name="frm_login_password" placeholder="Password" />
-            <button class="submit" id="frm_login_submit">Submit</button>
-        </form>
+        <input type="password" id="frm_login_password" name="frm_login_password" placeholder="Password"/>
+        <button class="submit" id="frm_login_submit">Submit</button>
+    </form>
     <span style="float: right; margin-top:10px"><a href="/copo/register/">Register</a></span>
 </div>
 

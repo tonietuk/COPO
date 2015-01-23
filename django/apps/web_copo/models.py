@@ -4,12 +4,15 @@ from django.contrib.auth.models import User
 import datetime
 from time import time
 from django.core.files.storage import FileSystemStorage
+
 fs = FileSystemStorage(location='/Users/fshaw/Desktop/test')
+
 
 def get_upload_file_name(instance, filename):
     return 'uploaded_files/%s_%s' % (str(time()).replace('.', '_'), filename)
 
-#profile is the top level container object representing a profile of work
+
+# profile is the top level container object representing a profile of work
 class Profile(models.Model):
     title = models.CharField(max_length=500)
     abstract = models.TextField(null=True, blank=True)
@@ -17,16 +20,20 @@ class Profile(models.Model):
     date_created = models.DateField(default=datetime.date.today)
     date_modified = models.DateField(default=datetime.date.today)
     user = models.ForeignKey(User)
+
     def __unicode__(self):
         return self.title
+
 
 #collection represents a type of data i.e. ENA, GenBank, pdf, image data, movie etc.
 class Collection(models.Model):
     name = models.CharField(max_length=50)
     type = models.CharField(max_length=50, default="custom submission")
     profile = models.ForeignKey(Profile)
+
     def __unicode__(self):
         return self.name
+
 
 #resource is a object which represents raw data as either a file path or a url
 class Resource(models.Model):
@@ -35,8 +42,10 @@ class Resource(models.Model):
     path = models.CharField(max_length=200, null=True, blank=True)
     md5_checksum = models.CharField(max_length=200, null=True, blank=True)
     collection = models.ForeignKey(Collection)
+
     def __unicode__(self):
         return self.name
+
 
 class DocumentForm(forms.Form):
     docfile = forms.FileField(
@@ -44,12 +53,13 @@ class DocumentForm(forms.Form):
         help_text='max. 42 megabytes'
     )
 
+
 class Document(models.Model):
     docfile = models.FileField(upload_to='/Users/fshaw/Desktop/test')
 
     @classmethod
     def create(cls, file, location):
-        doc = cls(docfile = file)
+        doc = cls(docfile=file)
         doc.docfile.upload_to = location
 
         return doc
@@ -68,6 +78,7 @@ class EnaStudy(models.Model):
     def __unicode__(self):
         return self.study_title
 
+
 class EnaStudyAttr(models.Model):
     ena_study = models.ForeignKey(EnaStudy)
     tag = models.CharField(max_length=50)
@@ -76,6 +87,7 @@ class EnaStudyAttr(models.Model):
 
     def __unicode__(self):
         return self.tag
+
 
 class EnaSample(models.Model):
     ena_study = models.ForeignKey(EnaStudy)
@@ -87,11 +99,13 @@ class EnaSample(models.Model):
     individual_name = models.CharField(max_length=50, null=True, blank=True)
     description = models.CharField(max_length=200, null=True, blank=True)
 
+
 class EnaSampleAttr(models.Model):
     ena_sample = models.ForeignKey(EnaSample)
     tag = models.CharField(max_length=50)
     value = models.CharField(max_length=50)
     unit = models.CharField(max_length=50, null=True, blank=True)
+
 
 class EnaExperiment(models.Model):
     data = models.ForeignKey(Resource)

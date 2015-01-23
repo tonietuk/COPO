@@ -45,10 +45,29 @@ $(document).ready(function(){
     //this is how many upload panels are on the screen
     $('#upload_info_count').val('0')
     $('#progress').hide()
-
+    $('#add_upload_group_button').hide()
     $('#select_file_type').change( function(){
         $('#file_type_guess').animate({opacity:"0"}, "fast")
     })
+
+    $('#add_upload_group_button').click(function(){
+        html = get_upload_box_html()
+        $('#container').append(html)
+    })
+    $('#multiplex_checkbox').change(function(){
+
+        if($('#multiplex_checkbox').is(':checked')){
+            html = get_upload_box_html()
+            $('#container').append(html)
+            $('#add_upload_group_button').show()
+        }
+        else{
+            $('#container').children().last().remove()
+            $('#add_upload_group_button').hide()
+        }
+
+    })
+
 
     $(function () {
     'use strict';
@@ -110,7 +129,7 @@ $(document).ready(function(){
                 size = size.toFixed(2) + ' MB'
                 var file_name = data.files[k].name.substr(0, data.files[k].name.indexOf('.'))
                 $('#upload_files_button').attr('disabled','disabled')
-                $('<div/>').addClass('alert alert-warning').attr('id', 'id_' + file_name).html("<strong>" + file_name + "</strong>").appendTo($('#file_status_label'));
+                $('<div/>').addClass('alert alert-warning file_info').attr('id', 'id_' + file_name).html("<strong>" + file_name + "</strong>").appendTo($('#file_status_label'));
 
                 var html = '<div id="progress_info_' + file_name + '" class="progress_info">' +
                             '<input type="hidden" id="upload_id_' + file_name + '" value="" />' +
@@ -175,14 +194,16 @@ $(document).ready(function(){
             $('#progress_info_' + file_name).hide()
             $('#id_' + file_name).hide()
             div = $('<div/>')
-            html = "<input type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li>" + x[i].size.toFixed(1) + " MB</li></ul>"
-                + '<span class="text-right zip-image"><img src="' + zipping_img + '" class="pull-right"/>'
+            html = "<div class='row'><div class='col-sm-9 col-md-9 col-lg-9'>"
+            + "<input type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li>" + x[i].size.toFixed(1) + " MB</li></ul>"
+            + "</div><div class='col-sm-3 col-md-3 col-lg-3'>"
+            + '<span class="text-right zip-image"><img src="' + zipping_img + '" class="pull-right"/>'
                 + '<h4 style="margin-right:30px">Zipping</h4></span>'
                 + '<span class="text-right hash-image"><img src="' + hashing_img + '" height="20px" class="pull-right"/>'
-                + '<h4 style="margin-right:30px">Hashing</h4></span>'
-            div.addClass('alert alert-success').html(html).insertAfter($('#id_' + file_name)).fadeIn();
-            div.children('.zip-image').hide()
-            div.children('.hash-image').hide()
+                + '<h4 style="margin-right:30px">Hashing</h4></span></div></div>'
+            div.addClass('alert alert-success file_info').html(html).insertBefore($('#file_status_label')).fadeIn();
+            div.find('.zip-image').hide()
+            div.find('.hash-image').hide()
         }
 
         if($.active < 2){
@@ -196,7 +217,7 @@ $(document).ready(function(){
 
 
     function get_hash(id){
-        $( "input[value='" + file_id + "']" ).siblings('.hash-image').fadeIn('fast')
+        $( "input[value='" + file_id + "']" ).parent().next().children('.hash-image').fadeIn('4000')
         $.ajax({ url: "/rest/hash_upload/",
             type: "GET",
             data: {file_id: id},
@@ -207,7 +228,7 @@ $(document).ready(function(){
             $d = $( "input[value='" + obj.file_id + "']" ).parent()
             html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
             $d.children('ul').append(html)
-            $( "input[value='" + file_id + "']" ).siblings('.hash-image').fadeOut('fast')
+            $( "input[value='" + file_id + "']" ).parent().next().children('.hash-image').fadeOut('4000')
         })
     }
 
@@ -232,22 +253,23 @@ $(document).ready(function(){
                     $(val).prop('selected', 'selected')
                 }
             })
-            if(data.file_type != 'unknown' && !$('#file_type_guess').length){
-                var warning_label = "<h5><small> We think your file is a </small>" +
-                    data.file_type + "<small> file. If this is incorrect please change accordingly.</small></h5><br/>"
-                $('<div/>').attr('id', 'file_type_guess').css('opacity', '0').html(warning_label).insertAfter($('#select_file_type')).animate({opacity:"100"}, "fast")
+            if(data.file_type != 'unknown' && $('#file_type_warning').children().length == 0){
+                var warning_label = "<h4><small> We think your file is a </small>" +
+                    data.file_type + "<small> file. If this is incorrect please change accordingly.</small></h4><br/>"
+
+                $('#file_type_warning').append(warning_label).fadeIn('fast')
             }
 
             //check if the file was gzipped, and if not send request to server to gzip
             if(data.file_type == 'fastq' && data.gzip == false){
-                $( "input[value='" + file_id + "']" ).siblings('.zip-image').fadeIn('fast')
+                $( "input[value='" + file_id + "']" ).parent().next().children('.zip-image').fadeIn('4000')
                 $.ajax({
                     url: '/rest/zip_file/',
                     type:'GET',
                     dataType:'text',
                     data:{'file_id': file_id},
                     success:function(){
-                        $( "input[value='" + file_id + "']" ).siblings('.zip-image').fadeOut('fast')
+                        $( "input[value='" + file_id + "']" ).parent().next().children('.zip-image').fadeOut('4000')
                         get_hash(file_id)
                     },
                     error:function(data){
@@ -261,7 +283,10 @@ $(document).ready(function(){
          })
     }
 
-    /* this code is to calculate an md5 checksum on the client side, but is very slow
+    /*
+    get_upload_box_html()
+
+    this code is to calculate an md5 checksum on the client side, but is very slow
     document.getElementById("file_upload").addEventListener("change", function() {
             var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
                 file = this.files[0],
