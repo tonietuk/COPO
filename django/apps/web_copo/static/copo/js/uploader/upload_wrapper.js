@@ -4,8 +4,8 @@ var upload_size = 0
 var chunk_size = 0
 var chunk_threshold = 200000000 // size of chunks in bytes
 
-function get_chunk_size(){
-    upload_size = $('#file_upload')[0].files[0].size
+function get_chunk_size(event){
+    upload_size = event.currentTarget.files[0].size
     if(upload_size < chunk_threshold){
         chunk_size = 0;
         $('#fileupload').fileupload(
@@ -50,30 +50,14 @@ $(document).ready(function(){
         $('#file_type_guess').animate({opacity:"0"}, "fast")
     })
 
-    $('#add_upload_group_button').click(function(){
-        html = get_upload_box_html()
-        $('#container').append(html)
-    })
-    $('#multiplex_checkbox').change(function(){
 
-        if($('#multiplex_checkbox').is(':checked')){
-            html = get_upload_box_html()
-            $('#container').append(html)
-            $('#add_upload_group_button').show()
-        }
-        else{
-            $('#container').children().last().remove()
-            $('#add_upload_group_button').hide()
-        }
-
-    })
 
 
     $(function () {
     'use strict';
         //file upload plugin
         var s;
-        $('#fileupload').fileupload({
+        $('form[id^=fileupload]').fileupload({
             dataType: 'json',
             headers: {'X-CSRFToken':token},
             progressInterval: '300',
@@ -94,8 +78,10 @@ $(document).ready(function(){
             },
             processstart: function(e, data){
                 $('#progress').show()
+
             },
             add: function(e, data) {
+
                 data.submit();
             },
             progress: function(e, data){
@@ -120,7 +106,8 @@ $(document).ready(function(){
         }).on('fileuploadchunkdone', function (e, data) {
 
             var file_name = data.files[0].name.substr(0, data.files[0].name.indexOf('.'))
-            $('#upload_id').val(data.result.upload_id)
+            console.log(data)
+            $(this).find('input[name=upload_id]').val(data.result.upload_id)
 
         }).bind('fileuploadchange', function (e, data) {
             for(var k = 0; k < data.files.length; k++){

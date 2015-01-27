@@ -43,29 +43,14 @@
 {% endblock %}
 
 {% block work_area %}
-<form enctype="multipart/form-data" id="fileupload" method="POST"
-      action="http://127.0.0.1:8000/rest/receive_data_file_chunked/">
-    {% csrf_token %}
-    <span id="upload_files_button" class="btn btn-success fileinput-button">
-        <i class="glyphicon glyphicon-plus"></i>
-        <span>Select files...</span>
-        <input type="file" name="file" id="file_upload" onchange="get_chunk_size()">
-        <input type="hidden" name="upload_id" value="" id="upload_id">
 
-    </span>
-    <span id="progress_label"></span>
-    <span id="total_label"></span>
 
-    <span id="bitrate"></span>
-    <br><br>
-
-    <div id="progress" class="progress">
-        <div style="width: 0%;height: 20px;background: green" class="bar"></div>
-        <div class="progress-bar progress-bar-success"></div>
-    </div>
-</form>
-
-<br/><br/><br/>
+        <input type="button" name="file_input"/>
+        <script>
+            $('input[type=button]').click(function(){
+            	console.log(this);
+            })
+        </script>
 
 
 {% endblock %}

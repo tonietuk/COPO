@@ -60,6 +60,8 @@
 
     <input type="hidden" id="hashing_image" value="{% static 'copo/img/sin_anim.gif' %}"/>
 
+    <input type="hidden" id="upload_counter" value="1" />
+
 
 </div>
 
@@ -370,8 +372,8 @@
                                 <div class="panel panel-primary">
                                     <div class="panel-heading">
                                         <h3 class="panel-title">Upload</h3>
-                                                <span class="pull-right clickable"><i
-                                                        class="glyphicon glyphicon-minus"></i></span>
+                                        <span class="pull-right clickable"><i
+                                                class="glyphicon glyphicon-minus"></i></span>
                                     </div>
                                     <div class="panel-body">
                                         <div class="row">
@@ -453,10 +455,9 @@
                                                                       class="btn btn-success fileinput-button vertical-center">
                                                                     <i class="glyphicon glyphicon-plus"></i>
                                                                     <span>Select files...</span>
-                                                                    <input type="file" name="file" id="file_upload"
-                                                                           onchange="get_chunk_size()" multiple>
-                                                                    <input type="hidden" name="upload_id" value=""
-                                                                           id="upload_id">
+                                                                    <input type="file" name="file"
+                                                                           onchange="get_chunk_size(event)" multiple>
+                                                                    <input type="hidden" name="upload_id" value="">
                                                                 </span>
                                                 </form>
                                             </div>

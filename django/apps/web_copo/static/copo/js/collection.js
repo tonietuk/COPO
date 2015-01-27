@@ -16,6 +16,24 @@ $(document).ready( function(){
     $('#select_platform').on('change', platform_change_handler)
 
 
+    $('#add_upload_group_button').click(function(){
+        html = get_upload_box_html()
+        $('#container').append(html)
+    })
+    $('#multiplex_checkbox').change(function(){
+
+        if($('#multiplex_checkbox').is(':checked')){
+            html = get_upload_box_html()
+            $('#container').append(html)
+            $('#add_upload_group_button').show()
+        }
+        else{
+            $('#container').children().last().remove()
+            $('#add_upload_group_button').hide()
+        }
+    })
+
+
 
 
     //function to save study
