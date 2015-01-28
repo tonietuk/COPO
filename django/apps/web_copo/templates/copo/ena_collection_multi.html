@@ -427,8 +427,9 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-12 col-md-12 col-lg-12">
-                                                <div id="file_status_label"></div>
-                                                <div id="progress_info">
+                                                <div class="file_status_label"></div>
+												<!--
+                                                <div id="progress_info_0">
                                                     <span id="progress_label"></span>
                                                     <span id="total_label"></span>
                                                     <span id="bitrate"></span>
@@ -439,7 +440,10 @@
                                                     <div style="width: 0%;height: 20px;background: green"
                                                          class="bar"></div>
                                                     <div class="progress-bar progress-bar-success"></div>
+
                                                 </div>
+                                                -->
+
                                             </div>
                                         </div>
                                         <div class="row">
@@ -447,9 +451,7 @@
 
                                             </div>
                                             <div class="col-sm-2 col-md-2 col-lg-2">
-                                                <form enctype="multipart/form-data" id="fileupload"
-                                                      method="POST"
-                                                      action="/rest/receive_data_file_chunked/">
+                                                <form enctype="multipart/form-data" id="upload_0" method="POST" action="/rest/receive_data_file_chunked/">
                                                     {% csrf_token %}
                                                                 <span id="upload_files_button"
                                                                       class="btn btn-success fileinput-button vertical-center">

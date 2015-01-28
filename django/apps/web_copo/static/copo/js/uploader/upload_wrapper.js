@@ -8,7 +8,7 @@ function get_chunk_size(event){
     upload_size = event.currentTarget.files[0].size
     if(upload_size < chunk_threshold){
         chunk_size = 0;
-        $('#fileupload').fileupload(
+        $(event.currentTarget).parent().parent().fileupload(
             'option',
             {
                 maxChunkSize: 0,
@@ -18,7 +18,7 @@ function get_chunk_size(event){
     }
     else{
         chunk_size = chunk_threshold
-        $('#fileupload').fileupload(
+        $(event.currentTarget).parent().parent().fileupload(
             'option',
             {
                 maxChunkSize: chunk_threshold,
@@ -26,7 +26,6 @@ function get_chunk_size(event){
             }
         );
     }
-
 }
 
 
@@ -36,7 +35,7 @@ $(document).ready(function(){
     var u_id = undefined
     var token = $.cookie('csrftoken')
     var f = $('#file_upload')
-    $('#upload_id').val('')
+    $('input[name=upload_id]').val('')
     //this is the zip image being hidden
     $('.zip_image').hide()
     //hide the hashing image
@@ -44,100 +43,99 @@ $(document).ready(function(){
     //$('#input_md5_checksum').val('To Be Calculated...')
     //this is how many upload panels are on the screen
     $('#upload_info_count').val('0')
-    $('#progress').hide()
+    $('.progress').hide()
     $('#add_upload_group_button').hide()
     $('#select_file_type').change( function(){
         $('#file_type_guess').animate({opacity:"0"}, "fast")
     })
 
-
-
-
     $(function () {
     'use strict';
         //file upload plugin
         var s;
-        $('form[id^=fileupload]').fileupload({
-            dataType: 'json',
-            headers: {'X-CSRFToken':token},
-            progressInterval: '300',
-            bitrateInterval: '300',
-            maxChunkSize: chunk_size,
-            singleFileUploads: true,
-            sequentialUploads: true,
-            fail: function(e, data){
-                alert('FAIL!!!')
-            },
-            done: function(e, data){
-                var final = $('#upload_id').val()
-                $('#upload_id').val('')
-                finalise_upload(e, data, final)
-            },
-            error: function(e, data){
-                console.log($.makeArray(arguments));
-            },
-            processstart: function(e, data){
-                $('#progress').show()
+        $(document).on('click', 'form[id^=upload]', function(){
 
-            },
-            add: function(e, data) {
+            $(this).fileupload({
+                dataType: 'json',
+                headers: {'X-CSRFToken':token},
+                progressInterval: '300',
+                bitrateInterval: '300',
+                maxChunkSize: chunk_size,
+                singleFileUploads: true,
+                sequentialUploads: true,
+                fail: function(e, data){
+                    alert('FAIL!!!')
+                },
+                done: function(e, data){
+                    var final = data.result.upload_id
+                    $(this).find('input[name=upload_id]').val('')
+                    finalise_upload(e, data, final, this)
+                },
+                error: function(e, data){
+                    console.log($.makeArray(arguments));
+                },
+                start: function(e, data){
+                    $(this).parents().eq(2).find('.progress').show()
+                },
+                add: function(e, data) {
+                    data.submit();
+                },
+                progress: function(e, data){
+                    //get name of the file for which the progress update is for
+                    var file_name = data.files[0].name
+                    file_name = file_name.substr(0, file_name.indexOf('.'))
+                    //increment progress bar
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    var selector = '#progress_' + file_name
+                    $(selector + ' .bar').css(
+                        'width',
+                        progress + '%'
+                    );
+                    //display uploaded bytes
+                    var uploaded = parseFloat(data.loaded) / 1000000.0
+                    s = uploaded.toFixed(2) + " MB of"
+                    $('#progress_info_' + file_name).children('#progress_label').html(s)
+                    //display upload bitrate
+                    var bit = " @ " + (data.bitrate / 1000.0 / 1000.0 / 8).toFixed(2) + " MB/sec"
+                    $('#progress_info_' + file_name).children('#bitrate').html(bit)
+                }
+            }).on('fileuploadchunkdone', function (e, data) {
+                var file_name = data.files[0].name.substr(0, data.files[0].name.indexOf('.'))
+                //console.log(data)
+                $(this).find('input[name=upload_id]').val(data.result.upload_id)
 
-                data.submit();
-            },
-            progress: function(e, data){
-                //get name of the file for which the progress update is for
-                var file_name = data.files[0].name
-                file_name = file_name.substr(0, file_name.indexOf('.'))
-                //increment progress bar
-                var progress = parseInt(data.loaded / data.total * 100, 10);
-                var selector = '#progress_' + file_name
-                $(selector + ' .bar').css(
-                    'width',
-                    progress + '%'
-                );
-                //display uploaded bytes
-                var uploaded = parseFloat(data.loaded) / 1000000.0
-                s = uploaded.toFixed(2) + " MB of"
-                $('#progress_info_' + file_name).children('#progress_label').html(s)
-                //display upload bitrate
-                var bit = " @ " + (data.bitrate / 1000.0 / 1000.0 / 8).toFixed(2) + " MB/sec"
-                $('#progress_info_' + file_name).children('#bitrate').html(bit)
-            }
-        }).on('fileuploadchunkdone', function (e, data) {
+            }).bind('fileuploadchange', function (e, data) {
+                for(var k = 0; k < data.files.length; k++){
+                    var insert_node = $(this).parents().eq(2).find('.file_status_label')
+                    var size = parseFloat(data.files[k].size)
+                    size = size / 1000000.0
+                    size = size.toFixed(2) + ' MB'
+                    var file_name = data.files[k].name.substr(0, data.files[k].name.indexOf('.'))
+                    $('#upload_files_button').attr('disabled','disabled')
+                    $('<div/>').addClass('alert alert-warning file_info').attr('id', 'id_' + file_name).html("<strong>" + file_name + "</strong>").appendTo(insert_node);
 
-            var file_name = data.files[0].name.substr(0, data.files[0].name.indexOf('.'))
-            console.log(data)
-            $(this).find('input[name=upload_id]').val(data.result.upload_id)
+                    var html = '<div id="progress_info_' + file_name + '" class="progress_info">' +
+                                '<input type="hidden" id="upload_id_' + file_name + '" value="" />' +
+                                '<span id="progress_label"></span>' +
+                                '<span id="total_label"> of ' + size + '</span>' +
+                                '<span id="bitrate"></span>' +
+                                '</div>' +
+                                '<div id="progress_' + file_name + '" class="progress">' +
+                                '<div style="width: 0%;height: 20px;background: green" class="bar"></div>' +
+                                '<div class="progress-bar progress-bar-success"></div>' +
+                                '</div>'
 
-        }).bind('fileuploadchange', function (e, data) {
-            for(var k = 0; k < data.files.length; k++){
-                var size = parseFloat(data.files[k].size)
-                size = size / 1000000.0
-                size = size.toFixed(2) + ' MB'
-                var file_name = data.files[k].name.substr(0, data.files[k].name.indexOf('.'))
-                $('#upload_files_button').attr('disabled','disabled')
-                $('<div/>').addClass('alert alert-warning file_info').attr('id', 'id_' + file_name).html("<strong>" + file_name + "</strong>").appendTo($('#file_status_label'));
-
-                var html = '<div id="progress_info_' + file_name + '" class="progress_info">' +
-                            '<input type="hidden" id="upload_id_' + file_name + '" value="" />' +
-                            '<span id="progress_label"></span>' +
-                            '<span id="total_label"> of ' + size + '</span>' +
-                            '<span id="bitrate"></span>' +
-                            '</div>' +
-                            '<div id="progress_' + file_name + '" class="progress">' +
-                            '<div style="width: 0%;height: 20px;background: green" class="bar"></div>' +
-                            '<div class="progress-bar progress-bar-success"></div>' +
-                            '</div>'
-                 $(html).appendTo($('#file_status_label'));
-            }
+                     $(html).appendTo(insert_node);
+                }
+            })
         })
     })
 
 
     //function called to finalised chunked upload
-    function finalise_upload(e, data, final){
+    function finalise_upload(e, data, final, tform){
             //serialise form
-            form = $('#fileupload').serializeFormJSON()
+            form = $(tform).serializeFormJSON()
             token = $.cookie('csrftoken')
             var output;
             if(chunk_size > 0){
@@ -147,7 +145,9 @@ $(document).ready(function(){
                     url: "/rest/complete_upload/",
                     type: "POST",
                     data: {'upload_id':final},
-                    success: update_html,
+                    success: function(data){
+                        update_html(data, tform)
+                    },
                     error: function(){
                         alert('error')
                         console.log($.makeArray(arguments));
@@ -157,14 +157,13 @@ $(document).ready(function(){
             }
             else{
                 //if we have a non chunked upload, just call the update_html method
-                update_html(data)
+                update_html(data, tform)
             }
     }
 
     //update the html based on the results of the upload process
-    function update_html(data){
+    function update_html(data, tform){
         var x;
-
         if(chunk_size > 0){
             x = $(data.files)
         }
@@ -188,7 +187,8 @@ $(document).ready(function(){
                 + '<h4 style="margin-right:30px">Zipping</h4></span>'
                 + '<span class="text-right hash-image"><img src="' + hashing_img + '" height="20px" class="pull-right"/>'
                 + '<h4 style="margin-right:30px">Hashing</h4></span></div></div>'
-            div.addClass('alert alert-success file_info').html(html).insertBefore($('#file_status_label')).fadeIn();
+            insert_node = $(tform).parents().eq(2).find('.file_status_label')
+            div.addClass('alert alert-success file_info').html(html).insertBefore(insert_node).fadeIn();
             div.find('.zip-image').hide()
             div.find('.hash-image').hide()
         }
@@ -199,7 +199,6 @@ $(document).ready(function(){
         }
         //now call function to inspect files
         inspect_uploaded_files(x[0].id)
-
     }
 
 
@@ -270,6 +269,7 @@ $(document).ready(function(){
          })
     }
 
+})
     /*
     get_upload_box_html()
 
@@ -314,4 +314,3 @@ $(document).ready(function(){
     })
     */
 
-})

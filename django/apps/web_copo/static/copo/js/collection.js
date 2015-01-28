@@ -2,6 +2,7 @@
  * Created by fshaw on 11/11/14.
  */
 $(document).ready( function(){
+    $('#upload_counter').val('0')
     $('#save_study').text('Save Study').removeAttr('disabled')
     study_form_data()
     sample_form_data()
@@ -17,19 +18,27 @@ $(document).ready( function(){
 
 
     $('#add_upload_group_button').click(function(){
-        html = get_upload_box_html()
+        var count = parseInt($('#upload_counter').val())
+        count = count + 1
+        html = get_upload_box_html(count)
         $('#container').append(html)
+        $('#upload_counter').val(count)
     })
     $('#multiplex_checkbox').change(function(){
-
+        //get value of the id of the upload box from hidden field
+        var count = parseInt($('#upload_counter').val())
         if($('#multiplex_checkbox').is(':checked')){
-            html = get_upload_box_html()
+            count = count + 1
+            html = get_upload_box_html(count)
             $('#container').append(html)
             $('#add_upload_group_button').show()
+            $('#upload_counter').val(count)
         }
         else{
+            count = count - 1
             $('#container').children().last().remove()
             $('#add_upload_group_button').hide()
+            $('#upload_counter').val(count)
         }
     })
 
