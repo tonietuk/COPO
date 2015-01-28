@@ -2,6 +2,7 @@
  * Created by fshaw on 11/11/14.
  */
 $(document).ready( function(){
+    $('#multiplex_checkbox').attr('checked', false);
     $('#upload_counter').val('0')
     $('#save_study').text('Save Study').removeAttr('disabled')
     study_form_data()

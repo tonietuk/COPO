@@ -43,7 +43,7 @@ $(document).ready(function(){
     //$('#input_md5_checksum').val('To Be Calculated...')
     //this is how many upload panels are on the screen
     $('#upload_info_count').val('0')
-    $('.progress').hide()
+
     $('#add_upload_group_button').hide()
     $('#select_file_type').change( function(){
         $('#file_type_guess').animate({opacity:"0"}, "fast")
@@ -78,6 +78,28 @@ $(document).ready(function(){
                     $(this).parents().eq(2).find('.progress').show()
                 },
                 add: function(e, data) {
+                    for(var k = 0; k < data.files.length; k++){
+                        var insert_node = $(this).parents().eq(2).find('.file_status_label')
+                        var size = parseFloat(data.files[k].size)
+                        size = size / 1000000.0
+                        size = size.toFixed(2) + ' MB'
+                        var file_name = data.files[k].name.substr(0, data.files[k].name.indexOf('.'))
+                        $('#upload_files_button').attr('disabled','disabled')
+                        $('<div/>').addClass('alert alert-warning file_info').attr('id', 'id_' + file_name).html("<strong>" + file_name + "</strong>").appendTo(insert_node);
+
+                        var html = '<div id="progress_info_' + file_name + '" class="progress_info">' +
+                                    '<input type="hidden" id="upload_id_' + file_name + '" value="" />' +
+                                    '<span id="progress_label"></span>' +
+                                    '<span id="total_label"> of ' + size + '</span>' +
+                                    '<span id="bitrate"></span>' +
+                                    '</div>' +
+                                    '<div id="progress_' + file_name + '" class="progress">' +
+                                    '<div style="width: 0%;height: 20px;background: green" class="bar"></div>' +
+                                    '<div class="progress-bar progress-bar-success"></div>' +
+                                    '</div>'
+
+                         $(html).appendTo(insert_node);
+                    }
                     data.submit();
                 },
                 progress: function(e, data){
@@ -105,28 +127,8 @@ $(document).ready(function(){
                 $(this).find('input[name=upload_id]').val(data.result.upload_id)
 
             }).bind('fileuploadchange', function (e, data) {
-                for(var k = 0; k < data.files.length; k++){
-                    var insert_node = $(this).parents().eq(2).find('.file_status_label')
-                    var size = parseFloat(data.files[k].size)
-                    size = size / 1000000.0
-                    size = size.toFixed(2) + ' MB'
-                    var file_name = data.files[k].name.substr(0, data.files[k].name.indexOf('.'))
-                    $('#upload_files_button').attr('disabled','disabled')
-                    $('<div/>').addClass('alert alert-warning file_info').attr('id', 'id_' + file_name).html("<strong>" + file_name + "</strong>").appendTo(insert_node);
 
-                    var html = '<div id="progress_info_' + file_name + '" class="progress_info">' +
-                                '<input type="hidden" id="upload_id_' + file_name + '" value="" />' +
-                                '<span id="progress_label"></span>' +
-                                '<span id="total_label"> of ' + size + '</span>' +
-                                '<span id="bitrate"></span>' +
-                                '</div>' +
-                                '<div id="progress_' + file_name + '" class="progress">' +
-                                '<div style="width: 0%;height: 20px;background: green" class="bar"></div>' +
-                                '<div class="progress-bar progress-bar-success"></div>' +
-                                '</div>'
 
-                     $(html).appendTo(insert_node);
-                }
             })
         })
     })
@@ -176,9 +178,9 @@ $(document).ready(function(){
         for(var i = 0; i < x.size(); i++){
             var file_name = x[i].name
             file_name = file_name.substr(0, file_name.indexOf('.'))
-            $('#progress_' + file_name).hide()
-            $('#progress_info_' + file_name).hide()
-            $('#id_' + file_name).hide()
+            $('#progress_' + file_name).remove()
+            $('#progress_info_' + file_name).remove()
+            $('#id_' + file_name).remove()
             div = $('<div/>')
             html = "<div class='row'><div class='col-sm-9 col-md-9 col-lg-9'>"
             + "<input type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li>" + x[i].size.toFixed(1) + " MB</li></ul>"
@@ -197,13 +199,14 @@ $(document).ready(function(){
 
             $('#upload_files_button').removeAttr('disabled')
         }
+
         //now call function to inspect files
         inspect_uploaded_files(x[0].id)
     }
 
 
     function get_hash(id){
-        $( "input[value='" + file_id + "']" ).parent().next().children('.hash-image').fadeIn('4000')
+        $( "input[value='" + id + "']" ).parent().next().children('.hash-image').show()
         $.ajax({ url: "/rest/hash_upload/",
             type: "GET",
             data: {file_id: id},
@@ -214,7 +217,7 @@ $(document).ready(function(){
             $d = $( "input[value='" + obj.file_id + "']" ).parent()
             html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
             $d.children('ul').append(html)
-            $( "input[value='" + file_id + "']" ).parent().next().children('.hash-image').fadeOut('4000')
+            $( "input[value='" + id + "']" ).parent().next().children('.hash-image').hide()
         })
     }
 
@@ -225,7 +228,8 @@ $(document).ready(function(){
 
         //var finished = $('.alert-success')
         //var file_id = $(finished[finished.length-1]).children('input').val()
-
+        type_warning = $('input[value=' + file_id + ']').parents().eq(5).find('.file_type_warning')
+        file_type = $('input[value=' + file_id + ']').parents().eq(5).find('select[name=select_file_type]')
         $.ajax({
             url: '/rest/inspect_file/',
             type: 'GET',
@@ -234,16 +238,16 @@ $(document).ready(function(){
          }).done(function(data){
             //now search through list of filetypes in dropdown
             //and make correct type selected
-            $('#select_file_type').children().removeAttr('selected').each(function(index, val){
+            $(file_type).children().removeAttr('selected').each(function(index, val){
                 if($(val).val() == data.file_type){
                     $(val).prop('selected', 'selected')
                 }
             })
-            if(data.file_type != 'unknown' && $('#file_type_warning').children().length == 0){
+            if(data.file_type != 'unknown' && type_warning.children().length == 0){
                 var warning_label = "<h4><small> We think your file is a </small>" +
                     data.file_type + "<small> file. If this is incorrect please change accordingly.</small></h4><br/>"
 
-                $('#file_type_warning').append(warning_label).fadeIn('fast')
+                $(type_warning).append(warning_label).fadeIn('fast')
             }
 
             //check if the file was gzipped, and if not send request to server to gzip
