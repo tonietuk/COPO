@@ -284,7 +284,7 @@
 <!-- Data Modal -->
 <div class="modal fade" id="newDataModal" tabindex="-1" role="dialog" aria-labelledby="newSampleModal"
      aria-hidden="false">
-<div class="modal-dialog modal-lg" style="width:1600px">
+<div class="modal-dialog" style="width:1600px">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
@@ -375,7 +375,7 @@
                                         <span class="pull-right clickable"><i
                                                 class="glyphicon glyphicon-minus"></i></span>
                                     </div>
-                                    <div class="panel-body">
+                                    <div class="panel-body" style="display:block">
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12">
                                                 <form class="form-inline" id="ena_ff">
@@ -474,14 +474,16 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm-10 col-md-10 col-lg-10"></div>
-                    <div class="col-sm-2 col-sm-2 col-sm-2">
-                            <span id="add_upload_group_button"
-                                  class="btn btn-info fileinput-button vertical-center">
-                                                                    <i class="glyphicon glyphicon-plus"></i>
-                                                                    <span>Add Experment Files</span>
-
-                                                                </span>
+                    <!--<div class="col-sm-4 col-md-4 col-lg-04" style="border:1px solid black">here</div>-->
+                    <div class="col-sm-6 col-sm-6 col-sm-6 pull-right" style="margin-right:50px">
+                            <span id="add_upload_group_button" class="btn btn-info fileinput-button vertical-center pull-right" style="margin-left:20px">
+								<i class="glyphicon glyphicon-plus"></i>
+								<span>Add Experment Group</span>
+							</span>
+							<span id="delete_upload_group_button" class="btn btn-danger fileinput-button vertical-center pull-right">
+								<i class="glyphicon glyphicon-minus"></i>
+								<span>Remove Experment Group</span>
+							</span>
                     </div>
                 </div>
             </div>

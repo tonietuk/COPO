@@ -3,6 +3,7 @@
  */
 $(document).ready( function(){
     $('#multiplex_checkbox').attr('checked', false);
+    $('#delete_upload_group_button').hide()
     $('#upload_counter').val('0')
     $('#save_study').text('Save Study').removeAttr('disabled')
     study_form_data()
@@ -24,6 +25,20 @@ $(document).ready( function(){
         html = get_upload_box_html(count)
         $('#container').append(html)
         $('#upload_counter').val(count)
+        if(count > 1){
+            $('#delete_upload_group_button').show()
+        }
+    })
+    $('#delete_upload_group_button').click(function(){
+        var count = parseInt($('#upload_counter').val())
+        if(count > 1){
+            count = count - 1;
+            $('#container').children().last().remove()
+            $('#upload_counter').val(count)
+        }
+        if(count == 1){
+            $('#delete_upload_group_button').hide()
+        }
     })
     $('#multiplex_checkbox').change(function(){
         //get value of the id of the upload box from hidden field
@@ -33,12 +48,14 @@ $(document).ready( function(){
             html = get_upload_box_html(count)
             $('#container').append(html)
             $('#add_upload_group_button').show()
+
             $('#upload_counter').val(count)
         }
         else{
             count = count - 1
             $('#container').children().last().remove()
             $('#add_upload_group_button').hide()
+            $('#delete_upload_group_button').hide()
             $('#upload_counter').val(count)
         }
     })

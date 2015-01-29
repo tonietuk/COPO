@@ -342,13 +342,6 @@ def receive_data_file(request):
     if request.method == 'POST':
         c = {}
 
-
-        #get timestamp
-
-
-
-
-
         fff = request.FILES['file']
         fname = fff.__str__()
         attrs = {'user': request.user, 'filename': fname}
@@ -433,7 +426,6 @@ def zip_file(request):
     #get the name of the file to zip and change its suffix to .gz
     input_file_name = os.path.join(settings.MEDIA_ROOT, file_obj.file.name)
     output_file_name = os.path.splitext(file_obj.filename)[0] + '.gz'
-
     try:
         #open the file as gzip acrchive...set compression level
         temp_name = os.path.join(settings.MEDIA_ROOT, str(uuid.uuid4()) + '.tmp')
@@ -445,6 +437,7 @@ def zip_file(request):
         for chunk in iter(lambda: src.read(n), ''):
             myzip.write(chunk)
     finally:
+
         myzip.close()
         src.close()
 
@@ -455,7 +448,10 @@ def zip_file(request):
 
     os.remove(input_file_name)
     os.rename(temp_name, input_file_name)
+    stats = os.stat(input_file_name)
+    new_file_size = stats.st_size / 1000 / 1000
 
-    out = {'zipped': True}
+
+    out = {'zipped': True, 'file_name':output_file_name, 'file_size':new_file_size}
     out = jsonpickle.encode(out)
     return HttpResponse(out, content_type='text/plain')

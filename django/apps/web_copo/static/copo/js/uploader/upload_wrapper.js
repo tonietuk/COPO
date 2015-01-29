@@ -258,8 +258,10 @@ $(document).ready(function(){
                     type:'GET',
                     dataType:'text',
                     data:{'file_id': file_id},
-                    success:function(){
+                    success:function(data){
                         $( "input[value='" + file_id + "']" ).parent().next().children('.zip-image').fadeOut('4000')
+                        console.log(data)
+
                         get_hash(file_id)
                     },
                     error:function(data){
