@@ -125,6 +125,7 @@ $(document).ready(function(){
                 var file_name = data.files[0].name.substr(0, data.files[0].name.indexOf('.'))
                 //console.log(data)
                 $(this).find('input[name=upload_id]').val(data.result.upload_id)
+                console.log($(this).fileupload('active'))
 
             }).bind('fileuploadchange', function (e, data) {
 
@@ -161,6 +162,7 @@ $(document).ready(function(){
                 //if we have a non chunked upload, just call the update_html method
                 update_html(data, tform)
             }
+
     }
 
     //update the html based on the results of the upload process
@@ -183,7 +185,7 @@ $(document).ready(function(){
             $('#id_' + file_name).remove()
             div = $('<div/>')
             html = "<div class='row'><div class='col-sm-9 col-md-9 col-lg-9'>"
-            + "<input type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li>" + x[i].size.toFixed(1) + " MB</li></ul>"
+            + "<input type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li class='file_size'>" + x[i].size.toFixed(1) + " MB</li></ul>"
             + "</div><div class='col-sm-3 col-md-3 col-lg-3'>"
             + '<span class="text-right zip-image"><img src="' + zipping_img + '" class="pull-right"/>'
                 + '<h4 style="margin-right:30px">Zipping</h4></span>'
@@ -201,28 +203,14 @@ $(document).ready(function(){
         }
 
         //now call function to inspect files
-        inspect_uploaded_files(x[0].id)
+        inspect_uploaded_files(x[0].id, tform)
     }
 
 
-    function get_hash(id){
-        $( "input[value='" + id + "']" ).parent().next().children('.hash-image').show()
-        $.ajax({ url: "/rest/hash_upload/",
-            type: "GET",
-            data: {file_id: id},
-            dataType: 'text'
-        }).done(function(data){
-            //now find the correct div and append the hash to it
-            var obj = jQuery.parseJSON(data)
-            $d = $( "input[value='" + obj.file_id + "']" ).parent()
-            html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
-            $d.children('ul').append(html)
-            $( "input[value='" + id + "']" ).parent().next().children('.hash-image').hide()
-        })
-    }
 
 
-    function inspect_uploaded_files(file_id){
+
+    function inspect_uploaded_files(file_id, tform){
         //this function calls the server to ask it to inspect the files just uploaded and provide
         //the front end with any information to autocomplete the input form
 
@@ -256,13 +244,17 @@ $(document).ready(function(){
                 $.ajax({
                     url: '/rest/zip_file/',
                     type:'GET',
-                    dataType:'text',
+                    dataType:'json',
                     data:{'file_id': file_id},
                     success:function(data){
                         $( "input[value='" + file_id + "']" ).parent().next().children('.zip-image').fadeOut('4000')
-                        console.log(data)
-
-                        get_hash(file_id)
+                        //now change the file name and file size in the alert div
+                        var new_name = data.file_name
+                        var new_size = data.file_size
+                        var node = $('input[value=' + file_id + ']')
+                        $(node).next().find('strong').html(new_name)
+                        $(node).next().find('.file_size').html(new_size + ' MB')
+                        get_hash(file_id, tform)
                     },
                     error:function(data){
                         console.log(data)
@@ -270,12 +262,37 @@ $(document).ready(function(){
                 })
             }
             else{
-                get_hash(file_id)
+                get_hash(file_id, tform)
             }
          })
     }
 
 })
+
+function get_hash(id, tform){
+        $( "input[value='" + id + "']" ).parent().next().children('.hash-image').show()
+        $.ajax({ url: "/rest/hash_upload/",
+            type: "GET",
+            data: {file_id: id},
+            dataType: 'text'
+        }).done(function(data){
+            //now find the correct div and append the hash to it
+            var obj = jQuery.parseJSON(data)
+            $d = $( "input[value='" + obj.file_id + "']" ).parent()
+            html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
+            $d.children('ul').append(html)
+            $( "input[value='" + id + "']" ).parent().next().children('.hash-image').hide()
+            //now finalise group update box heading and close panel if necessary
+            finalise_group(id, tform)
+        })
+
+    }
+
+function finalise_group(file_id, tform){
+    if($(tform).fileupload('active') < 1){
+        alert('here')
+    }
+}
     /*
     get_upload_box_html()
 
