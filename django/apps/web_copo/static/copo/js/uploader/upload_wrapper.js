@@ -290,7 +290,7 @@ function get_hash(id, tform){
 
 function finalise_group(file_id, tform){
     if($(tform).fileupload('active') < 1){
-        alert('here')
+        alert('copo')
     }
 }
     /*
