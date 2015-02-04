@@ -187,7 +187,7 @@ $(document).ready(function(){
             html = "<div class='row'><div class='col-sm-9 col-md-9 col-lg-9'>"
             + "<input type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li class='file_size'>" + x[i].size.toFixed(1) + " MB</li></ul>"
             + "</div><div class='col-sm-3 col-md-3 col-lg-3'>"
-            + '<span class="text-right zip-image"><img src="' + zipping_img + '" class="pull-right"/>'
+            + '<span class="text-right zip-image"><img src="' + zipping_img + '" height="20px" class="pull-right"/>'
                 + '<h4 style="margin-right:30px">Zipping</h4></span>'
                 + '<span class="text-right hash-image"><img src="' + hashing_img + '" height="20px" class="pull-right"/>'
                 + '<h4 style="margin-right:30px">Hashing</h4></span></div></div>'
@@ -270,28 +270,49 @@ $(document).ready(function(){
 })
 
 function get_hash(id, tform){
-        $( "input[value='" + id + "']" ).parent().next().children('.hash-image').show()
-        $.ajax({ url: "/rest/hash_upload/",
-            type: "GET",
-            data: {file_id: id},
-            dataType: 'text'
-        }).done(function(data){
-            //now find the correct div and append the hash to it
-            var obj = jQuery.parseJSON(data)
-            $d = $( "input[value='" + obj.file_id + "']" ).parent()
-            html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
-            $d.children('ul').append(html)
-            $( "input[value='" + id + "']" ).parent().next().children('.hash-image').hide()
-            //now finalise group update box heading and close panel if necessary
-            finalise_group(id, tform)
-        })
+    $( "input[value='" + id + "']" ).parent().next().children('.hash-image').show()
+    $.ajax({ url: "/rest/hash_upload/",
+        type: "GET",
+        data: {file_id: id},
+        dataType: 'text'
+    }).done(function(data){
+        //now find the correct div and append the hash to it
+        var obj = jQuery.parseJSON(data)
+        $d = $( "input[value='" + obj.file_id + "']" ).parent()
+        html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
+        $d.children('ul').append(html)
+        $( "input[value='" + id + "']" ).parent().next().children('.hash-image').hide()
+        //now finalise group update box heading and close panel if necessary
+        finalise_group(id, tform)
+    })
 
-    }
+}
 
 function finalise_group(file_id, tform){
+    //if this is the last upload
     if($(tform).fileupload('active') < 1){
-        alert('copo')
-    }
+        var total = 0
+        var file_type = ''
+        var ext = ''
+        //get all the input success alerts
+        $('input[value=' + file_id + ']').parents().eq(3).children('.alert-success').each(function(i, value){
+            //iterate over them counting the sizes of their files
+            var f_name = $(value).parent().find('strong').html()
+            if(i == 0){
+                file_type = f_name.split('.').pop()
+            }
+            else{
+                f_ext = f_name.split('.').pop()
+                if(file_type != f_ext){
+                    file_type = 'Mixed'
+                }
+            }
+            total = total + parseFloat($(value).find('li[class=file_size]').text().replace(' MB', ''))
+            //console.log(parseFloat($(value).find('li[class=file_size]').text().replace(' MB', '')))
+
+        })
+        $('input[value=' + file_id + ']').parents().eq(6).find('.panel-title').html(file_type + ' Files Group - ' + total + ' MB')
+        $('input[value=' + file_id + ']').parents().eq(5).css('display', 'none')    }
 }
     /*
     get_upload_box_html()

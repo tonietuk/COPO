@@ -67,3 +67,21 @@ a.clickable:hover { text-decoration:none; }
 .file_info{
     margin-top:20px
 }
+
+.upload_input{
+    width:180px !important
+
+}
+
+.file_status_label, .alert_success{
+    margin:0 20px 0 20px;
+
+}
+.alert{
+    color:black;
+}
+
+form{
+    margin-bottom:20px
+}
+

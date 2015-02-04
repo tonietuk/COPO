@@ -47,6 +47,11 @@ $(document).ready( function(){
             count = count + 1
             html = get_upload_box_html(count)
             $('#container').append(html)
+
+            //deal with csrf token
+            var token = $('#hidden_attrs').children('input[name=csrfmiddlewaretoken]').val()
+            $('input[name=csrfmiddlewaretoken]').val(token)
+
             $('#add_upload_group_button').show()
 
             $('#upload_counter').val(count)
