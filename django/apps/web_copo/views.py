@@ -109,7 +109,7 @@ def view_test(request):
 def new_collection(request):
     c_type = request.POST['collection_type']
     c_name = request.POST['collection_name']
-    profile_id = request.POST['bundle_id']
+    profile_id = request.POST['profile_id']
     b = Profile.objects.get(id=profile_id)
 
     c = b.collection_set.create(

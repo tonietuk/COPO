@@ -128,7 +128,7 @@ def save_ena_study_callback(request):
         e.study_description = values['STUDY_DESCRIPTION']
         e.center_project_name = values['CENTER_PROJECT_NAME']
         e.save()
-
+        study_id = e.id
         #now clear existing attributes and add the updated set
         for a in e.enastudyattr_set.all():
             a.delete()
@@ -156,7 +156,7 @@ def save_ena_study_callback(request):
         except(TypeError):
             return_type = False
 
-    return_structure = {'return_value': return_type}
+    return_structure = {'return_value': return_type, 'study_id': e.id}
     out = jsonpickle.encode(return_structure)
     return HttpResponse(out, content_type='json')
 

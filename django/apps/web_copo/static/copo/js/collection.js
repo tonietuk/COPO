@@ -23,11 +23,13 @@ $(document).ready( function(){
         var count = parseInt($('#upload_counter').val())
         count = count + 1
         html = get_upload_box_html(count)
-        $('#container').append(html)
+        var dom = jQuery.parseHTML(html)
+        $('#container').append(dom)
         $('#upload_counter').val(count)
         if(count > 1){
             $('#delete_upload_group_button').show()
         }
+        get_experimental_samples(dom)
     })
     $('#delete_upload_group_button').click(function(){
         var count = parseInt($('#upload_counter').val())
@@ -45,8 +47,9 @@ $(document).ready( function(){
         var count = parseInt($('#upload_counter').val())
         if($('#multiplex_checkbox').is(':checked')){
             count = count + 1
-            html = get_upload_box_html(count)
-            $('#container').append(html)
+            var html = get_upload_box_html(count)
+            var dom = jQuery.parseHTML(html)
+            $('#container').append(dom)
 
             //deal with csrf token
             var token = $('#hidden_attrs').children('input[name=csrfmiddlewaretoken]').val()
@@ -55,6 +58,7 @@ $(document).ready( function(){
             $('#add_upload_group_button').show()
 
             $('#upload_counter').val(count)
+            get_experimental_samples(dom)
         }
         else{
             count = count - 1
@@ -105,11 +109,11 @@ $(document).ready( function(){
                 type:"GET",
                 url:"/rest/ena_new_study/",
                 async:false,
-                dataType:"text",
+                dataType:"json",
                 success:function(data){
-                    d = jQuery.parseJSON(data)
-                    if(d.return_value == true){
+                    if(data.return_value == true){
                         $('#save_study').text('Saved').attr('disabled','disabled')
+                        $('#study_id').val(data.study_id)
                     }
                 },
                 error:function(){
@@ -166,6 +170,13 @@ $(document).ready( function(){
             data:{sample_details:JSON.stringify(form), sample_attr:JSON.stringify(attr_values), collection_id: collection_id, study_id: study_id, sample_id:sample_id}
         });
     })
+
+    //function to save experiment
+    $('#btn_save_data').on('click', function(){
+        alert('copo!')
+    })
+
+
 
     //function to add new attribute to study html
     $('#study_add_attribute_button').click(function(){
@@ -372,7 +383,7 @@ $(document).ready( function(){
         });
     }
 
-    function get_experimental_samples(){
+    function get_experimental_samples(context){
         var study_id = $('#study_id').val()
         $.get( "/rest/get_experimental_samples/",
         {
@@ -388,7 +399,12 @@ $(document).ready( function(){
                 out += data[k].fields.scientific_name
                 out += '</option>'
             }
-            $('#select_sample_ref').empty().append(out)
+            if(context == undefined){
+                $('select[name=select_sample_ref]').empty().append(out)
+            }
+            else{
+                $(context).find('select[name=select_sample_ref]').empty().append(out)
+            }
         });
     }
 
@@ -435,6 +451,8 @@ $(document).ready( function(){
             )
         })
     }
+
+
 
 
 })

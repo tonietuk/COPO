@@ -466,8 +466,9 @@
                                                                     <i class="glyphicon glyphicon-plus"></i>
                                                                     <span>Select files...</span>
                                                                     <input type="file" name="file"
-																		   onchange="get_chunk_size(event)" multiple>
-                                                                    <input type="hidden" name="upload_id" value="">
+																		   onchange="get_chunk_size(event)" multiple/>
+                                                                    <input type="hidden" name="upload_id" value=""/>
+																	<input type="hidden" name="panel_id" value="0"/>
                                                                 </span>
 								</form>
 							</div>
@@ -501,15 +502,15 @@
 </div>
 
 
-</div>
+
 <div class="modal-footer">
 	<p id="p_save_data">
-		<button type="button" id="btn:save_data" class="btn btn-success">Save Data</button>
+		<button type="button" id="btn_save_data" class="btn btn-success">Save Data</button>
 	</p>
 </div>
 </div>
 </div>
-</div>
+
 
 {% endblock %}
 

@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 import datetime
 from time import time
 from django.core.files.storage import FileSystemStorage
+from chunked_upload.models import ChunkedUpload
 
 fs = FileSystemStorage(location='/Users/fshaw/Desktop/test')
 
@@ -119,4 +120,7 @@ class EnaExperiment(models.Model):
     library_construction_protocol = models.CharField(max_length=50, null=True, blank=True)
     library_layout = models.CharField(max_length=50, null=True, blank=True)
 
-
+class ExpFile(models.Model):
+    #class to join experiments with files
+    experiment_id = models.ForeignKey(EnaExperiment)
+    file_id = models.ForeignKey(ChunkedUpload)

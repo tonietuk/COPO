@@ -139,6 +139,8 @@ $(document).ready(function(){
     function finalise_upload(e, data, final, tform){
             //serialise form
             form = $(tform).serializeFormJSON()
+            panel_id = $(tform).attr('id')
+            panel_id = panel_id.split('_')[0]
             token = $.cookie('csrftoken')
             var output;
             if(chunk_size > 0){
@@ -147,7 +149,7 @@ $(document).ready(function(){
                     headers: {'X-CSRFToken':token},
                     url: "/rest/complete_upload/",
                     type: "POST",
-                    data: {'upload_id':final},
+                    data: {'upload_id':final, 'form':form},
                     success: function(data){
                         update_html(data, tform)
                     },
