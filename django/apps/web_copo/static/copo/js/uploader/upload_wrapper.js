@@ -140,7 +140,7 @@ $(document).ready(function(){
             //serialise form
             form = $(tform).serializeFormJSON()
             panel_id = $(tform).attr('id')
-            panel_id = panel_id.split('_')[0]
+            panel_id = panel_id.split('_')[1]
             token = $.cookie('csrftoken')
             var output;
             if(chunk_size > 0){
@@ -149,7 +149,7 @@ $(document).ready(function(){
                     headers: {'X-CSRFToken':token},
                     url: "/rest/complete_upload/",
                     type: "POST",
-                    data: {'upload_id':final, 'form':form},
+                    data: {'upload_id':final, 'panel_id':panel_id},
                     success: function(data){
                         update_html(data, tform)
                     },
@@ -187,7 +187,7 @@ $(document).ready(function(){
             $('#id_' + file_name).remove()
             div = $('<div/>')
             html = "<div class='row'><div class='col-sm-9 col-md-9 col-lg-9'>"
-            + "<input type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li class='file_size'>" + x[i].size.toFixed(1) + " MB</li></ul>"
+            + "<input name='file_id' type='hidden' value='" + x[i].id + "'/> <ul class='list-inline'><li><strong>" + x[i].name + "</strong></li>-<li class='file_size'>" + x[i].size.toFixed(1) + " MB</li></ul>"
             + "</div><div class='col-sm-3 col-md-3 col-lg-3'>"
             + '<span class="text-right zip-image"><img src="' + zipping_img + '" height="20px" class="pull-right"/>'
                 + '<h4 style="margin-right:30px">Zipping</h4></span>'

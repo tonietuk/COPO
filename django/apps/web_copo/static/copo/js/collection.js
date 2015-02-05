@@ -173,7 +173,48 @@ $(document).ready( function(){
 
     //function to save experiment
     $('#btn_save_data').on('click', function(){
-        alert('copo!')
+        //get common fields
+        var token = $.cookie('csrftoken')
+        var common = {}
+        common.platform = $('#select_platform').val()
+        common.model = $('#select_instrument_model').val()
+        common.lib_source = $('#select_library_source').val()
+        common.lib_selection = $('#select_library_selection').val()
+        common.lib_strategy = $('#select_library_strategy').val()
+        common.insert_size = $('#input_insert_size').val()
+        //now iterate for each file group box
+        //each of these will produce a separate experiment
+        //object using controls in the container and the common values above
+        $('#container').children('.row').each(function(key_1, panel){
+            //get all the alert success labels. Each of these contains the file id
+            //of a previously uploaded file
+            per_file = {}
+            var panel_files = []
+            var p = $(panel)
+            p.find('input[name=file_id]').each(function(key_2, hidden_id){
+                panel_files[key_2] = $(hidden_id).val()
+            })
+            per_file.files = panel_files
+            //now get the non-common elements for each panel box
+            per_file.file_type = p.find('#select_file_type').val()
+            per_file.lib_name = p.find('#input_library_name').val()
+            per_file.sample_id = p.find('#select_sample_ref').val()
+            common = JSON.stringify(common)
+            per_file = JSON.stringify(per_file)
+            $.ajax({
+                type:'POST',
+                url: "/rest/save_experiment/",
+                headers: {'X-CSRFToken':token},
+                data:{'common':common, 'per_file':per_file},
+                dataType:'json',
+                success: function(data){
+                    alert('data')
+                },
+                error: function(data){
+                    alert(data)
+                }
+            })
+        })
     })
 
 

@@ -5,7 +5,7 @@ from rest_framework.renderers import JSONRenderer
 import jsonpickle
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
-from apps.web_copo.models import EnaStudy, EnaSample, EnaStudyAttr, EnaSampleAttr, EnaExperiment, DocumentForm, Document
+from apps.web_copo.models import EnaStudy, EnaSample, EnaStudyAttr, EnaSampleAttr, EnaExperiment, ExpFile, DocumentForm, Document
 import apps.web_copo.xml.EnaParsers as parsers
 import apps.web_copo.utils.EnaUtils as u
 from chunked_upload.models import ChunkedUpload
@@ -455,3 +455,25 @@ def zip_file(request):
     out = {'zipped': True, 'file_name':output_file_name, 'file_size':new_file_size}
     out = jsonpickle.encode(out)
     return HttpResponse(out, content_type='text/plain')
+
+def save_experiment(request):
+    common = jsonpickle.decode(request.POST.get('common'))
+    per_file = jsonpickle.decode(request.POST.get('per_file'))
+
+    exp = EnaExperiment()
+    exp.platform = common.platform
+    exp.instrument = common.model
+    exp.lib_source = common.lib_source
+    exp.lib_selection = common.lib_selection
+    exp.lib_strategy = common.lib_strategy
+    exp.insert_size = common.insert_size
+    exp.sample = per_file.sample_id
+
+    exp.sample = per_file.sample_id
+    exp.lib_name = per_file.lib_name
+    exp.file_type = per_file.file_type
+
+    #here we need to loop through per_fil.files creating new ExpFile objects for each file id
+
+
+    return HttpResponse("ABCDEFG", content_type='text/plain')

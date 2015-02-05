@@ -109,18 +109,23 @@ class EnaSampleAttr(models.Model):
 
 
 class EnaExperiment(models.Model):
-    data = models.ForeignKey(Resource)
-    sample_reference = models.ForeignKey(EnaStudy)
-    instrument_model = models.CharField(max_length=50, null=True, blank=True)
-    library_name = models.CharField(max_length=50, null=True, blank=True)
-    library_source = models.CharField(max_length=50, null=True, blank=True)
-    library_selection = models.CharField(max_length=50, null=True, blank=True)
-    library_strategy = models.CharField(max_length=50, null=True, blank=True)
+    sample = models.ForeignKey(EnaStudy)
+    platform = models.CharField(max_length=50, null=True, blank=True)
+    instrument = models.CharField(max_length=50, null=True, blank=True)
+    lib_name = models.CharField(max_length=50, null=True, blank=True)
+    lib_source = models.CharField(max_length=50, null=True, blank=True)
+    lib_selection = models.CharField(max_length=50, null=True, blank=True)
+    lib_strategy = models.CharField(max_length=50, null=True, blank=True)
+    insert_size = models.IntegerField(null=True, blank=True)
     design_description = models.CharField(max_length=50, null=True, blank=True)
-    library_construction_protocol = models.CharField(max_length=50, null=True, blank=True)
-    library_layout = models.CharField(max_length=50, null=True, blank=True)
+    lib_construction_protocol = models.CharField(max_length=50, null=True, blank=True)
+    lib_layout = models.CharField(max_length=50, null=True, blank=True)
+    file_type = models.CharField(max_length=50, null=True, blank=True)
+    lib_name = models.CharField(max_length=100, null=True, blank=True)
+
 
 class ExpFile(models.Model):
     #class to join experiments with files
     experiment_id = models.ForeignKey(EnaExperiment)
     file_id = models.ForeignKey(ChunkedUpload)
+    md5_hash = models.CharField(max_length=50, null=True, blank=True)
