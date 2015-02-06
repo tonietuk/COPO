@@ -174,8 +174,10 @@ $(document).ready( function(){
     //function to save experiment
     $('#btn_save_data').on('click', function(){
         //get common fields
+
         var token = $.cookie('csrftoken')
         var common = {}
+        common.study = $('#study_id').val()
         common.platform = $('#select_platform').val()
         common.model = $('#select_instrument_model').val()
         common.lib_source = $('#select_library_source').val()
@@ -188,24 +190,32 @@ $(document).ready( function(){
         $('#container').children('.row').each(function(key_1, panel){
             //get all the alert success labels. Each of these contains the file id
             //of a previously uploaded file
-            per_file = {}
+            per_panel = {}
             var panel_files = []
+            var panel_hashes = []
             var p = $(panel)
+            var per_panel.panel_id = p.find('input[name=panel_id]').val()
             p.find('input[name=file_id]').each(function(key_2, hidden_id){
+                //this is the file id
                 panel_files[key_2] = $(hidden_id).val()
             })
-            per_file.files = panel_files
+            per_panel.files = panel_files
+            p.find('.hash_span').each(function(key_2, hash_span){
+                //now need to get file hash
+                panel_hashes[key_2] = $(hash_span).text()
+            })
+            per_panel.hashes = panel_hashes
             //now get the non-common elements for each panel box
-            per_file.file_type = p.find('#select_file_type').val()
-            per_file.lib_name = p.find('#input_library_name').val()
-            per_file.sample_id = p.find('#select_sample_ref').val()
+            per_panel.file_type = p.find('#select_file_type').val()
+            per_panel.lib_name = p.find('#input_library_name').val()
+            per_panel.sample_id = p.find('#select_sample_ref').val()
             common = JSON.stringify(common)
-            per_file = JSON.stringify(per_file)
+            per_panel = JSON.stringify(per_panel)
             $.ajax({
                 type:'POST',
                 url: "/rest/save_experiment/",
                 headers: {'X-CSRFToken':token},
-                data:{'common':common, 'per_file':per_file},
+                data:{'common':common, 'per_panel':per_panel},
                 dataType:'json',
                 success: function(data){
                     alert('data')
@@ -434,7 +444,7 @@ $(document).ready( function(){
 
             var out = ''
             for(var k = 0; k < data.length; k++){
-                out += '<option>'
+                out += '<option value="' + data[k].pk + '">'
                 out += data[k].fields.title
                 out += ' - '
                 out += data[k].fields.scientific_name

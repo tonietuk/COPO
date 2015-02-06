@@ -281,7 +281,7 @@ function get_hash(id, tform){
         //now find the correct div and append the hash to it
         var obj = jQuery.parseJSON(data)
         $d = $( "input[value='" + obj.file_id + "']" ).parent()
-        html = '<h5><span class="label label-success">' + obj.output_hash + '</span></h5>'
+        html = '<h5><span class="hash_span label label-success">' + obj.output_hash + '</span></h5>'
         $d.children('ul').append(html)
         $( "input[value='" + id + "']" ).parent().next().children('.hash-image').hide()
         //now finalise group update box heading and close panel if necessary

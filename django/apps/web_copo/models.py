@@ -109,23 +109,27 @@ class EnaSampleAttr(models.Model):
 
 
 class EnaExperiment(models.Model):
-    sample = models.ForeignKey(EnaStudy)
+    study = models.ForeignKey(EnaStudy, null=True)
+    sample = models.ForeignKey(EnaSample, null=True)
     platform = models.CharField(max_length=50, null=True, blank=True)
     instrument = models.CharField(max_length=50, null=True, blank=True)
     lib_name = models.CharField(max_length=50, null=True, blank=True)
     lib_source = models.CharField(max_length=50, null=True, blank=True)
     lib_selection = models.CharField(max_length=50, null=True, blank=True)
     lib_strategy = models.CharField(max_length=50, null=True, blank=True)
-    insert_size = models.IntegerField(null=True, blank=True)
+    insert_size = models.IntegerField(default=0, null=True, blank=True)
     design_description = models.CharField(max_length=50, null=True, blank=True)
     lib_construction_protocol = models.CharField(max_length=50, null=True, blank=True)
     lib_layout = models.CharField(max_length=50, null=True, blank=True)
     file_type = models.CharField(max_length=50, null=True, blank=True)
     lib_name = models.CharField(max_length=100, null=True, blank=True)
+    #panel id allows for multiple experiments to be displayed as if they were multiplexed
+    #single experiments. i.e. make a new panel for each new panel id
+    panel_id = models.IntegerField(default=0)
 
 
 class ExpFile(models.Model):
     #class to join experiments with files
-    experiment_id = models.ForeignKey(EnaExperiment)
-    file_id = models.ForeignKey(ChunkedUpload)
+    experiment = models.ForeignKey(EnaExperiment)
+    file = models.ForeignKey(ChunkedUpload)
     md5_hash = models.CharField(max_length=50, null=True, blank=True)

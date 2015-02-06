@@ -458,22 +458,38 @@ def zip_file(request):
 
 def save_experiment(request):
     common = jsonpickle.decode(request.POST.get('common'))
-    per_file = jsonpickle.decode(request.POST.get('per_file'))
+    per_panel = jsonpickle.decode(request.POST.get('per_panel'))
 
     exp = EnaExperiment()
-    exp.platform = common.platform
-    exp.instrument = common.model
-    exp.lib_source = common.lib_source
-    exp.lib_selection = common.lib_selection
-    exp.lib_strategy = common.lib_strategy
-    exp.insert_size = common.insert_size
-    exp.sample = per_file.sample_id
+    exp.platform = common['platform']
+    exp.instrument = common['model']
+    exp.lib_source = common['lib_source']
+    exp.lib_selection = common['lib_selection']
+    exp.lib_strategy = common['lib_strategy']
+    try:
+        exp.insert_size = int(common['insert_size'])
+    except:
+        exp.insert_size = 0
+    study_id = common['study']
+    exp.study = EnaStudy.objects.get(id = int(study_id))
+    sample_id = per_panel['sample_id']
+    exp.sample = EnaSample.objects.get(id = int(sample_id))
 
-    exp.sample = per_file.sample_id
-    exp.lib_name = per_file.lib_name
-    exp.file_type = per_file.file_type
-
+    exp.lib_name = per_panel['lib_name']
+    exp.file_type = per_panel['file_type']
+    exp.save()
     #here we need to loop through per_fil.files creating new ExpFile objects for each file id
 
+    for k in range(0, len(per_panel['files'])):
+        #for each file in the list supplied, create a new
+        #ExpFile object to join the experiment object and the chunked upload entry
+        f = ExpFile()
+
+        #get chunkedUpload object
+        f.file = ChunkedUpload.objects.get(id=int(per_panel['files'][k]))
+        #assign experiment
+        f.experiment = exp
+        f.md5_hash = per_panel['hashes'][k]
+        f.save()
 
     return HttpResponse("ABCDEFG", content_type='text/plain')
