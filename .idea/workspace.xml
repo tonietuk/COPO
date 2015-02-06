@@ -2,10 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="9fa971f6-f398-41e3-ba42-1919a585bde2" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0001_initial.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0002_auto_20141124_1710.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0003_enasample_scientific_name.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0004_auto_20141127_1526.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0005_auto_20141201_1111.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0006_collection_typo.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0007_remove_collection_typo.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0008_document.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0009_auto_20141209_1210.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0010_auto_20141209_1405.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0011_auto_20141215_1454.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0012_expfile.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0013_expfile_md5_hash.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0014_auto_20150205_1646.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0015_enaexperiment_platform.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0016_enaexperiment_insert_size.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0017_auto_20150206_1114.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0018_auto_20150206_1219.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0019_auto_20150206_1422.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/django/apps/web_copo/migrations/0020_enaexperiment_panel_id.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py" afterPath="$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/collection.js" afterPath="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/collection.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django/apps/web_copo/models.py" afterPath="$PROJECT_DIR$/django/apps/web_copo/models.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_wrapper.js" afterPath="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_wrapper.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django/apps/web_copo/templates/copo/ena_collection_multi.html" afterPath="$PROJECT_DIR$/django/apps/web_copo/templates/copo/ena_collection_multi.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_util.js" afterPath="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_util.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="COPO.iws" />
@@ -79,21 +99,21 @@
     <splitter split-orientation="horizontal" split-proportion="0.51513314">
       <split-first>
         <leaf>
-          <file leaf-file-name="models.py" pinned="false" current="true" current-in-tab="true">
+          <file leaf-file-name="models.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/django/apps/web_copo/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.78530425" vertical-offset="1373" max-vertical-offset="2295">
+                <state vertical-scroll-proportion="0.0" vertical-offset="1373" max-vertical-offset="2295">
                   <caret line="127" column="45" selection-start-line="127" selection-start-column="45" selection-end-line="127" selection-end-column="45" />
                   <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="collection.js" pinned="false" current="false" current-in-tab="false">
+          <file leaf-file-name="collection.js" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/collection.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="2975" max-vertical-offset="8738">
-                  <caret line="196" column="73" selection-start-line="196" selection-start-column="73" selection-end-line="196" selection-end-column="73" />
+                <state vertical-scroll-proportion="0.22727273" vertical-offset="3284" max-vertical-offset="8908">
+                  <caret line="202" column="12" selection-start-line="202" selection-start-column="12" selection-end-line="202" selection-end-column="12" />
                   <folding />
                 </state>
               </provider>
@@ -102,8 +122,18 @@
           <file leaf-file-name="upload_wrapper.js" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_wrapper.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="-200.5" vertical-offset="2982" max-vertical-offset="6256">
+                <state vertical-scroll-proportion="-370.5" vertical-offset="2642" max-vertical-offset="6256">
                   <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="upload_util.js" pinned="false" current="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_util.js">
+              <provider selected="true" editor-type-id="text-editor">
+                <state vertical-scroll-proportion="0.0" vertical-offset="836" max-vertical-offset="1581">
+                  <caret line="74" column="71" selection-start-line="74" selection-start-column="71" selection-end-line="74" selection-end-column="71" />
                   <folding />
                 </state>
               </provider>
@@ -116,7 +146,7 @@
           <file leaf-file-name="rest_urls.py" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/django/apps/web_copo/rest_urls.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="375" max-vertical-offset="480">
+                <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
                   <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="46" />
                   <folding />
                 </state>
@@ -133,11 +163,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="EnaRest.py" pinned="false" current="false" current-in-tab="true">
+          <file leaf-file-name="EnaRest.py" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="1.4380841" vertical-offset="6419" max-vertical-offset="8245">
-                  <caret line="465" column="41" selection-start-line="465" selection-start-column="41" selection-end-line="465" selection-end-column="41" />
+                <state vertical-scroll-proportion="0.5866261" vertical-offset="7740" max-vertical-offset="8398">
+                  <caret line="493" column="8" selection-start-line="493" selection-start-column="8" selection-end-line="493" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -146,8 +176,8 @@
           <file leaf-file-name="ena_collection_multi.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/django/apps/web_copo/templates/copo/ena_collection_multi.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="6684" max-vertical-offset="8085">
-                  <caret line="501" column="6" selection-start-line="501" selection-start-column="6" selection-end-line="501" selection-end-column="6" />
+                <state vertical-scroll-proportion="-18.846153" vertical-offset="7517" max-vertical-offset="9180">
+                  <caret line="471" column="68" selection-start-line="471" selection-start-column="68" selection-end-line="471" selection-end-column="113" />
                   <folding />
                 </state>
               </provider>
@@ -224,16 +254,16 @@
         <option value="$PROJECT_DIR$/django/apps/web_copo/templates/copo/base.html" />
         <option value="$PROJECT_DIR$/django/apps/web_copo/migrations/0001_initial.py" />
         <option value="$PROJECT_DIR$/django/apps/web_copo/views.py" />
-        <option value="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_util.js" />
-        <option value="$PROJECT_DIR$/django/apps/web_copo/templates/copo/ena_collection_multi.html" />
         <option value="/Library/Python/2.7/site-packages/chunked_upload/views.py" />
         <option value="$PROJECT_DIR$/django/apps/web_copo/rest_urls.py" />
         <option value="$PROJECT_DIR$/django/apps/web_copo/tests.py" />
-        <option value="$PROJECT_DIR$/django/project_copo/settings.py" />
         <option value="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_wrapper.js" />
-        <option value="$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py" />
-        <option value="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/collection.js" />
         <option value="$PROJECT_DIR$/django/apps/web_copo/models.py" />
+        <option value="$PROJECT_DIR$/django/project_copo/settings.py" />
+        <option value="$PROJECT_DIR$/django/apps/web_copo/templates/copo/ena_collection_multi.html" />
+        <option value="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_util.js" />
+        <option value="$PROJECT_DIR$/django/apps/web_copo/static/copo/js/collection.js" />
+        <option value="$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py" />
       </list>
     </option>
   </component>
@@ -1209,7 +1239,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32788798" sideWeight="0.49963742" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17008953" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" x="-541" y="133" width="353" height="707" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13006845" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" x="784" y="182" width="353" height="473" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22024472" sideWeight="0.49963742" order="5" side_tool="false" content_ui="tabs" x="2801" y="54" width="763" height="881" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22024472" sideWeight="0.49963742" order="5" side_tool="false" content_ui="tabs" x="2801" y="54" width="763" height="881" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16274865" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32881355" sideWeight="0.5003626" order="9" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.17062147" sideWeight="0.49963742" order="2" side_tool="false" content_ui="tabs" />
@@ -1276,10 +1306,17 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py</url>
+          <line>496</line>
+          <option name="timeStamp" value="290" />
+        </line-breakpoint>
+      </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
-      <option name="time" value="285" />
+      <option name="time" value="291" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -1535,13 +1572,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/migrations/0001_initial.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.26190478" vertical-offset="0" max-vertical-offset="2400">
-          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/django/apps/web_copo/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="90" max-vertical-offset="2160">
@@ -1563,36 +1593,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/templates/copo/ena_collection_multi.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6684" max-vertical-offset="8085">
-          <caret line="501" column="6" selection-start-line="501" selection-start-column="6" selection-end-line="501" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/rest_urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="435">
-          <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="46" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/django/project_copo/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3888025" vertical-offset="785" max-vertical-offset="2835">
-          <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_util.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.1588785" vertical-offset="524" max-vertical-offset="1380">
-          <caret line="44" column="191" selection-start-line="44" selection-start-column="191" selection-end-line="44" selection-end-column="191" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/django/apps/web_copo/tests.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="345">
@@ -1609,41 +1609,74 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///Library/Python/2.7/site-packages/django/core/handlers/base.py">
+    <entry file="file://$PROJECT_DIR$/django/project_copo/settings.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.33282673" vertical-offset="1206" max-vertical-offset="3660">
-          <caret line="110" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.4380841" vertical-offset="6419" max-vertical-offset="8245">
-          <caret line="465" column="41" selection-start-line="465" selection-start-column="41" selection-end-line="465" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_wrapper.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-200.5" vertical-offset="2982" max-vertical-offset="6256">
-          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/collection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="2975" max-vertical-offset="8738">
-          <caret line="196" column="73" selection-start-line="196" selection-start-column="73" selection-end-line="196" selection-end-column="73" />
+        <state vertical-scroll-proportion="0.3892078" vertical-offset="834" max-vertical-offset="3213">
+          <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/django/apps/web_copo/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.78530425" vertical-offset="1373" max-vertical-offset="2295">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1373" max-vertical-offset="2295">
           <caret line="127" column="45" selection-start-line="127" selection-start-column="45" selection-end-line="127" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/rest_urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+          <caret line="25" column="30" selection-start-line="25" selection-start-column="30" selection-end-line="25" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_wrapper.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-370.5" vertical-offset="2642" max-vertical-offset="6256">
+          <caret line="199" column="0" selection-start-line="199" selection-start-column="0" selection-end-line="199" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/templates/copo/ena_collection_multi.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-18.846153" vertical-offset="7517" max-vertical-offset="9180">
+          <caret line="471" column="68" selection-start-line="471" selection-start-column="68" selection-end-line="471" selection-end-column="113" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Python/2.7/site-packages/django/core/handlers/base.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.33333334" vertical-offset="1395" max-vertical-offset="4148">
+          <caret line="110" column="0" selection-start-line="110" selection-start-column="0" selection-end-line="110" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/uploader/upload_util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="836" max-vertical-offset="1581">
+          <caret line="74" column="71" selection-start-line="74" selection-start-column="71" selection-end-line="74" selection-end-column="71" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/static/copo/js/collection.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22727273" vertical-offset="3284" max-vertical-offset="8908">
+          <caret line="202" column="12" selection-start-line="202" selection-start-column="12" selection-end-line="202" selection-end-column="12" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/django/apps/web_copo/rest/EnaRest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.5866261" vertical-offset="7740" max-vertical-offset="8398">
+          <caret line="493" column="8" selection-start-line="493" selection-start-column="8" selection-end-line="493" selection-end-column="8" />
           <folding />
         </state>
       </provider>

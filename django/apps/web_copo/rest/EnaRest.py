@@ -460,12 +460,20 @@ def save_experiment(request):
     common = jsonpickle.decode(request.POST.get('common'))
     per_panel = jsonpickle.decode(request.POST.get('per_panel'))
 
-    exp = EnaExperiment()
+    if(per_panel['experiment_id'] == ''):
+        #if we are dealing with a new experiment (i.e. no id has been supplied)
+        #then create a new object
+        exp = EnaExperiment()
+    else:
+        #else retrieve the existing object
+        exp = EnaExperiment.objects.get(id=int(per_panel['experiment_id']))
+
     exp.platform = common['platform']
     exp.instrument = common['model']
     exp.lib_source = common['lib_source']
     exp.lib_selection = common['lib_selection']
     exp.lib_strategy = common['lib_strategy']
+    exp.panel_id = int(per_panel['panel_id'])
     try:
         exp.insert_size = int(common['insert_size'])
     except:
@@ -491,5 +499,6 @@ def save_experiment(request):
         f.experiment = exp
         f.md5_hash = per_panel['hashes'][k]
         f.save()
-
-    return HttpResponse("ABCDEFG", content_type='text/plain')
+        out = {'experiment_id': exp.id}
+        out = jsonpickle.encode(out)
+    return HttpResponse(out, content_type='text/plain')

@@ -184,17 +184,23 @@ $(document).ready( function(){
         common.lib_selection = $('#select_library_selection').val()
         common.lib_strategy = $('#select_library_strategy').val()
         common.insert_size = $('#input_insert_size').val()
+
+        common = JSON.stringify(common)
         //now iterate for each file group box
         //each of these will produce a separate experiment
         //object using controls in the container and the common values above
+        var num_panels = $('#container').children('.row').size()
         $('#container').children('.row').each(function(key_1, panel){
             //get all the alert success labels. Each of these contains the file id
             //of a previously uploaded file
-            per_panel = {}
+            var per_panel = {}
             var panel_files = []
             var panel_hashes = []
             var p = $(panel)
-            var per_panel.panel_id = p.find('input[name=panel_id]').val()
+            per_panel.panel_id = p.find('input[name=panel_id]').val()
+            //get input to store experiment_id later on
+            var exp_input = p.find('input[name=exp_id]')
+            per_panel.experiment_id = $(exp_input).val()
             p.find('input[name=file_id]').each(function(key_2, hidden_id){
                 //this is the file id
                 panel_files[key_2] = $(hidden_id).val()
@@ -209,7 +215,7 @@ $(document).ready( function(){
             per_panel.file_type = p.find('#select_file_type').val()
             per_panel.lib_name = p.find('#input_library_name').val()
             per_panel.sample_id = p.find('#select_sample_ref').val()
-            common = JSON.stringify(common)
+
             per_panel = JSON.stringify(per_panel)
             $.ajax({
                 type:'POST',
@@ -218,13 +224,17 @@ $(document).ready( function(){
                 data:{'common':common, 'per_panel':per_panel},
                 dataType:'json',
                 success: function(data){
-                    alert('data')
+                    $(exp_input).val(data.experiment_id)
+                    if(key_1 == num_panels-1){
+                        $('#newDataModal').modal('hide')
+                    }
                 },
                 error: function(data){
                     alert(data)
                 }
             })
         })
+        $('newDataModal').modal('hide')
     })
 
 
