@@ -1,7 +1,7 @@
 from django.test import TestCase
-from django.test import Client
+#from django.test import Client
 import unittest
-from selenium import webdriver
+#from selenium import webdriver
 
 # Create your tests here.
 
@@ -11,7 +11,7 @@ class EnaTest(unittest.TestCase):
 
 
     def test_experiment(self):
-        driver = webdriver.Firefox()
-        driver.get("/copo")
+        #driver = webdriver.Firefox()
+        #driver.get("/copo")
         self.assertEqual(200, 200)
 

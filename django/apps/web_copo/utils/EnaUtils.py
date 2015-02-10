@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ObjectDoesNotExist
 import pysam
 from apps.web_copo.models import EnaStudy, EnaSample
+import pdb
 
 
 def get_sample_html_from_collection_id(collection_id):
@@ -97,3 +98,22 @@ def is_gzipped(file_name):
         return False
     finally:
         f.close()
+
+def filesize_toString(f_size):
+    import math
+    KB = math.pow(10,3)
+    MB = math.pow(10,6)
+    GB = math.pow(10,9)
+    TB = math.pow(10,12)
+
+    if f_size >= 0 and f_size < KB:
+        out = "%.2f" % f_size + ' B'
+    elif f_size >= KB and f_size < MB:
+        out = "%.2f" % (f_size / KB) + " KB"
+    elif f_size >= MB and f_size < GB:
+        out = "%.2f" % (f_size / MB) + " MB"
+    elif f_size >= GB and f_size < TB:
+        out = "%.2f" % (f_size / GB) + " GB"
+    else:
+        out = "%.2f" % (f_size / TB) + " TB"
+    return out

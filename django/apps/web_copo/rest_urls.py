@@ -24,4 +24,5 @@ urlpatterns = patterns('',
                        url(r'^inspect_file/', rest.inspect_file, name='inspect_file'),
                        url(r'^zip_file/', rest.zip_file, name='zip_file'),
                        url(r'^save_experiment/', rest.save_experiment, name='save_experiment'),
+                       url(r'^get_experiment_table_data/', rest.get_experiment_table_data, name='get_experiment_table_data'),
 )

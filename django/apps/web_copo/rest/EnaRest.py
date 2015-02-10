@@ -337,19 +337,20 @@ def get_experimental_samples(request):
 
 
 def receive_data_file(request):
+    from django.utils import timezone
     # need to make a chunked upload record to store deails of the file
 
     if request.method == 'POST':
         c = {}
+        f = request.FILES['file']
 
-        fff = request.FILES['file']
-        fname = fff.__str__()
-        attrs = {'user': request.user, 'filename': fname}
+        fname = f.__str__()
+        attrs = {'user': request.user, 'filename': fname, 'completed_on': timezone.now(), 'offset': f.size}
         chunked_upload = ChunkedUpload(**attrs)
         # file starts empty
         chunked_upload.file.save(name='', content=ContentFile(''), save=True)
 
-        f = request.FILES['file']
+
         path = chunked_upload.file
         destination = open(os.path.join(settings.MEDIA_ROOT, path.file.name), 'w+')
         for chunk in f.chunks():
@@ -467,13 +468,17 @@ def save_experiment(request):
     else:
         #else retrieve the existing object
         exp = EnaExperiment.objects.get(id=int(per_panel['experiment_id']))
+        #and delete linked expFile objects
+        ExpFile.objects.filter(experiment__id = exp.id).delete()
 
     exp.platform = common['platform']
     exp.instrument = common['model']
     exp.lib_source = common['lib_source']
     exp.lib_selection = common['lib_selection']
     exp.lib_strategy = common['lib_strategy']
-    exp.panel_id = int(per_panel['panel_id'])
+    exp.panel_ordering = int(per_panel['panel_ordering'])
+    exp.panel_id = per_panel['panel_id']
+    exp.data_modal_id = per_panel['data_modal_id']
     try:
         exp.insert_size = int(common['insert_size'])
     except:
@@ -501,4 +506,49 @@ def save_experiment(request):
         f.save()
         out = {'experiment_id': exp.id}
         out = jsonpickle.encode(out)
+    return HttpResponse(out, content_type='text/plain')
+
+def get_experiment_table_data(request):
+    from datetime import datetime
+    import pytz
+    #get experiment records, should only get those where panel_id is 0,
+    #as multiple experiments can appear in the same panel (fudge of multiplexed data)
+    e = EnaExperiment.objects.filter(study_id=request.GET.get('study_id'))
+
+
+    #do calculation to get the size of the related files and the date the group was last modified
+    #get ids of experiment objects
+    ids = set(exp.id for exp in e)
+    #get related ExpFile objects
+    file_set = ExpFile.objects.filter(experiment__in=ids)
+    #get ids of related ExpFile objects
+    ids = set(f.file_id for f in file_set)
+    #get related chunked_upload objects
+    chs = ChunkedUpload.objects.filter(id__in=ids)
+    total = 0
+    last_modified = datetime.min
+    utc = pytz.UTC
+    last_modified = utc.localize(last_modified)
+    #calculate the size of the file group and when in was last modified
+    for upload in chs:
+        total = total + upload.offset
+        if upload.completed_on > last_modified:
+            last_modified = upload.completed_on
+    #create output object
+    e = e.filter(panel_id=0)
+    elements = {}
+    if e.exists():
+
+        for member in e:
+            out = {}
+            group_type = member.platform
+            fmt = '%d-%m-%Y %H:%M:%S'
+            out['group_size'] = u.filesize_toString(total)
+            out['last_modified'] = last_modified.strftime(fmt)
+            out['platform'] = group_type
+            elements.append(out)
+        elements = jsonpickle.encode(elements)
+
+
+    out = jsonpickle.encode(elements)
     return HttpResponse(out, content_type='text/plain')

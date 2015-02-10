@@ -6,15 +6,28 @@ $(document).ready( function(){
     $('#delete_upload_group_button').hide()
     $('#upload_counter').val('0')
     $('#save_study').text('Save Study').removeAttr('disabled')
+    $('input[name=data_modal_id]').val()
     study_form_data()
     sample_form_data()
     exp_form_data()
     get_experimental_samples()
+    get_experiment_table_data()
     $('#collection_type').change(function(){
         study_form_data()
         sample_form_data()
         exp_form_data()
     })
+
+    $('#add_data_button').on('click', function(){
+        $('input[name=data_modal_id]').val(generate_uid())
+    })
+
+    //check value of initial panel id
+    var panel_id = $('input[name=panel_id]').val()
+    if(panel_id == ""){
+        var guid = generate_uid()
+        $('input[name=panel_id]').val(generate_uid())
+    }
 
     $('#select_platform').on('change', platform_change_handler)
 
@@ -22,7 +35,7 @@ $(document).ready( function(){
     $('#add_upload_group_button').click(function(){
         var count = parseInt($('#upload_counter').val())
         count = count + 1
-        html = get_upload_box_html(count)
+        html = get_upload_box_html(count, generate_uid())
         var dom = jQuery.parseHTML(html)
         $('#container').append(dom)
         $('#upload_counter').val(count)
@@ -47,7 +60,7 @@ $(document).ready( function(){
         var count = parseInt($('#upload_counter').val())
         if($('#multiplex_checkbox').is(':checked')){
             count = count + 1
-            var html = get_upload_box_html(count)
+            var html = get_upload_box_html(count, generate_uid())
             var dom = jQuery.parseHTML(html)
             $('#container').append(dom)
 
@@ -197,7 +210,7 @@ $(document).ready( function(){
             var panel_files = []
             var panel_hashes = []
             var p = $(panel)
-            per_panel.panel_id = p.find('input[name=panel_id]').val()
+
             //get input to store experiment_id later on
             var exp_input = p.find('input[name=exp_id]')
             per_panel.experiment_id = $(exp_input).val()
@@ -215,8 +228,11 @@ $(document).ready( function(){
             per_panel.file_type = p.find('#select_file_type').val()
             per_panel.lib_name = p.find('#input_library_name').val()
             per_panel.sample_id = p.find('#select_sample_ref').val()
-
+            per_panel.panel_id = p.find('input[name=panel_id]').val()
+            per_panel.panel_ordering = p.find('input[name=panel_ordering]').val()
+            per_panel.data_modal_id = p.parents().eq(6).find('input[name=data_modal_id]').val()
             per_panel = JSON.stringify(per_panel)
+
             $.ajax({
                 type:'POST',
                 url: "/rest/save_experiment/",
@@ -513,7 +529,17 @@ $(document).ready( function(){
         })
     }
 
-
+    function get_experiment_table_data(){
+        var study_id = $('#study_id').val()
+        $.get( "/rest/get_experiment_table_data/",
+            {
+                study_id:study_id
+            },
+            function( data ) {
+                console.log($.parseJSON(data))
+            }
+        );
+    }
 
 
 })

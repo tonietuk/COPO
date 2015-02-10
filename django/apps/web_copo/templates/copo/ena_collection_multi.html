@@ -288,6 +288,7 @@
 <!-- Data Modal -->
 <div class="modal fade" id="newDataModal" tabindex="-1" role="dialog" aria-labelledby="newSampleModal"
 	 aria-hidden="false">
+<input type="hidden" name="data_modal_id" value=""/>
 <div class="modal-dialog" style="width:1024px">
 <div class="modal-content">
 <div class="modal-header">
@@ -378,6 +379,7 @@
 							<h3 class="panel-title">Upload</h3>
                                         <span class="pull-right clickable"><i
 												class="glyphicon glyphicon-minus"></i></span>
+						<input type="hidden" name="panel_id" value=""/>
 						</div>
 						<div class="panel-body" style="display:block">
 							<div class="row">
@@ -468,7 +470,7 @@
                                                                     <input type="file" name="file"
 																		   onchange="get_chunk_size(event)" multiple/>
                                                                     <input type="hidden" name="upload_id" value=""/>
-																	<input type="hidden" name="panel_id" value="0"/>
+																	<input type="hidden" name="panel_ordering" value="0"/>
 																	<input type="hidden" name="exp_id" value=""/>
                                                                 </span>
 								</form>
