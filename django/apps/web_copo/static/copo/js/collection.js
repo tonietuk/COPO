@@ -537,14 +537,21 @@ $(document).ready( function(){
                 study_id:study_id
             },
             function( data ) {
+                //initialise string
+                var str =''
                 var data = $.parseJSON(data)
+                console.log(data)
                 for (x in data){
                     var row = data[x]
-                    for(y in row){
-                        td = row[y]
-                        
-                    }
+                    str = str + '<tr>'
+
+                    str = str + '<td data-exp_id="' + row['data_modal_id'] + '"><a>' + row['platform'] + '</a></td>'
+                    str = str + '<td>' + row['group_size'] + '</td>'
+                    str = str + '<td>' + row['last_modified'] + '</td>'
+
+                    str = str + '</tr>'
                 }
+                $('#exp_table tr').after(str)
             }
         );
     }
