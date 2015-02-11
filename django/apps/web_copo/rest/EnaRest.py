@@ -550,6 +550,8 @@ def get_experiment_table_data(request):
         out['data_modal_id'] = modal['data_modal_id']
         elements.append(out)
 
+        
+
     el = jsonpickle.encode(elements)
 
     return HttpResponse(el, content_type='text/plain')
