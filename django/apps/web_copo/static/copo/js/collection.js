@@ -6,6 +6,7 @@ $(document).ready( function(){
     $('#delete_upload_group_button').hide()
     $('#upload_counter').val('0')
     $('#save_study').text('Save Study').removeAttr('disabled')
+    $('input[name=exp_id]').val('')
     $('input[name=data_modal_id]').val()
     study_form_data()
     sample_form_data()
@@ -536,7 +537,14 @@ $(document).ready( function(){
                 study_id:study_id
             },
             function( data ) {
-                console.log($.parseJSON(data))
+                var data = $.parseJSON(data)
+                for (x in data){
+                    var row = data[x]
+                    for(y in row){
+                        td = row[y]
+                        alert(td)
+                    }
+                }
             }
         );
     }

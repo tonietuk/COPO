@@ -511,44 +511,45 @@ def save_experiment(request):
 def get_experiment_table_data(request):
     from datetime import datetime
     import pytz
-    #get experiment records, should only get those where panel_id is 0,
-    #as multiple experiments can appear in the same panel (fudge of multiplexed data)
+    out = 'abc'
+
+    #get all experiment objects for this study
     e = EnaExperiment.objects.filter(study_id=request.GET.get('study_id'))
+    #now get a list of the unique data_modal_ids...this is what we should be returning a list of
+    udm = e.values('data_modal_id').distinct()
+    elements = []
+    for modal in udm:
+        #for each modal id, get corresponding experiments
+        me = EnaExperiment.objects.filter(data_modal_id=modal['data_modal_id'])
+        #do calculation to get the size of the related files and the date the group was last modified
+        #get ids of experiment objects
+        ids = set(exp.id for exp in me)
+        #get related ExpFile objects
+        file_set = ExpFile.objects.filter(experiment__in=ids)
+        #get ids of related ExpFile objects
+        ids = set(f.file_id for f in file_set)
+        #get related chunked_upload objects
+        chs = ChunkedUpload.objects.filter(id__in=ids)
+        total = 0
+        last_modified = datetime.min
+        utc = pytz.UTC
+        last_modified = utc.localize(last_modified)
+        #calculate the size of the file group and when in was last modified
+        for upload in chs:
+            total = total + upload.offset
+            print(total)
+            if upload.completed_on > last_modified:
+                last_modified = upload.completed_on
+        #create output object
+        out = {}
+        group_type = me[0].platform
+        fmt = '%d-%m-%Y %H:%M:%S'
+        out['group_size'] = u.filesize_toString(total)
+        out['last_modified'] = last_modified.strftime(fmt)
+        out['platform'] = group_type
+        out['data_modal_id'] = modal['data_modal_id']
+        elements.append(out)
 
+    el = jsonpickle.encode(elements)
 
-    #do calculation to get the size of the related files and the date the group was last modified
-    #get ids of experiment objects
-    ids = set(exp.id for exp in e)
-    #get related ExpFile objects
-    file_set = ExpFile.objects.filter(experiment__in=ids)
-    #get ids of related ExpFile objects
-    ids = set(f.file_id for f in file_set)
-    #get related chunked_upload objects
-    chs = ChunkedUpload.objects.filter(id__in=ids)
-    total = 0
-    last_modified = datetime.min
-    utc = pytz.UTC
-    last_modified = utc.localize(last_modified)
-    #calculate the size of the file group and when in was last modified
-    for upload in chs:
-        total = total + upload.offset
-        if upload.completed_on > last_modified:
-            last_modified = upload.completed_on
-    #create output object
-    e = e.filter(panel_id=0)
-    elements = {}
-    if e.exists():
-
-        for member in e:
-            out = {}
-            group_type = member.platform
-            fmt = '%d-%m-%Y %H:%M:%S'
-            out['group_size'] = u.filesize_toString(total)
-            out['last_modified'] = last_modified.strftime(fmt)
-            out['platform'] = group_type
-            elements.append(out)
-        elements = jsonpickle.encode(elements)
-
-
-    out = jsonpickle.encode(elements)
-    return HttpResponse(out, content_type='text/plain')
+    return HttpResponse(el, content_type='text/plain')
