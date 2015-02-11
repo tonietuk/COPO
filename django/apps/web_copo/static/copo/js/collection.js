@@ -542,7 +542,7 @@ $(document).ready( function(){
                     var row = data[x]
                     for(y in row){
                         td = row[y]
-                        alert(td)
+                        
                     }
                 }
             }
