@@ -1,4 +1,4 @@
-Django==1.7
+Django==3.2.15
 Flask==0.10.1
 Jinja2==2.7.3
 Markdown==2.5.1
@@ -81,3 +81,4 @@ xml2json==0.1
 xmltodict==0.5.0
 yolk==0.4.3
 zope.interface==4.1.1
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
