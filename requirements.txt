@@ -6,7 +6,7 @@ MarkupSafe==0.23
 MySQL-python==1.2.5
 PyXB==1.2.4
 Pygments==1.6
-Twisted==13.2.0
+Twisted==22.10.0rc1
 Werkzeug==0.9.6
 altgraph==0.10.2
 bdist-mpkg==0.5.0
@@ -81,3 +81,4 @@ xml2json==0.1
 xmltodict==0.5.0
 yolk==0.4.3
 zope.interface==4.1.1
+setuptools>=65.5.1 # not directly required, pinned by Snyk to avoid a vulnerability
