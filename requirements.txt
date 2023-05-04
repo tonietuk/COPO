@@ -1,5 +1,5 @@
-Django==1.7
-Flask==0.10.1
+Django==3.2.19
+Flask==2.2.5
 Jinja2==2.7.3
 Markdown==2.5.1
 MarkupSafe==0.23
